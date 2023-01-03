@@ -1,7 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, jsonify
 from api.models import db, Users, Posts, Fav_posts
 from api.utils import generate_sitemap, APIException
 
@@ -16,3 +16,19 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+# Traer todos los Usuarios
+@api.route('/hola', methods=['GET'])
+def get_user():
+    user=Users.query.all()
+    return list(map(lambda item: item.serialize(),user)), 200
+    
+# traer los favoritos
+@api.route('/fav_posts', methods=['GET'])
+def get_Fav_post():
+    fav_posts=Fav_posts.query.all()
+    return list(map(lambda item: item.serialize(),fav_posts)), 200
+
+
+
+    
+    
