@@ -17,7 +17,7 @@ def handle_hello():
 
     return jsonify(response_body), 200
 # Traer todos los Usuarios
-@api.route('/hola', methods=['GET'])
+@api.route('/user', methods=['GET'])
 def get_user():
     user=Users.query.all()
     return list(map(lambda item: item.serialize(),user)), 200
@@ -28,7 +28,10 @@ def get_Fav_post():
     fav_posts=Fav_posts.query.all()
     return list(map(lambda item: item.serialize(),fav_posts)), 200
 
-
+@api.route('/posts', methods=['GET'])
+def get_posts():
+    posts=Posts.query.all()
+    return list(map(lambda item: item.serialize(),Posts)), 200
 
     
     
