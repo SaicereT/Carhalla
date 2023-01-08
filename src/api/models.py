@@ -46,7 +46,8 @@ class Posts(db.Model):
         "year":self.year,
         "make":self.make,
         "model":self.model,
-        "price":self.price
+        "price":self.price,
+        "post_id":self.id
         }
     
     def serializeFull(self):

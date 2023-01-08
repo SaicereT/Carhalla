@@ -103,3 +103,13 @@ def add_post():
     db.session.add(new_post)
     db.session.commit()
     return jsonify({"msg":"New post uploaded"}), 200
+    
+#borrando publicacion
+@api.route('/posts/delete/<int:post_param>', methods = ['DELETE'])
+def delete_post(post_param):
+    post = Posts.query.filter(Posts.id==post_param).first()
+    if post != None:
+        db.session.delete(post)
+        db.session.commit()
+        return jsonify({'msg':'Post Deleted'}), 200
+    return jsonify({'msg':'Post does not exist'}), 404
