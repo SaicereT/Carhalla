@@ -15,5 +15,6 @@ def setup_admin(app):
     admin.add_view(ModelView(Posts, db.session))
     admin.add_view(ModelView(Fav_posts, db.session))
 
+
     # You can duplicate that line to add mew models
     # admin.add_view(ModelView(YourModelName, db.session)) 
