@@ -116,11 +116,5 @@ def delete_post(post_param):
         return jsonify({'msg':'Post Deleted'}), 200
     return jsonify({'msg':'Post does not exist'}), 404
 
-# Traer todos los Nuevos Usuarios
-@api.route('/users_info', methods=['GET'])
-def get_user_info():
-    user_info=Add_user.query.all()
-    return list(map(lambda item: item.serialize(),user_info)), 200
-
 
 
