@@ -2,10 +2,12 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, jsonify
-from api.models import db, Users, Posts, Fav_posts
+from api.models import db, Users, Posts, Fav_posts 
 from api.utils import generate_sitemap, APIException
-from flask_jwt_extended import create_access_token, create_refresh_token
 import json
+from flask_jwt_extended import create_access_token, create_refresh_token
+
+
 
 api = Blueprint('api', __name__)
 
@@ -113,3 +115,6 @@ def delete_post(post_param):
         db.session.commit()
         return jsonify({'msg':'Post Deleted'}), 200
     return jsonify({'msg':'Post does not exist'}), 404
+
+
+

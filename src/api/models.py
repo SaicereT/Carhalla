@@ -8,6 +8,13 @@ class Users(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    is_admin = db.Column(db.Boolean(), unique=False, nullable=True)
+    firstname = db.Column(db.String(40), unique=False, nullable=False)
+    lastname = db.Column(db.String(120), unique=False, nullable=False)
+    telnumber = db.Column(db.String(120), unique=True, nullable=False)
+    address = db.Column(db.String(120), unique=False, nullable=False)
+    country = db.Column(db.String(120), unique=False, nullable=False)
+    age = db.Column(db.String(120), unique=False, nullable=False)
 
     def __repr__(self):
         return f'<User {self.email}>'
@@ -15,7 +22,16 @@ class Users(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "email": self.email
+            "email": self.email,
+            "email":self.email,
+            #"photo":self.photo,
+             "password":self.password,
+            "firstname":self.firstname,
+            "lastname":self.lastname,
+            "number":self.number,
+            "address":self.address,
+            "country":self.country,
+            "age":self.age,
         }
 
 class Posts(db.Model):
