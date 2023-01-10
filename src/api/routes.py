@@ -2,14 +2,18 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, jsonify
-from api.models import db, Users, Posts, Fav_posts 
+from api.models import db, Users, Posts, Fav_posts, TokenBlocklist
 from api.utils import generate_sitemap, APIException
 import json
-from flask_jwt_extended import create_access_token, create_refresh_token
+from datetime import datetime, timezone
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt
+from flask_bcrypt import Bcrypt
 
 
 
 api = Blueprint('api', __name__)
+
+cripto=Bcrypt(Flask(__name__))
 
 #inicio de session 
 @api.route('/login', methods=['POST'])
@@ -31,12 +35,47 @@ def user_login():
     #clave no valilda
         print("clave Invalida")
         return jsonify({"msg":"Invalid Login"}), 401
+
+@api.route('/logout', methods=['POST'])
+@jwt_required()
+def user_logout():
+    jti=get_jtw(["jti"])
+    now = datetime.now(timezone.utc)
+    blocked_token=TokenBlocklist(jti=jti, created_at=now)
+    db.session.add(blocked_token)
+    db.session.commit()
+    return jsonify({"msg":"Token has been blocked"}), 200
     
 # Traer todos los Usuarios
 @api.route('/users', methods=['GET'])
 def get_user():
     user=Users.query.all()
     return list(map(lambda item: item.serialize(),user)), 200
+
+@api.route('/signup', methods = ['POST'])
+def add_user():
+    body = json.loads(request.data)
+    user_exists=Users.query.filter(Users.email==body["email"]).first()
+    if user_exists != None:
+        return jsonify({"msg":"There is already an account with this email"}), 401
+#    for i in body:
+#       test = lambda: [i.strip() for i in body]
+#        if (not (body[i] and (body[i]).strip())):
+#            return jsonify({"msg":"There are empty values"}), 404        
+    new_user = Users(
+        email=body["email"],
+        password=cripto.generate_password_hash(body["password"]),
+        is_active=body["is_active"],
+        firstname=body["firstname"],
+        lastname=body["lastname"],
+        telnumber=body["telnumber"],
+        address=body["address"],
+        country=body["country"],
+        age=body["age"]
+    )
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({"msg":"New user created!"}), 200
    
 # traer los favoritos
 @api.route('/users/<int:user_param>/favorites', methods=['GET'])
