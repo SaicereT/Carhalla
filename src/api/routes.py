@@ -37,6 +37,31 @@ def user_login():
 def get_user():
     user=Users.query.all()
     return list(map(lambda item: item.serialize(),user)), 200
+
+@api.route('users/new', methods = ['POST'])
+def add_user():
+    body = json.loads(request.data)
+    user_exists=Users.query.filter(Users.email==body["email"]).first()
+    if user_exists != None:
+        return jsonify({"msg":"There is already an account with this email"}), 401
+#    for i in body:
+#       test = lambda: [i.strip() for i in body]
+#        if (not (body[i] and (body[i]).strip())):
+#            return jsonify({"msg":"There are empty values"}), 404        
+    new_user = Users(
+        email=body["email"],
+        password=body["password"],
+        is_active=body["is_active"],
+        firstname=body["firstname"],
+        lastname=body["lastname"],
+        telnumber=body["telnumber"],
+        address=body["address"],
+        country=body["country"],
+        age=body["age"]
+    )
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({"msg":"New user created!"}), 200
    
 # traer los favoritos
 @api.route('/users/<int:user_param>/favorites', methods=['GET'])
