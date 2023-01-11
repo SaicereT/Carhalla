@@ -13,7 +13,7 @@ export const Navbar = () => {
             <button className="btn btn-primary">Sing in</button>
           </Link>
           <Link to="/">
-            <button className="btn btn-dark">Log Out</button>
+            <button className="btn btn-dark">Log on</button>
           </Link>
         </div>
       </div>

@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import { Action } from "history";
 
 export function FormUser() {
   const [validated, setValidated] = useState(false);
@@ -25,26 +26,38 @@ export function FormUser() {
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="validationCustom01">
             <Form.Label>Name</Form.Label>
-            <Form.Control required type="text" placeholder="Nombre" />
+            <Form.Control
+              htmlFor="username"
+              required
+              type="text"
+              placeholder="Nombre"
+              name="firstname"
+            />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="4" controlId="validationCustom02">
             <Form.Label>Lastname</Form.Label>
-            <Form.Control required type="text" placeholder="Lastname" />
+            <Form.Control
+              required
+              type="text"
+              placeholder="Lastname"
+              name="lastname"
+            />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
-          <Form.Group as={Col} md="4" controlId="validationCustom01">
+          <Form.Group as={Col} md="4" controlId="validationCustom03">
             <Form.Label>Age</Form.Label>
-            <Form.Control required type="number" placeholder="Age" />
+            <Form.Control required type="number" placeholder="Age" name="age" />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group as={Col} md="6" controlId="validationCustom03">
-            <Form.Label>Email address</Form.Label>
+          <Form.Group as={Col} md="6" controlId="validationCustom04">
+            <Form.Label>Email</Form.Label>
             <Form.Control
               required
               type="email"
               placeholder="name@example.com"
+              name="email"
             />
             <Form.Control.Feedback type="invalid">
               Porfavor Agregar un correo
@@ -53,23 +66,33 @@ export function FormUser() {
         </Row>
 
         <Row className="mb-3">
-          <Form.Group as={Col} md="6" controlId="validationCustom04">
-            <Form.Label>City</Form.Label>
-            <Form.Control type="text" placeholder="City" required />
-            <Form.Control.Feedback type="invalid">
-              Please provide a valid city.
-            </Form.Control.Feedback>
-          </Form.Group>
           <Form.Group as={Col} md="6" controlId="validationCustom05">
-            <Form.Label>Adress</Form.Label>
-            <Form.Control type="text" placeholder="Adress" required />
+            <Form.Label>City</Form.Label>
+            <Form.Control type="text" placeholder="City" required name="city" />
             <Form.Control.Feedback type="invalid">
               Please provide a valid city.
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group as={Col} md="3" controlId="validationCustom06">
+          <Form.Group as={Col} md="6" controlId="validationCustom06">
+            <Form.Label>Adress</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Adress"
+              required
+              name="adress"
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid city.
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group as={Col} md="3" controlId="validationCustom07">
             <Form.Label>Phone</Form.Label>
-            <Form.Control type="num" placeholder="Phone" required />
+            <Form.Control
+              type="num"
+              placeholder="Phone"
+              required
+              name="phone"
+            />
             <Form.Control.Feedback type="invalid">
               Please provide a valid state.
             </Form.Control.Feedback>
@@ -109,9 +132,33 @@ export function FormUser() {
         </Form.Text>
 
         <div>
-          <Button type="submit">Enviar Formulario</Button>
+          <Button type="submit" onClick={() => NewUser}>
+            Enviar Formulario
+          </Button>
         </div>
       </Form>
     </div>
   );
+}
+var apiurl =
+  "https://3001-saiceret-proyectofinalj-5zzirbg8u22.ws-us82.gitpod.io/api/signup";
+async function NewUser() {
+  console.log("hello");
+  respuesta = await fetch(apiurl, {
+    method: "POST",
+    body: JSON.stringify({
+      email: email,
+      password: password,
+      firstname: firstname,
+      lastname: lastname,
+      is_active: true,
+      telnumber: phone,
+      address: adress,
+      country: city,
+      age: age,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }
