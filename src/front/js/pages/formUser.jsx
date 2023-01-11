@@ -20,6 +20,28 @@ export function FormUser() {
     setValidated(true);
   };
 
+  var apiurl =
+    "https://3001-saiceret-proyectofinalj-jhc95hjz0rz.ws-us82.gitpod.io/api/signup";
+  async function NewUser() {
+    respuesta = await fetch(apiurl, {
+      method: "POST",
+      body: JSON.stringify({
+        email: [email],
+        password: [password],
+        firstname: [firstname],
+        lastname: [lastname],
+        is_active: [true],
+        telnumber: [phone],
+        address: [adress],
+        country: [city],
+        age: [age],
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
   return (
     <div className="container">
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -139,26 +161,4 @@ export function FormUser() {
       </Form>
     </div>
   );
-}
-var apiurl =
-  "https://3001-saiceret-proyectofinalj-5zzirbg8u22.ws-us82.gitpod.io/api/signup";
-async function NewUser() {
-  console.log("hello");
-  respuesta = await fetch(apiurl, {
-    method: "POST",
-    body: JSON.stringify({
-      email: email,
-      password: password,
-      firstname: firstname,
-      lastname: lastname,
-      is_active: true,
-      telnumber: phone,
-      address: adress,
-      country: city,
-      age: age,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
 }
