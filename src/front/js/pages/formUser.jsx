@@ -11,30 +11,46 @@ export function FormUser() {
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+    event.preventDefault();
+    //event.stopPropagation();
+    //const form = event.currentTarget;
+    if (event.target.checkValidity()) {
+      let formData = new FormData(event.target);
+      let data = {};
+      let campos = [
+        "firstname",
+        "lastname",
+        "age",
+        "email",
+        "city",
+        "address",
+        "phone",
+        "password",
+      ];
+      campos.forEach((campo) => {
+        data[campo] = formData.get(campo);
+      });
+      console.log(data);
+      //NewUser();
+      //setValidated(true);
     }
-
-    setValidated(true);
   };
 
-  var apiurl =
-    "https://3001-saiceret-proyectofinalj-jhc95hjz0rz.ws-us82.gitpod.io/api/signup";
   async function NewUser() {
+    var apiurl =
+      "https://3001-saiceret-proyectofinalj-jhc95hjz0rz.ws-us82.gitpod.io/api/signup";
     respuesta = await fetch(apiurl, {
       method: "POST",
       body: JSON.stringify({
-        email: [email],
-        password: [password],
-        firstname: [firstname],
-        lastname: [lastname],
-        is_active: [true],
-        telnumber: [phone],
-        address: [adress],
-        country: [city],
-        age: [age],
+        email: "test1",
+        password: "test",
+        firstname: "test",
+        lastname: "test",
+        is_active: true,
+        telnumber: "4",
+        address: "test",
+        country: "test",
+        age: "3",
       }),
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +60,7 @@ export function FormUser() {
 
   return (
     <div className="container">
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form onSubmit={(event) => handleSubmit(event)}>
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="validationCustom01">
             <Form.Label>Name</Form.Label>
@@ -99,9 +115,9 @@ export function FormUser() {
             <Form.Label>Adress</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Adress"
+              placeholder="Address"
               required
-              name="adress"
+              name="address"
             />
             <Form.Control.Feedback type="invalid">
               Please provide a valid city.
@@ -139,6 +155,7 @@ export function FormUser() {
             type="password"
             id="inputPassword5"
             aria-describedby="passwordHelpBlock"
+            name="password"
           />
           <Form.Label htmlFor="inputPasswordRE">Repetir Contraseña</Form.Label>
           <Form.Control
@@ -154,11 +171,12 @@ export function FormUser() {
         </Form.Text>
 
         <div>
-          <Button type="submit" onClick={() => NewUser}>
-            Enviar Formulario
-          </Button>
+          <Button type="submit">Enviar Formulario</Button>
         </div>
       </Form>
+      <Button type="submit" onClick={() => NewUser()}>
+        Test button
+      </Button>
     </div>
   );
 }

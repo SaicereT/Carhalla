@@ -64,7 +64,7 @@ def add_user():
 #            return jsonify({"msg":"There are empty values"}), 404        
     new_user = Users(
         email=body["email"],
-        password=cripto.generate_password_hash(body["password"]),
+        password=body["password"],
         is_active=body["is_active"],
         firstname=body["firstname"],
         lastname=body["lastname"],
