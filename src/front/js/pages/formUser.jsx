@@ -12,8 +12,6 @@ export function FormUser() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    //event.stopPropagation();
-    //const form = event.currentTarget;
     if (event.target.checkValidity()) {
       let formData = new FormData(event.target);
       let data = {};
@@ -67,7 +65,7 @@ export function FormUser() {
             <Form.Control
               required
               type="text"
-              placeholder="Nombre"
+              placeholder="Name"
               name="firstname"
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -88,7 +86,7 @@ export function FormUser() {
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group as={Col} md="6" controlId="validationCustom04">
+          <Form.Group as={Col} md="4" controlId="validationCustom04">
             <Form.Label>Email</Form.Label>
             <Form.Control
               required
@@ -134,21 +132,21 @@ export function FormUser() {
               Please provide a valid state.
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Profile Photo</Form.Label>
+          <Form.Group as={Col} md="5" controlId="formFile" className="mb-3">
+            <Form.Label>File</Form.Label>
             <Form.Control type="file" />
           </Form.Group>
         </Row>
         <Form.Group className="mb-3">
           <Form.Check
             required
-            label="Acepto uso de terminos y condiciones"
+            label="Agree to terms and conditions"
             feedback="You must agree before submitting."
             feedbackType="invalid"
           />
         </Form.Group>
         <Form.Group as={Col} md="3">
-          <Form.Label htmlFor="inputPassword5">Constraseña</Form.Label>
+          <Form.Label htmlFor="inputPassword5">Password</Form.Label>
           <Form.Control
             required
             type="password"
@@ -156,7 +154,7 @@ export function FormUser() {
             aria-describedby="passwordHelpBlock"
             name="password"
           />
-          <Form.Label htmlFor="inputPasswordRE">Repetir Contraseña</Form.Label>
+          <Form.Label htmlFor="inputPasswordRE">Repeat Password</Form.Label>
           <Form.Control
             required
             type="password"
@@ -165,12 +163,12 @@ export function FormUser() {
           />
         </Form.Group>
         <Form.Text id="passwordHelpBlock" muted>
-          Su contraseña debe tener entre 8 y 20 caracteres, contener letras y
-          números, y no debe contener espacios, caracteres especiales o emoji.
+          Your password must be 8-20 characters long, contain letters and
+          numbers, and must not contain spaces, special characters, or emoji.
         </Form.Text>
 
         <div>
-          <Button type="submit">Enviar Formulario</Button>
+          <Button type="submit">Send submit</Button>
         </div>
       </Form>
     </div>
