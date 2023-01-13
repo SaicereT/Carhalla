@@ -55,13 +55,24 @@ def get_user():
 @api.route('/signup', methods = ['POST'])
 def add_user():
     body = json.loads(request.data)
+    for i in body:
+        if (type(body[i]) != bool):
+            body[i] = body[i].strip()
+            
+    for i in body:
+        if (body[i] == ""):
+            return jsonify({"msg":"There are empty values"}), 404
+
     user_exists=Users.query.filter(Users.email==body["email"]).first()
+
     if user_exists != None:
         return jsonify({"msg":"There is already an account with this email"}), 401
-#    for i in body:
-#       test = lambda: [i.strip() for i in body]
-#        if (not (body[i] and (body[i]).strip())):
-#            return jsonify({"msg":"There are empty values"}), 404        
+    
+    phone_exists = Users.query.filter(Users.telnumber==body["telnumber"]).first()
+
+    if phone_exists != None:
+        return jsonify({"msg":"There is already an account with this telephone number"}), 401
+        
     new_user = Users(
         email=body["email"],
         password=cripto.generate_password_hash(body["password"]),
@@ -124,8 +135,12 @@ def get_post_detail(post_param):
 def add_post():
     body = json.loads(request.data)
     for i in body:
-        if body[i] is None:
-            raise APIException("There are empty values", status_code=404)
+        if (type(body[i]) != bool):
+            body[i] = body[i].strip()
+            
+    for i in body:
+        if (body[i] == ""):
+            return jsonify({"msg":"There are empty values"}), 404
     
     new_post = Posts(
         title=body["title"],
@@ -144,6 +159,37 @@ def add_post():
     db.session.add(new_post)
     db.session.commit()
     return jsonify({"msg":"New post uploaded"}), 200
+
+#actualizar publicacion
+@api.route('/posts/update/<int:post_param>', methods = ['PUT'])
+def update_post(post_param):
+    body = json.loads(request.data)
+    for i in body:
+        if (type(body[i]) != bool):
+            body[i] = body[i].strip()
+
+    for i in body:
+        if (body[i] == ""):
+            return jsonify({"msg":"There are empty values"}), 404
+
+    post_exists=Posts.query.filter(Posts.id==post_param).first()
+
+    if post_exists != None:
+        post = Posts.query.get(post_param)
+        post.title= body["title"]
+        post.make= body["make"]
+        post.model= body["model"]
+        post.style= body["style"]
+        post.fuel= body["fuel"]
+        post.transmission= body["transmission"]
+        post.doors= body["doors"]
+        post.year= body["year"]
+        post.price= body["price"]
+        post.description= body["description"]
+        post.financing= request.json.get('financing')
+        db.session.commit()
+        return jsonify({'msg':'Post Updated'}), 200
+    return jsonify({'msg':'Post does not exist'}), 404
     
 #borrando publicacion
 @api.route('/posts/delete/<int:post_param>', methods = ['DELETE'])
