@@ -31,26 +31,26 @@ export function FormUser() {
         data[campo] = formData.get(campo);
       });
       console.log(data);
-      //NewUser();
+      NewUser(data);
       //setValidated(true);
     }
   };
 
-  async function NewUser() {
+  async function NewUser(data) {
     var apiurl =
-      "https://3001-saiceret-proyectofinalj-jhc95hjz0rz.ws-us82.gitpod.io/api/signup";
-    respuesta = await fetch(apiurl, {
+      "https://3001-saiceret-proyectofinalj-6y3huu2bh8a.ws-us82.gitpod.io/api/signup";
+    let respuesta = await fetch(apiurl, {
       method: "POST",
       body: JSON.stringify({
-        email: "test1",
-        password: "test",
-        firstname: "test",
-        lastname: "test",
+        email: data.email,
+        password: data.password,
+        firstname: data.firstname,
+        lastname: data.lastname,
         is_active: true,
-        telnumber: "4",
-        address: "test",
-        country: "test",
-        age: "3",
+        telnumber: data.phone,
+        address: data.address,
+        country: data.city,
+        age: data.age,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -62,10 +62,9 @@ export function FormUser() {
     <div className="container">
       <Form onSubmit={(event) => handleSubmit(event)}>
         <Row className="mb-3">
-          <Form.Group as={Col} md="4" controlId="validationCustom01">
+          <Form.Group as={Col} md="4" controlId="firstname">
             <Form.Label>Name</Form.Label>
             <Form.Control
-              htmlFor="username"
               required
               type="text"
               placeholder="Nombre"
@@ -174,9 +173,6 @@ export function FormUser() {
           <Button type="submit">Enviar Formulario</Button>
         </div>
       </Form>
-      <Button type="submit" onClick={() => NewUser()}>
-        Test button
-      </Button>
     </div>
   );
 }
