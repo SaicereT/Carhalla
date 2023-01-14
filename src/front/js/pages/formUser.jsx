@@ -6,9 +6,11 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Action } from "history";
+import { Context } from "../store/appContext";
 
 export function FormUser() {
   const [validated, setValidated] = useState(false);
+  const { store, actions } = useContext(Context);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,32 +31,9 @@ export function FormUser() {
         data[campo] = formData.get(campo);
       });
       console.log(data);
-      NewUser(data);
-      //setValidated(true);
+      actions.NewUser(data);
     }
   };
-
-  async function NewUser(data) {
-    var apiurl =
-      "https://3001-saiceret-proyectofinalj-6y3huu2bh8a.ws-us82.gitpod.io/api/signup";
-    let respuesta = await fetch(apiurl, {
-      method: "POST",
-      body: JSON.stringify({
-        email: data.email,
-        password: data.password,
-        firstname: data.firstname,
-        lastname: data.lastname,
-        is_active: true,
-        telnumber: data.phone,
-        address: data.address,
-        country: data.city,
-        age: data.age,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }
 
   return (
     <div className="container">
