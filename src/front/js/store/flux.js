@@ -22,6 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         });
       },
+      userLogin: (username, password) => {},
       //Nueva action aqui
     },
   };

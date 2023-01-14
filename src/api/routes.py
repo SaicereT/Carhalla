@@ -6,7 +6,7 @@ from api.models import db, Users, Posts, Fav_posts, TokenBlocklist
 from api.utils import generate_sitemap, APIException
 import json
 from datetime import datetime, timezone
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt, get_jwt_identity
 from flask_bcrypt import Bcrypt
 
 
@@ -26,7 +26,7 @@ def user_login():
         print("correo invalido")
         return jsonify({"msg":"Invalid Login"}), 401
  #valida la contraseña
-    if user.password==password:
+    if cripto.check_password_hash(user.password, password):
         print("Clave correcta")
         access_token=create_access_token(identity=user.id)
         refresh_token=create_refresh_token(identity=user.id)
@@ -39,7 +39,7 @@ def user_login():
 @api.route('/logout', methods=['POST'])
 @jwt_required()
 def user_logout():
-    jti=get_jtw(["jti"])
+    jti=get_jwt()["jti"]
     now = datetime.now(timezone.utc)
     blocked_token=TokenBlocklist(jti=jti, created_at=now)
     db.session.add(blocked_token)
@@ -75,7 +75,7 @@ def add_user():
         
     new_user = Users(
         email=body["email"],
-        password=body["password"],
+        password=cripto.generate_password_hash(body["password"]).decode('utf-8'),
         is_active=body["is_active"],
         firstname=body["firstname"],
         lastname=body["lastname"],
@@ -89,19 +89,28 @@ def add_user():
     return jsonify({"msg":"New user created!"}), 200
    
 # traer los favoritos
-@api.route('/users/<int:user_param>/favorites', methods=['GET'])
-def get_Fav_post(user_param):
-    fav_posts=Fav_posts.query.filter(Fav_posts.user_id==user_param).all()
+@api.route('/favorites', methods=['GET'])
+@jwt_required()
+def get_Fav_post():
+    user_id=get_jwt_identity()
+    fav_posts=Fav_posts.query.filter(Fav_posts.user_id==user_id).all()
     return list(map(lambda item: item.serialize(),fav_posts)), 200
 
 #agregar un favorito
-@api.route('/users/<int:user_param>/favorites/<int:fav_id>', methods=['POST'])
-def add_favorite(user_param, fav_id):
-    fav_exists=Fav_posts.query.filter(Fav_posts.post_id==fav_id, Fav_posts.user_id==user_param).first()
+@api.route('/favorites/<int:fav_id>', methods=['POST'])
+@jwt_required()
+def add_favorite(fav_id):
+    user_id=get_jwt_identity()
+    post_exists=Posts.query.filter(Posts.id==fav_id).first()
+    fav_exists=Fav_posts.query.filter(Fav_posts.post_id==fav_id, Fav_posts.user_id==user_id).first()
+    if post_exists is None:
+        return jsonify({"msg":"Post does not exist"}), 404
+
     if fav_exists != None:
         return jsonify({'msg':'Favorite already exists'}), 404
     
-    new_fav_post=Fav_posts(user_id = user_param, post_id= fav_id)
+
+    new_fav_post=Fav_posts(user_id = user_id, post_id= fav_id)
     db.session.add(new_fav_post)
     db.session.commit()
     db.session.refresh(new_fav_post)
@@ -109,14 +118,19 @@ def add_favorite(user_param, fav_id):
 
 #quitar un favorito
 @api.route('/favorites/<int:fav_id>', methods=['DELETE'])
+@jwt_required()
 def delete_favorite(fav_id):
+    user_id=get_jwt_identity()
     fav_exists=Fav_posts.query.filter(Fav_posts.id==fav_id).first()
     if fav_exists is None:
         return jsonify({'msg':"Favorite does not exist"}), 404
 
-    fav_post=Fav_posts.query.filter_by(id=fav_id).delete()
-    db.session.commit()
-    return jsonify({'msg':"Favorite Deleted"}), 200
+    if fav_exists.user_id==user_id:
+        fav_post=Fav_posts.query.filter_by(id=fav_id).delete()
+        db.session.commit()
+        return jsonify({'msg':"Favorite Deleted"}), 200
+    
+    return jsonify({"msg":"Not authorized to delete favorite"}), 403
 
 #traer todos los post
 @api.route('/posts', methods=['GET'])
@@ -132,7 +146,9 @@ def get_post_detail(post_param):
 
 #agregar una nueva publicacion
 @api.route('posts/new', methods = ['POST'])
+@jwt_required()
 def add_post():
+    user_id=get_jwt_identity()
     body = json.loads(request.data)
     for i in body:
         if (type(body[i]) != bool):
@@ -154,7 +170,7 @@ def add_post():
         year=body["year"],
         price=body["price"],
         description=body["description"],
-        user_id=body["user_id"]
+        user_id=user_id
     )
     db.session.add(new_post)
     db.session.commit()
@@ -162,7 +178,9 @@ def add_post():
 
 #actualizar publicacion
 @api.route('/posts/update/<int:post_param>', methods = ['PUT'])
+@jwt_required()
 def update_post(post_param):
+    user_id=get_jwt_identity()
     body = json.loads(request.data)
     for i in body:
         if (type(body[i]) != bool):
@@ -175,6 +193,10 @@ def update_post(post_param):
     post_exists=Posts.query.filter(Posts.id==post_param).first()
 
     if post_exists != None:
+
+        if post_exists.user_id != user_id:
+            return jsonify({"msg":"Not authorized to edit post"})
+
         post = Posts.query.get(post_param)
         post.title= body["title"]
         post.make= body["make"]
@@ -189,17 +211,27 @@ def update_post(post_param):
         post.financing= request.json.get('financing')
         db.session.commit()
         return jsonify({'msg':'Post Updated'}), 200
+
     return jsonify({'msg':'Post does not exist'}), 404
     
 #borrando publicacion
 @api.route('/posts/delete/<int:post_param>', methods = ['DELETE'])
+@jwt_required()
 def delete_post(post_param):
+    user_id=get_jwt_identity()
     post = Posts.query.filter(Posts.id==post_param).first()
-    if post != None:
-        db.session.delete(post)
-        db.session.commit()
-        return jsonify({'msg':'Post Deleted'}), 200
-    return jsonify({'msg':'Post does not exist'}), 404
+    if post is None:
+        return jsonify({'msg':'Post does not exist'}), 404
+
+    if post.user_id != user_id:
+        return jsonify({"msg":"Not authorized to delete post"}), 403
+
+    db.session.delete(post)
+    db.session.commit()
+    return jsonify({'msg':'Post Deleted'}), 200
+
+    
+    
 
 
 
