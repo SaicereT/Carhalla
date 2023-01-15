@@ -23,7 +23,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
       },
       LogOn: async (data) => {
-        let resp = await fetch(process.env.BACKEND_URL + "/api/users", {
+        let resp = await fetch(process.env.BACKEND_URL + "/api/login", {
           method: "GET",
           body: JSON.stringify({
             email: data.email,
