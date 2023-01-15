@@ -230,6 +230,16 @@ def delete_post(post_param):
     db.session.commit()
     return jsonify({'msg':'Post Deleted'}), 200
 
+@api.route('/change_password', methods=['PATCH'])
+@jwt_required()
+def update_user_password():
+    new_password=request.json.get("password")
+    user_id=get_jwt_identity()
+    user=Users.query.get(user_id)
+    user.password=cripto.generate_password_hash(new_password)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({"msg":"Password has been updated"}), 200
     
     
 
