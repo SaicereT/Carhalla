@@ -34,6 +34,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         });
       },
+
       //Nueva action aqui
     },
   };
