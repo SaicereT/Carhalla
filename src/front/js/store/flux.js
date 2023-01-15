@@ -22,6 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         });
       },
+      userLogin: (username, password) => {},
       LogOn: async (data) => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/login", {
           method: "GET",
@@ -34,7 +35,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         });
       },
-
       //Nueva action aqui
     },
   };
