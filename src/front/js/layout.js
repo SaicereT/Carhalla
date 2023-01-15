@@ -7,7 +7,7 @@ import { FormUser } from "./pages/formUser.jsx";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import { Navbar } from "./component/navbar.jsx";
 import { Footer } from "./component/footer";
 
 //create your first component

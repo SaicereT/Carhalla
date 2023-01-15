@@ -22,9 +22,20 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         });
       },
+      LogOn: async (data) => {
+        let resp = await fetch(process.env.BACKEND_URL + "/api/users", {
+          method: "GET",
+          body: JSON.stringify({
+            email: data.email,
+            password: data.password,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      },
       //Nueva action aqui
     },
   };
 };
-
 export default getState;
