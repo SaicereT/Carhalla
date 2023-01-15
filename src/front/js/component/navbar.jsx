@@ -27,7 +27,7 @@ export const Navbar = () => {
         </Link>
         <div className="ml-auto">
           <Link to="/formUser">
-            <button className="btn btn-primary">Sing in</button>
+            <button className="btn btn-primary">Sign up</button>
           </Link>
           <div className="dropdown">
             <button
@@ -37,7 +37,7 @@ export const Navbar = () => {
               aria-expanded="false"
               data-bs-auto-close="outside"
             >
-              Log on
+              Log in
             </button>
             <form
               className="dropdown-menu p-4"
@@ -74,7 +74,7 @@ export const Navbar = () => {
                 />
               </div>
               <button type="submit" className="btn btn-primary">
-                enter log
+                Submit
               </button>
             </form>
           </div>

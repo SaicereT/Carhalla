@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {},
@@ -25,7 +26,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       userLogin: (username, password) => {},
       LogOn: async (data) => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/login", {
-          method: "GET",
+          method: "POST",
           body: JSON.stringify({
             email: data.email,
             password: data.password,
@@ -34,6 +35,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Content-Type": "application/json",
           },
         });
+        if (resp.status == 200) {
+        }
       },
       //Nueva action aqui
     },

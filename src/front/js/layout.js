@@ -6,6 +6,7 @@ import { Home } from "./pages/home";
 import { FormUser } from "./pages/formUser.jsx";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
+import { Profile } from "./component/profile_page.jsx";
 
 import { Navbar } from "./component/navbar.jsx";
 import { Footer } from "./component/footer";
@@ -25,6 +26,7 @@ const Layout = () => {
             <Route element={<Home />} path="/" />
             <Route element={<FormUser />} path="/formUser" />
             <Route element={<Single />} path="/single/:theid" />
+            <Route element={<Profile />} path="/profile_page" />
             <Route element={<h1>Not found!</h1>} />
           </Routes>
           <Footer />
