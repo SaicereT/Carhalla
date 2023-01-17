@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 3c93fdbcb8a1
+Revision ID: 6305c5e3aa69
 Revises: 
-Create Date: 2023-01-15 14:53:09.586409
+Create Date: 2023-01-17 16:43:15.849957
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '3c93fdbcb8a1'
+revision = '6305c5e3aa69'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,7 +24,9 @@ def upgrade():
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_token_blocklist_jti'), 'token_blocklist', ['jti'], unique=False)
+    with op.batch_alter_table('token_blocklist', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_token_blocklist_jti'), ['jti'], unique=False)
+
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('email', sa.String(length=120), nullable=False),
@@ -74,6 +76,8 @@ def downgrade():
     op.drop_table('Fav_posts')
     op.drop_table('posts')
     op.drop_table('users')
-    op.drop_index(op.f('ix_token_blocklist_jti'), table_name='token_blocklist')
+    with op.batch_alter_table('token_blocklist', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_token_blocklist_jti'))
+
     op.drop_table('token_blocklist')
     # ### end Alembic commands ###

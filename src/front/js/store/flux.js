@@ -38,6 +38,27 @@ const getState = ({ getStore, getActions, setStore }) => {
         if (resp.status == 200) {
         }
       },
+      NewPost: async (data) => {
+        let res = await fetch(process.env.BACKEND_URL + "/api/posts/new", {
+          method: "POST",
+          body: JSON.stringify({
+            title: data.title,
+            make: data.make,
+            model: data.model,
+            style: data.style,
+            fuel: data.fuel,
+            transmission: data.transmission,
+            financing: true,
+            doors: data.doors,
+            year: data.year,
+            price: data.price,
+            description: data.description,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      },
       //Nueva action aqui
     },
   };
