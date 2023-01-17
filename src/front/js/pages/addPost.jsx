@@ -133,9 +133,14 @@ export function AddPost() {
           </Form.Group>
         </Row>
         <div>
-          <Button type="submit">Post Publication</Button>
+          <Button type="submit">Agree New Post</Button>
         </div>
       </Form>
+      <Link to="/add_photos">
+        <Button>
+          <add_photos /> Add Photos
+        </Button>
+      </Link>
     </div>
   );
 }

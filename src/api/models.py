@@ -52,7 +52,7 @@ class Posts(db.Model):
     year = db.Column(db.Integer, unique=False, nullable=False)
     price = db.Column(db.Integer, unique=False, nullable=False)
     description = db.Column(db.String(240), unique=False, nullable=False)
-    #photo = ??
+    #photo
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     user = db.relationship(Users)
 

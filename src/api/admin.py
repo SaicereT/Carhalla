@@ -1,7 +1,7 @@
   
 import os
 from flask_admin import Admin
-from .models import db, Users, Posts, Fav_posts, TokenBlocklist
+from .models import db, Users, Posts, Fav_posts, TokenBlocklist, Imagen
 from flask_admin.contrib.sqla import ModelView
 
 def setup_admin(app):

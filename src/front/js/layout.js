@@ -8,6 +8,7 @@ import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 import { Profile } from "./component/profile_page.jsx";
 import { AddPost } from "./pages/addPost.jsx";
+import { AddPhotos } from "./component/add_photos.jsx";
 
 import { Navbar } from "./component/navbar.jsx";
 import { Footer } from "./component/footer";
@@ -27,6 +28,7 @@ const Layout = () => {
             <Route element={<Home />} path="/" />
             <Route element={<FormUser />} path="/formUser" />
             <Route element={<AddPost />} path="/addPost" />
+            <Route element={<AddPhotos />} path="/add_photos" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<Profile />} path="/profile_page" />
             <Route element={<h1>Not found!</h1>} />
