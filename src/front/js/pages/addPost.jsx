@@ -100,8 +100,8 @@ export function AddPost() {
           <Form.Group as={Col} md="6">
             <Form.Label>Doors</Form.Label>
             <Form.Select name="doors">
-              <option value="2-3">2-3</option>
-              <option value="4 or more">4 or more</option>
+              <option value="3">3</option>
+              <option value="4">4 or more</option>
             </Form.Select>
           </Form.Group>
           <Form.Group as={Col} md="6">
@@ -132,13 +132,13 @@ export function AddPost() {
             />
           </Form.Group>
         </Row>
-        <div>
+        <div className="d-flex grid gap-3">
           <Button type="submit">Agree New Post</Button>
+          <Link to="/add_photos">
+            <Button>Add Photos</Button>
+          </Link>
         </div>
       </Form>
-      <Link to="/add_photos">
-        <Button>Add Photos</Button>
-      </Link>
     </div>
   );
 }

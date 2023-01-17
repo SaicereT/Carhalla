@@ -48,7 +48,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             style: data.style,
             fuel: data.fuel,
             transmission: data.transmission,
-            financing: data.financing,
+            financing: true,
             doors: data.doors,
             year: data.year,
             price: data.price,
