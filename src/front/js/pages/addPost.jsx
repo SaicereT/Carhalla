@@ -137,9 +137,7 @@ export function AddPost() {
         </div>
       </Form>
       <Link to="/add_photos">
-        <Button>
-          <add_photos /> Add Photos
-        </Button>
+        <Button>Add Photos</Button>
       </Link>
     </div>
   );
