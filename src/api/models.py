@@ -52,7 +52,6 @@ class Posts(db.Model):
     year = db.Column(db.Integer, unique=False, nullable=False)
     price = db.Column(db.Integer, unique=False, nullable=False)
     description = db.Column(db.String(240), unique=False, nullable=False)
-    #photo
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     user = db.relationship(Users)
 
@@ -103,3 +102,11 @@ class Fav_posts(db.Model):
             "post":self.post.title,
             "user_id":self.user_id,
         }
+
+class Images(db.Model):
+    __tablename__= "images"
+    id = db.Column(db.Integer, primary_key=True)
+    resource_path=db.Column(db.String(250), unique=False, nullable=False)
+    description=db.Column(db.String(200))
+    post_id=db.Column(db.Integer, db.ForeignKey("posts.id"))
+    post=db.relationship(Posts)

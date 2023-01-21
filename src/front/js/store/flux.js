@@ -37,8 +37,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Content-Type": "application/json",
           },
         });
-        if (resp.status == 200) {
-        }
+        return true;
       },
       getPosts: async () => {
         let response = await fetch(process.env.BACKEND_URL + "/api/posts");
