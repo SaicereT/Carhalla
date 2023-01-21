@@ -29,9 +29,11 @@ export const Navbar = () => {
         <Link to="/">
           <span className="navbar-brand mb-0 h1">React Boilerplate</span>
         </Link>
-        <div className="ml-auto">
+        <div className="ml-auto d-flex grid gap-3">
           <Link to="/formUser">
-            <button className="btn btn-primary">Sign up</button>
+            <button className=" btn btn-primary Col md={6} mb-2">
+              Sign up
+            </button>
           </Link>
           <div className="dropdown">
             <button
@@ -44,7 +46,7 @@ export const Navbar = () => {
               Log in
             </button>
             <form
-              className="dropdown-menu p-4"
+              className="dropdown-menu p-2"
               onSubmit={(event) => handleSubmit(event)}
             >
               <div className="mb-6">

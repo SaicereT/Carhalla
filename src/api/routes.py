@@ -138,7 +138,7 @@ def delete_favorite(fav_id):
 @api.route('/posts', methods=['GET'])
 def get_posts():
     posts=Posts.query.all()
-    return list(map(lambda item: item.serializeCompact(),posts)), 200
+    return jsonify({"results":list(map(lambda item: item.serializeCompact(),posts))}), 200
 
 #traer toda la info de solo una
 @api.route('/posts/<int:post_param>', methods=['GET'])
@@ -273,7 +273,8 @@ def update_user_password():
     db.session.add(user)
     db.session.commit()
     return jsonify({"msg":"Password has been updated"}), 200
-    
+
+
 #@api.route ('/uploadPostImage/<int:post_param>', methods=['POST'])
 #@jwt_required()
 #def uploadPostImage(post_param):
@@ -309,5 +310,3 @@ def update_user_password():
 #        return jsonify({"msg":"Image uploaded"}), 200
 #
 #    return jsonify({"msg":"Image updated"}), 200
-
-

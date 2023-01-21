@@ -15,6 +15,7 @@ from flask_jwt_extended import JWTManager
 import firebase_admin
 from firebase_admin import credentials
 
+
 #from models import Person
 
 ENV = os.getenv("FLASK_ENV")
