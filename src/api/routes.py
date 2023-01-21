@@ -136,7 +136,7 @@ def delete_favorite(fav_id):
 @api.route('/posts', methods=['GET'])
 def get_posts():
     posts=Posts.query.all()
-    return list(map(lambda item: item.serializeCompact(),posts)), 200
+    return jsonify({"results":list(map(lambda item: item.serializeCompact(),posts))}), 200
 
 #traer toda la info de solo una
 @api.route('/posts/<int:post_param>', methods=['GET'])

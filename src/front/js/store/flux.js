@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 const getState = ({ getStore, getActions, setStore }) => {
   return {
-    store: {},
+    store: {
+      posts: [],
+    },
     actions: {
       // Use getActions to call a function within a fuction
       NewUser: async (data) => {
@@ -38,7 +40,18 @@ const getState = ({ getStore, getActions, setStore }) => {
         if (resp.status == 200) {
         }
       },
-      //Nueva action aqui
+      getPosts: async () => {
+        let response = await fetch(process.env.BACKEND_URL + "/api/posts");
+        if (!response.ok) {
+          console.log(response.status + ": " + response.statusText);
+          return;
+        }
+        let data = await response.json();
+        console.log(data);
+        let newStore = getStore();
+        newStore.posts = data.results;
+        setStore(newStore);
+      },
     },
   };
 };
