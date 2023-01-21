@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
   const [validated, setValidated] = useState(false);
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (event.target.checkValidity()) {
       let formData = new FormData(event.target);
@@ -15,8 +17,10 @@ export const Navbar = () => {
       campos.forEach((campo) => {
         data[campo] = formData.get(campo);
       });
-      console.log(data);
-      actions.LogOn(data);
+      let resp = await actions.LogOn(data);
+      if (resp) {
+        navigate("/");
+      }
     }
   };
   return (

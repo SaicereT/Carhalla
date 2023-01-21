@@ -2,12 +2,14 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, jsonify
-from api.models import db, Users, Posts, Fav_posts, TokenBlocklist
+from api.models import db, Users, Posts, Fav_posts, TokenBlocklist, Images
 from api.utils import generate_sitemap, APIException
 import json
 from datetime import datetime, timezone
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt, get_jwt_identity
 from flask_bcrypt import Bcrypt
+from firebase_admin import storage
+import tempfile
 
 
 
@@ -149,15 +151,29 @@ def get_post_detail(post_param):
 @jwt_required()
 def add_post():
     user_id=get_jwt_identity()
-    body = json.loads(request.data)
+    body={
+        "title":"",
+        "make":"",
+        "model":"",
+        "style":"",
+        "fuel":"",
+        "transmission":"",
+        "financing":"",
+        "doors":"",
+        "year":"",
+        "price":"",
+        "description":"",
+    }
     for i in body:
-        if (type(body[i]) != bool):
+        if(i=="financing"):
+            body[i]=bool(request.form.get(i))
+        else:
+            body[i]=request.form.get(i)
             body[i] = body[i].strip()
-            
-    for i in body:
+
         if (body[i] == ""):
             return jsonify({"msg":"There are empty values"}), 404
-    
+
     new_post = Posts(
         title=body["title"],
         make=body["make"],
@@ -173,6 +189,23 @@ def add_post():
         user_id=user_id
     )
     db.session.add(new_post)
+    db.session.flush()
+
+    files=request.files.getlist('postPic')
+    i=1 #buscar cuantas imagenes tine el post para saber de donde van a contar las imagenes nuevas
+    for file in files:
+        extension=file.filename.split(".")[1]
+        temp = tempfile.NamedTemporaryFile(delete=False)
+        file.save(temp.name)
+        bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+        filename="posts/"+ str(new_post.id) +"/" +str(i)+ "." + extension
+        resource = bucket.blob(filename)
+        resource.upload_from_filename(temp.name,content_type="image/"+extension)
+        newImage=Images(resource_path=filename, description="Picture for post " + str(new_post.id))
+        newImage.post_id=new_post.id
+        db.session.add(newImage)
+        db.session.flush()
+        i=i+1
     db.session.commit()
     return jsonify({"msg":"New post uploaded"}), 200
 
@@ -236,12 +269,45 @@ def update_user_password():
     new_password=request.json.get("password")
     user_id=get_jwt_identity()
     user=Users.query.get(user_id)
-    user.password=cripto.generate_password_hash(new_password)
+    user.password=cripto.generate_password_hash(new_password).decode('utf-8')
     db.session.add(user)
     db.session.commit()
     return jsonify({"msg":"Password has been updated"}), 200
     
-    
-
+#@api.route ('/uploadPostImage/<int:post_param>', methods=['POST'])
+#@jwt_required()
+#def uploadPostImage(post_param):
+#    post = Posts.query.filter(Posts.id==post_param).first()
+#    user_id = get_jwt_identity()
+#    user = Users.query.get(get_jwt_identity())
+#    if user is None:
+#        return jsonify({"msg":"User not found"}), 403
+#    
+ #   if post is None:
+#        return jsonify({"msg":"Post not found"}), 403 
+#
+#    if post.user_id != user_id:
+#        return jsonify({"msg":"Not authorized to delete post"}), 403
+#
+ #   file=request.files['postPic']
+#    extension=file.filename.split(".")[1]
+#    temp = tempfile.NamedTemporaryFile(delete=False)
+#    file.save(temp.name)
+#    bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+#    filename="posts/" + str(user_id) + "/" + str(post_param) + "." + extension
+#    resource = bucket.blob(filename)
+#    resource.upload_from_filename(temp.name,content_type="image/"+extension)
+#
+#    if Images.query.filter(Images.resource_path==filename).first() is None:
+#
+#        newImage=Images(resource_path=filename, description="Picture for post " + str(post_param))
+#        db.session.add(newImage)
+#        db.session.flush()
+#        post.post_picture_id=newImage.id
+#        db.session.add(user)
+#        db.session.commit()
+#        return jsonify({"msg":"Image uploaded"}), 200
+#
+#    return jsonify({"msg":"Image updated"}), 200
 
 

@@ -35,8 +35,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Content-Type": "application/json",
           },
         });
-        if (resp.status == 200) {
-        }
+        return true;
       },
       //Nueva action aqui
     },
