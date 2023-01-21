@@ -240,7 +240,10 @@ def update_user_password():
     db.session.add(user)
     db.session.commit()
     return jsonify({"msg":"Password has been updated"}), 200
+
+
     
+
     
 
 
