@@ -10,7 +10,7 @@ import Row from "react-bootstrap/Row";
 import { Context } from "../store/appContext";
 import { FormCheck } from "react-bootstrap";
 
-export function AddPost() {
+export const AddPost = () => {
   const [validated, setValidated] = useState(false);
   const { store, actions } = useContext(Context);
 
@@ -37,7 +37,7 @@ export function AddPost() {
         data[campo] = formData.get(campo);
       });
       console.log(data);
-      actions.NewPost(data);
+      store.actions.NewPost(data);
     }
   };
 
@@ -143,4 +143,4 @@ export function AddPost() {
       </Form>
     </div>
   );
-}
+};
