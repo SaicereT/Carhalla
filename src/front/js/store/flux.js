@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
+      accessToken: "",
+      refreshToken: "",
       posts: [],
     },
     actions: {
@@ -25,7 +27,15 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         });
       },
-      userLogin: (username, password) => {},
+      // userLogin: (username, password) => {
+      //     let sesion = username==data.email && password==data.password
+
+      //     if(sesion){
+      //       setStore({...getStore(),
+      //         accessToken:data.token
+      //       })
+      //     }
+      // },
       LogOn: async (data) => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/login", {
           method: "POST",
@@ -37,6 +47,12 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Content-Type": "application/json",
           },
         });
+        if (resp.status == 200) {
+          setStore({ ...getStore(), 
+            accessToken: data.token,
+            refreshToken: data.refresh,
+          
+          });
         return true;
       },
       getPosts: async () => {
@@ -72,7 +88,13 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         });
       },
-      //Nueva action aqui
+      // loadToken: (access, refresh) => {
+      //   setStore({...getStore(),
+      //     accessToken: access,
+      //     refreshToken: refresh,
+      //   }
+      //   )
+      // }
     },
   };
 };
