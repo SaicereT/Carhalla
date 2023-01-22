@@ -21,11 +21,11 @@ const PostCard = (props) => {
         <li className="list-group-item">Year: {props.year}</li>
       </ul>
       <div className="card-body d-flex justify-content-between">
-        <button type="button" class="btn btn-outline-info">
+        <button type="button" className="btn btn-outline-info">
           Info
         </button>
-        <button type="button" class="btn btn-outline-danger">
-          <i class="bi bi-heart-fill"></i>
+        <button type="button" className="btn btn-outline-danger">
+          <i className="bi bi-heart-fill"></i>
         </button>
       </div>
     </div>
