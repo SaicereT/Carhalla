@@ -4,7 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
     store: {
       accessToken: "",
       refreshToken: "",
-      userInfo: [],
+      posts: [],
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -53,7 +53,40 @@ const getState = ({ getStore, getActions, setStore }) => {
             refreshToken: data.refresh,
           
           });
+        return true;
+      },
+      getPosts: async () => {
+        let response = await fetch(process.env.BACKEND_URL + "/api/posts");
+        if (!response.ok) {
+          console.log(response.status + ": " + response.statusText);
+          return;
         }
+        let data = await response.json();
+        console.log(data);
+        let newStore = getStore();
+        newStore.posts = data.results;
+        setStore(newStore);
+      },
+      NewPost: async (data) => {
+        let res = await fetch(process.env.BACKEND_URL + "/api/posts/new", {
+          method: "POST",
+          body: JSON.stringify({
+            title: data.title,
+            make: data.make,
+            model: data.model,
+            style: data.style,
+            fuel: data.fuel,
+            transmission: data.transmission,
+            financing: true,
+            doors: data.doors,
+            year: data.year,
+            price: data.price,
+            description: data.description,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
       },
       // loadToken: (access, refresh) => {
       //   setStore({...getStore(),

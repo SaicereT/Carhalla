@@ -2,12 +2,13 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
-import { Home } from "./pages/home";
 import { FormUser } from "./pages/formUser.jsx";
 import { Single } from "./pages/single";
-import injectContext from "./store/appContext";
+import injectContext from "./store/appContext.js";
 import { Profile } from "./component/profile_page.jsx";
-
+import { Frontpage } from "./pages/FrontPage.jsx";
+import { AddPost } from "./pages/addPost.jsx";
+import { AddPhotos } from "./component/add_photos.jsx";
 import { Navbar } from "./component/navbar.jsx";
 import { Footer } from "./component/footer";
 
@@ -23,11 +24,13 @@ const Layout = () => {
         <ScrollToTop>
           <Navbar />
           <Routes>
-            <Route element={<Home />} path="/" />
+            <Route element={<Frontpage />} path="/" />
             <Route element={<FormUser />} path="/formUser" />
+            <Route element={<AddPost />} path="/addPost" />
+            <Route element={<AddPhotos />} path="/add_photos" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<Profile />} path="/profile_page" />
-            <Route element={<h1>Not found!</h1>} />
+            <Route element={<h1>Not found!</h1>} path="*" />
           </Routes>
           <Footer />
         </ScrollToTop>
