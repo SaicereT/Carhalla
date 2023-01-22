@@ -144,7 +144,7 @@ def get_posts():
 @api.route('/posts/<int:post_param>', methods=['GET'])
 def get_post_detail(post_param):
     post=Posts.query.filter(Posts.id==post_param).first()
-    return jsonify(post.serializeFull()), 200
+    return jsonify({"results": post.serializeFull()}), 200
 
 #agregar una nueva publicacion
 @api.route('posts/new', methods = ['POST'])
