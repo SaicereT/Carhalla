@@ -31,6 +31,7 @@ export const AddPost = () => {
         "year",
         "price",
         "description",
+        "photos",
       ];
       campos.forEach((campo) => {
         data[campo] = formData.get(campo);
@@ -133,11 +134,12 @@ export const AddPost = () => {
           </Form.Group>
         </Row>
         <div className="d-flex grid gap-3">
-          <Button type="submit">Agree New Post</Button>
-          <Link to="/add_photos">
-            <Button>Add Photos</Button>
-          </Link>
+          <Form.Group controlId="formFileMultiple" className="mb-3">
+            <Form.Label>Choose multiple car photos</Form.Label>
+            <Form.Control type="file" multiple name="photos" />
+          </Form.Group>
         </div>
+        <Button type="submit">Agree New Post</Button>
       </Form>
     </div>
   );

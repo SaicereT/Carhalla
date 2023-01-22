@@ -7,10 +7,10 @@ import { Single } from "./pages/single";
 import injectContext from "./store/appContext.js";
 import { Profile } from "./component/profile_page.jsx";
 import { Frontpage } from "./pages/FrontPage.jsx";
-import { AddPhotos } from "./component/add_photos.jsx";
+import { AddPost } from "./pages/addPost.jsx";
 import { Navbar } from "./component/navbar.jsx";
 import { Footer } from "./component/footer";
-import { AddPost } from "./pages/addPost.jsx";
+import { DetailCar } from "./component/detailcar.jsx";
 
 //create your first component
 const Layout = () => {
@@ -25,9 +25,9 @@ const Layout = () => {
           <Navbar />
           <Routes>
             <Route element={<Frontpage />} path="/" />
-            <Route element={<AddPost />} path="/addpost" />
+            <Route element={<DetailCar />} path="detailcar" />
             <Route element={<FormUser />} path="/formUser" />
-            <Route element={<AddPhotos />} path="/add_photos" />
+            <Route element={<AddPost />} path="/addPost" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<Profile />} path="/profile_page" />
             <Route element={<h1>Not found!</h1>} path="*" />

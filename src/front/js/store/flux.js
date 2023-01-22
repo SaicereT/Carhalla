@@ -71,8 +71,21 @@ const getState = ({ getStore, getActions, setStore }) => {
         newStore.posts = data.results;
         setStore(newStore);
       },
+      getPostsDetail: async () => {
+        let response = await fetch(process.env.BACKEND_URL + "/api/posts");
+        if (!response.ok) {
+          console.log(response.status + ": " + response.statusText);
+          return;
+        }
+        let data = await response.json();
+        console.log(data);
+        let newStore = getStore();
+        newStore.posts = data.results;
+        setStore(newStore);
+      },
+
       NewPost: async (data) => {
-        let res = await fetch(process.env.BACKEND_URL + "/api/posts/new", {
+        let resp = await fetch(process.env.BACKEND_URL + "/api/posts/new", {
           method: "POST",
           body: JSON.stringify({
             title: data.title,
