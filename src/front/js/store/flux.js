@@ -71,17 +71,17 @@ const getState = ({ getStore, getActions, setStore }) => {
         newStore.posts = data.results;
         setStore(newStore);
       },
-      getPostsDetail: async () => {
-        let response = await fetch(process.env.BACKEND_URL + "/api/posts");
+      getPostDetails: async (postid) => {
+        let response = await fetch(
+          process.env.BACKEND_URL + "/api/posts/" + postid
+        );
         if (!response.ok) {
           console.log(response.status + ": " + response.statusText);
           return;
         }
         let data = await response.json();
         console.log(data);
-        let newStore = getStore();
-        newStore.posts = data.results;
-        setStore(newStore);
+        return data.results;
       },
 
       NewPost: async (data) => {

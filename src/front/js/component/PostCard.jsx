@@ -21,9 +21,11 @@ const PostCard = (props) => {
         <li className="list-group-item">Year: {props.year}</li>
       </ul>
       <div className="card-body d-flex justify-content-between">
-        <button type="button" className="btn btn-outline-info">
-          Info
-        </button>
+        <Link to={`/posts/${props.id}`}>
+          <button type="button" className="btn btn-outline-info">
+            Info
+          </button>
+        </Link>
         <button type="button" className="btn btn-outline-danger">
           <i className="bi bi-heart-fill"></i>
         </button>
