@@ -53,7 +53,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore(newStore);
       },
       NewPost: async (data) => {
-        let res = await fetch(process.env.BACKEND_URL + "/api/posts/new", {
+        let resp = await fetch(process.env.BACKEND_URL + "/api/posts/new", {
           method: "POST",
           body: JSON.stringify({
             title: data.title,
@@ -70,6 +70,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           }),
           headers: {
             "Content-Type": "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY3NDM3NzI1MSwianRpIjoiMTk2ZDI2MWQtZTFhMi00NGMyLWJhYmYtYjczOWQwZjdiY2IzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjc0Mzc3MjUxLCJleHAiOjE2NzQzNzgxNTF9.yjH-wMRJzX3wgCxtU_0hRCfpmhmHtiZM1qEOlQjntwA",
           },
         });
       },
