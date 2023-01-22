@@ -10,6 +10,7 @@ import { Frontpage } from "./pages/FrontPage.jsx";
 import { AddPost } from "./pages/addPost.jsx";
 import { Navbar } from "./component/navbar.jsx";
 import { Footer } from "./component/footer";
+import { DetailCar } from "./component/detailcar.jsx";
 
 //create your first component
 const Layout = () => {
@@ -24,6 +25,7 @@ const Layout = () => {
           <Navbar />
           <Routes>
             <Route element={<Frontpage />} path="/" />
+            <Route element={<DetailCar />} path="detailcar" />
             <Route element={<FormUser />} path="/formUser" />
             <Route element={<AddPost />} path="/addPost" />
             <Route element={<Single />} path="/single/:theid" />
