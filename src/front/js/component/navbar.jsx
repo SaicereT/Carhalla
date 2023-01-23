@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 
-export const Navbar = (props) => {
+export const Navbar = () => {
   const [validated, setValidated] = useState(false);
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
