@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 
-export const Navbar = () => {
+export const Navbar = (props) => {
   const [validated, setValidated] = useState(false);
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
@@ -34,6 +34,12 @@ export const Navbar = () => {
       <div className="container-fluid">
         <Link to="/">
           <span className="navbar-brand mb-0 h1 ms-3">React Boilerplate</span>
+        </Link>
+        <Link to="/profile_page">
+          <span className="navbar-brand mb-0 h1 ms-3">profile</span>
+        </Link>
+        <Link to="/addPost">
+          <span className="navbar-brand mb-0 h1 ms-3">Newpost</span>
         </Link>
         {store.accessToken == "" || null || undefined ? (
           <div className="ml-auto d-flex me-3">

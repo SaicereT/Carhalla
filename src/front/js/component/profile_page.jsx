@@ -7,11 +7,16 @@ export const Profile = () => {
       <div className="float-md-start  " style={{ marginRight: "25px" }}>
         <img
           src="https://picsum.photos/id/237/200/300"
-          style={{ borderRadius: "50px" }}
+          style={{ borderRadius: "70px", marginTop: "50px" }}
           alt="/"
         />
       </div>
-      <ul className="nav nav-tabs" id="myTab" role="tablist">
+      <ul
+        className="nav nav-tabs"
+        id="myTab"
+        role="tablist"
+        style={{ marginTop: "50px" }}
+      >
         <li className="nav-item" role="presentation">
           <button
             className="nav-link active"
