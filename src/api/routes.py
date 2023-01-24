@@ -54,6 +54,17 @@ def get_user():
     user=Users.query.all()
     return list(map(lambda item: item.serialize(),user)), 200
 
+@api.route('/user_info', methods=['GET'])
+@jwt_required()
+def get_user_info():
+    user_id=get_jwt_identity()
+    if user_id:
+        user=Users.query.filter(Users.id==user_id).first()
+        return jsonify({"results": user.serialize()}), 200
+    return jsonify({"msg":"No User Found"})
+    
+
+#Traer las publicaciones de un usuario
 @api.route('/user_posts', methods=['GET'])
 @jwt_required()
 def get_user_posts():
@@ -156,6 +167,8 @@ def get_posts():
 @api.route('/posts/<int:post_param>', methods=['GET'])
 def get_post_detail(post_param):
     post=Posts.query.filter(Posts.id==post_param).first()
+    if post is None:
+        return jsonify({"msg":"No post found"})
     return jsonify({"results": post.serializeFull()}), 200
 
 #agregar una nueva publicacion
