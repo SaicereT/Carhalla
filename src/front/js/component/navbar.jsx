@@ -35,6 +35,12 @@ export const Navbar = () => {
         <Link to="/">
           <span className="navbar-brand mb-0 h1 ms-3">React Boilerplate</span>
         </Link>
+        <Link to="/profile_page">
+          <span className="navbar-brand mb-0 h1 ms-3">profile</span>
+        </Link>
+        <Link to="/addPost">
+          <span className="navbar-brand mb-0 h1 ms-3">Newpost</span>
+        </Link>
         {store.accessToken == "" || null || undefined ? (
           <div className="ml-auto d-flex me-3">
             <div className="dropdown me-2">
