@@ -98,9 +98,13 @@ class Fav_posts(db.Model):
 
     def serialize(self):
         return {
-            "Fav #:":self.id,
-            "post":self.post.title,
+            "id:":self.post.id,
+            "title":self.post.title,
             "user_id":self.user_id,
+            "model":self.post.model,
+            "year":self.post.year,
+            "price":self.post.price,
+
         }
 
 class Images(db.Model):
