@@ -54,6 +54,18 @@ def get_user():
     user=Users.query.all()
     return list(map(lambda item: item.serialize(),user)), 200
 
+@api.route('/user_posts', methods=['GET'])
+@jwt_required()
+def get_user_posts():
+    user_id=get_jwt_identity()
+    if user_id:
+        user_posts=Posts.query.filter(Posts.user_id==user_id).all()
+        if user_posts is None:
+            return jsonify({"msg":"No posts found"}), 404
+        return jsonify({"results":list(map(lambda item: item.serializeCompact(),user_posts))}), 200
+    return jsonify({"msg":"Unauthorized request"}), 401
+
+#Crear una cuenta
 @api.route('/signup', methods = ['POST'])
 def add_user():
     body = json.loads(request.data)
