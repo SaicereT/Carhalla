@@ -53,7 +53,8 @@ def user_logout():
 def get_user():
     user=Users.query.all()
     return list(map(lambda item: item.serialize(),user)), 200
-
+    
+#info de un usuario
 @api.route('/user_info', methods=['GET'])
 @jwt_required()
 def get_user_info():

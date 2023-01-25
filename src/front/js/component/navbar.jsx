@@ -25,8 +25,7 @@ export const Navbar = () => {
     }
   };
   const handleLogout = () => {
-    let access = store.accessToken;
-    actions.logOut(access);
+    actions.logOut();
   };
 
   return (

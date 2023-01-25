@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import UserPostsTab from "../component/UserPostsTab.jsx";
 
 export const Profile = () => {
   return (
@@ -77,7 +78,7 @@ export const Profile = () => {
           aria-labelledby="profile-tab"
           tabIndex="0"
         >
-          En el otro, tab
+          <UserPostsTab />
         </div>
         <div
           className="tab-pane fade"

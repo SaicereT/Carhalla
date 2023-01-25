@@ -5,6 +5,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       accessToken: "",
       refreshToken: "",
       posts: [],
+      userPosts: [],
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -60,6 +61,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           refreshToken: refresh,
         });
       },
+      getAuthorizationHeader: () => {
+        let { accessToken } = getStore();
+        return { Authorization: "Bearer " + accessToken };
+      },
       getPosts: async () => {
         let response = await fetch(process.env.BACKEND_URL + "/api/posts");
         if (!response.ok) {
@@ -101,15 +106,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             description: data.description,
           }),
           headers: {
+            ...getActions().getAuthorizationHeader(),
             "Content-Type": "application/json",
           },
         });
       },
-      logOut: async (access) => {
+      logOut: async () => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/logout", {
           method: "POST",
           headers: {
-            Authorization: "Bearer " + access,
+            ...getActions().getAuthorizationHeader(),
           },
         });
         if (resp.status == 200 || 401) {
@@ -122,6 +128,21 @@ const getState = ({ getStore, getActions, setStore }) => {
           localStorage.setItem("refreshToken", "");
           console.log("Logged out");
         }
+      },
+      specificUserPosts: async () => {
+        let store = getStore();
+        let resp = await fetch(process.env.BACKEND_URL + "/api/user_posts", {
+          headers: {
+            ...getActions().getAuthorizationHeader(),
+          },
+        });
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+        let data = await resp.json();
+        store.userPosts = data.results;
+        setStore(store);
       },
       /*Nueva action arriba de esta linea*/
     },
