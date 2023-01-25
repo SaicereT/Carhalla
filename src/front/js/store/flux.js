@@ -89,22 +89,12 @@ const getState = ({ getStore, getActions, setStore }) => {
         return data.results;
       },
 
-      NewPost: async (data) => {
+      NewPost: async (formdata) => {
+        let access = getStore().accessToken;
+        console.log(formdata);
         let resp = await fetch(process.env.BACKEND_URL + "/api/posts/new", {
           method: "POST",
-          body: JSON.stringify({
-            title: data.title,
-            make: data.make,
-            model: data.model,
-            style: data.style,
-            fuel: data.fuel,
-            transmission: data.transmission,
-            financing: true,
-            doors: data.doors,
-            year: data.year,
-            price: data.price,
-            description: data.description,
-          }),
+          body: formdata,
           headers: {
             ...getActions().getAuthorizationHeader(),
             "Content-Type": "application/json",
