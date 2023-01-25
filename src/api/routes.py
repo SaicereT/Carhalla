@@ -53,7 +53,31 @@ def user_logout():
 def get_user():
     user=Users.query.all()
     return list(map(lambda item: item.serialize(),user)), 200
+    
+#info de un usuario
+@api.route('/user_info', methods=['GET'])
+@jwt_required()
+def get_user_info():
+    user_id=get_jwt_identity()
+    if user_id:
+        user=Users.query.filter(Users.id==user_id).first()
+        return jsonify({"results": user.serialize()}), 200
+    return jsonify({"msg":"No User Found"})
+    
 
+#Traer las publicaciones de un usuario
+@api.route('/user_posts', methods=['GET'])
+@jwt_required()
+def get_user_posts():
+    user_id=get_jwt_identity()
+    if user_id:
+        user_posts=Posts.query.filter(Posts.user_id==user_id).all()
+        if user_posts is None:
+            return jsonify({"msg":"No posts found"}), 404
+        return jsonify({"results":list(map(lambda item: item.serializeCompact(),user_posts))}), 200
+    return jsonify({"msg":"Unauthorized request"}), 401
+
+#Crear una cuenta
 @api.route('/signup', methods = ['POST'])
 def add_user():
     body = json.loads(request.data)
@@ -144,6 +168,8 @@ def get_posts():
 @api.route('/posts/<int:post_param>', methods=['GET'])
 def get_post_detail(post_param):
     post=Posts.query.filter(Posts.id==post_param).first()
+    if post is None:
+        return jsonify({"msg":"No post found"})
     return jsonify({"results": post.serializeFull()}), 200
 
 #agregar una nueva publicacion

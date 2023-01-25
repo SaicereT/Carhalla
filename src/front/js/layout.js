@@ -4,12 +4,12 @@ import ScrollToTop from "./component/scrollToTop";
 
 import { FormUser } from "./pages/formUser.jsx";
 import injectContext from "./store/appContext.js";
-import { Profile } from "./component/profile_page.jsx";
 import { Frontpage } from "./pages/FrontPage.jsx";
 import { AddPost } from "./pages/addPost.jsx";
 import { Navbar } from "./component/navbar.jsx";
 import { Footer } from "./component/footer";
 import { PostDetailsPage } from "./pages/postDetailsPage.jsx";
+import { Profile } from "./pages/profile_page.jsx";
 
 //create your first component
 const Layout = () => {
