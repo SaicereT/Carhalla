@@ -90,14 +90,12 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       NewPost: async (formdata) => {
-        let access = getStore().accessToken;
         console.log(formdata);
         let resp = await fetch(process.env.BACKEND_URL + "/api/posts/new", {
           method: "POST",
           body: formdata,
           headers: {
             ...getActions().getAuthorizationHeader(),
-            "Content-Type": "application/json",
           },
         });
       },

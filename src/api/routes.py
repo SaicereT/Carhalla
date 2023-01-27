@@ -196,10 +196,9 @@ def add_post():
         else:
             body[i]=request.form.get(i)
             #body[i] = body[i].strip()
-
+        #print(request.form.get(i))
         if (body[i] == ""):
             return jsonify({"msg":"There are empty values"}), 404
-
     new_post = Posts(
         title=body["title"],
         make=body["make"],
