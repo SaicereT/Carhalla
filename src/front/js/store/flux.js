@@ -134,6 +134,21 @@ const getState = ({ getStore, getActions, setStore }) => {
         store.userPosts = data.results;
         setStore(store);
       },
+
+      getUserInfo: async () => {
+        let resp = await fetch(process.env.BACKEND_URL + "/api/user_info", {
+          headers: {
+            ...getActions().getAuthorizationHeader(),
+          },
+        });
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+        let data = await resp.json();
+        console.log(data);
+        return data.results;
+      },
       /*Nueva action arriba de esta linea*/
     },
   };
