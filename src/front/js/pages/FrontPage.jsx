@@ -16,7 +16,7 @@ export const Frontpage = () => {
       <div className="container">
         <div className="row justify-content-between">
           {store.posts.map((post) => (
-            <div className="col-4 mb-3" key={post.post_id}>git a
+            <div className="col-4 mb-3" key={post.post_id}>
               <PostCard
                 make={post.make}
                 model={post.model}
