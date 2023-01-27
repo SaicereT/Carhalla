@@ -120,7 +120,7 @@ def add_user():
 def get_Fav_post():
     user_id=get_jwt_identity()
     fav_posts=Fav_posts.query.filter(Fav_posts.user_id==user_id).all()
-    return list(map(lambda item: item.serialize(),fav_posts)), 200
+    return ({"results":list(map(lambda item: item.serialize(),fav_posts))}), 200
 
 #agregar un favorito
 @api.route('/favorites/<int:fav_id>', methods=['POST'])
