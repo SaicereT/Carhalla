@@ -6,6 +6,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       refreshToken: "",
       posts: [],
       userPosts: [],
+      userFavorites: [],
+      
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -146,6 +148,21 @@ const getState = ({ getStore, getActions, setStore }) => {
         let data = await resp.json();
         console.log(data);
         return data.results;
+      },
+      getUserFavorites: async () => {
+        let store = getStore();
+        let resp = await fetch(process.env.BACKEND_URL + "/api/favorites", {
+          headers: {
+            ...getActions().getAuthorizationHeader(),
+          },
+        });
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+        let data = await resp.json();
+        store.userFavorites = data.results;
+        setStore(store);
       },
       /*Nueva action arriba de esta linea*/
     },

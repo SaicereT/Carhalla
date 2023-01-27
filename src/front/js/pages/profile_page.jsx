@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import UserPostsTab from "../component/UserPostsTab.jsx";
 import UserInfo from "../component/UserInfo.jsx";
+import UserFavorites from "../component/UserFavorites.jsx";
 import { Context } from "../store/appContext.js";
 
 export const Profile = () => {
@@ -106,7 +107,7 @@ export const Profile = () => {
           aria-labelledby="contact-tab"
           tabIndex="0"
         >
-          vamos ganado
+          <UserFavorites />
         </div>
       </div>
     </div>
