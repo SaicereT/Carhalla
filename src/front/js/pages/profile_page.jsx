@@ -38,7 +38,7 @@ export const Profile = () => {
             aria-controls="home-tab-pane"
             aria-selected="true"
           >
-            User Info
+            Profile Info
           </button>
         </li>
         <li className="nav-item" role="presentation">
@@ -52,7 +52,7 @@ export const Profile = () => {
             aria-controls="profile-tab-pane"
             aria-selected="false"
           >
-            My post
+            My posts
           </button>
         </li>
         <li className="nav-item" role="presentation">
@@ -66,7 +66,7 @@ export const Profile = () => {
             aria-controls="contact-tab-pane"
             aria-selected="false"
           >
-            hola
+            Favorites
           </button>
         </li>
       </ul>
