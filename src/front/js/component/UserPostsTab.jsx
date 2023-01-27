@@ -20,7 +20,7 @@ const UserPostsTab = () => {
               id={post.post_id}
               price={post.price}
               title={post.title}
-              year={post.year}
+              year={post.year}  
             />
           </div>
         ))}

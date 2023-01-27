@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import UserPostsTab from "../component/UserPostsTab.jsx";
+import UserInfo from "../component/UserInfo.jsx";
+import { Context } from "../store/appContext.js";
 
 export const Profile = () => {
+  const { store, actions } = useContext(Context);
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    if (store.accessToken) actions.getUserInfo().then((resp) => setData(resp));
+  }, [store.accessToken]);
+
   return (
     <div className="container">
       <div className="float-md-start  " style={{ marginRight: "25px" }}>
@@ -29,7 +38,7 @@ export const Profile = () => {
             aria-controls="home-tab-pane"
             aria-selected="true"
           >
-            User Info
+            Profile Info
           </button>
         </li>
         <li className="nav-item" role="presentation">
@@ -43,7 +52,7 @@ export const Profile = () => {
             aria-controls="profile-tab-pane"
             aria-selected="false"
           >
-            My post
+            My posts
           </button>
         </li>
         <li className="nav-item" role="presentation">
@@ -57,7 +66,7 @@ export const Profile = () => {
             aria-controls="contact-tab-pane"
             aria-selected="false"
           >
-            Favorite
+            Favorites
           </button>
         </li>
       </ul>
@@ -69,7 +78,17 @@ export const Profile = () => {
           aria-labelledby="home-tab"
           tabIndex="0"
         >
-          La Lucha continua
+          <UserInfo
+            address={data.address}
+            age={data.age}
+            country={data.country}
+            email={data.email}
+            firstname={data.firstname}
+            id={data.id}
+            is_active={data.is_active}
+            lastname={data.lastname}
+            telnumber={data.telnumber}
+          />
         </div>
         <div
           className="tab-pane fade"
