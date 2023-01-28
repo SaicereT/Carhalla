@@ -7,7 +7,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       posts: [],
       userPosts: [],
       userFavorites: [],
-      
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -98,8 +97,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           body: formdata,
           headers: {
             ...getActions().getAuthorizationHeader(),
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
           },
         });
       },
