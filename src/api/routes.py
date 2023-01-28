@@ -120,7 +120,7 @@ def add_user():
 def get_Fav_post():
     user_id=get_jwt_identity()
     fav_posts=Fav_posts.query.filter(Fav_posts.user_id==user_id).all()
-    return list(map(lambda item: item.serialize(),fav_posts)), 200
+    return ({"results":list(map(lambda item: item.serialize(),fav_posts))}), 200
 
 #agregar un favorito
 @api.route('/favorites/<int:fav_id>', methods=['POST'])
@@ -196,10 +196,9 @@ def add_post():
         else:
             body[i]=request.form.get(i)
             #body[i] = body[i].strip()
-
+        #print(request.form.get(i))
         if (body[i] == ""):
             return jsonify({"msg":"There are empty values"}), 404
-
     new_post = Posts(
         title=body["title"],
         make=body["make"],

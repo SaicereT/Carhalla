@@ -9,14 +9,25 @@ export const Frontpage = () => {
 
   useEffect(() => {
     actions.getPosts();
+    // clean up code
+    window.removeEventListener("scroll", eventScroll);
+    window.addEventListener("scroll", eventScroll, { passive: true });
+    return () => window.removeEventListener("scroll", eventScroll);
   }, []);
+
+  function eventScroll(e) {
+    let pos = window.scrollY + window.innerHeight;
+    let height = document.getElementById("app").scrollHeight;
+    //console.log(app.scrollHeight);
+    if (pos == height) console.log("fin");
+  }
   return (
     <div className="jumbotron">
       <h1 className="display-4">Home Page</h1>
       <div className="container">
         <div className="row justify-content-between">
           {store.posts.map((post) => (
-            <div className="col-4 mb-3" key={post.post_id}>
+            <div className="col-4 mb-3 " key={post.post_id}>
               <PostCard
                 make={post.make}
                 model={post.model}
