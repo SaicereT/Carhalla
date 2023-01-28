@@ -98,6 +98,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           headers: {
             ...getActions().getAuthorizationHeader(),
             "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
           },
         });
       },
