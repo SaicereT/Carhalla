@@ -14,6 +14,7 @@ import { FormCheck } from "react-bootstrap";
 export const AddPost = () => {
   const [validated, setValidated] = useState(false);
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -22,7 +23,10 @@ export const AddPost = () => {
       console.log(formData);
       let files = event.target.elements["postPic"].files;
       if (files.length == 0) formData.delete("postPic");
-      actions.NewPost(formData);
+      let resp = actions.NewPost(formData);
+      if (resp) {
+        navigate("/");
+      }
     }
   };
 
@@ -151,12 +155,7 @@ export const AddPost = () => {
                 <div className="d-flex grid gap-3">
                   <Form.Group controlId="formFileMultiple" className="mb-3">
                     <Form.Label>Choose multiple car photos</Form.Label>
-                    <Form.Control
-                      type="file"
-                      multiple
-                      name="postPic"
-                      required
-                    />
+                    <Form.Control type="file" multiple name="postPic" />
                   </Form.Group>
                 </div>
               </div>
@@ -171,16 +170,19 @@ export const AddPost = () => {
                     Close
                   </button>
                 </div>
-                <Link to="/">
-                  <button
-                    type="submit"
-                    className="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    skip
-                  </button>
-                </Link>
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-secondary "
+                  data-bs-dismiss="modal"
+                >
+                  skip
+                </button>
+
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  data-bs-dismiss="modal"
+                >
                   upload pictures
                 </button>
               </div>
