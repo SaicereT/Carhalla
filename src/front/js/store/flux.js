@@ -1,3 +1,4 @@
+import { Pagination } from "react-bootstrap";
 import { Link } from "react-router-dom";
 const getState = ({ getStore, getActions, setStore }) => {
   return {
@@ -7,7 +8,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       posts: [],
       userPosts: [],
       userFavorites: [],
-      
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -67,8 +67,14 @@ const getState = ({ getStore, getActions, setStore }) => {
         let { accessToken } = getStore();
         return { Authorization: "Bearer " + accessToken };
       },
-      getPosts: async () => {
-        let response = await fetch(process.env.BACKEND_URL + "/api/posts");
+      getPosts: async (pagination) => {
+        let params = "";
+        /*if (!pagination.page) {
+          params = `?page=${pagination.page}&limit=${pagination.limit || 20}`;
+        }*/
+        let response = await fetch(
+          process.env.BACKEND_URL + "/api/posts" //+ params
+        );
         if (!response.ok) {
           console.log(response.status + ": " + response.statusText);
           return;

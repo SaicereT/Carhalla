@@ -73,10 +73,10 @@ export const Profile = () => {
       </ul>
       <div className="tab-content" id="myTabContent">
         <div
-          className="tab-pane fade show active"
+          className="tab-pane fade"
           id="home-tab-pane"
           role="tabpanel"
-          aria-labelledby="home-tab"
+          aria-labelledby="home-tab show active"
           tabIndex="0"
         >
           <UserInfo
