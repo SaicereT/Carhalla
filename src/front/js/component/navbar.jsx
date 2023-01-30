@@ -108,6 +108,45 @@ export const Navbar = () => {
             Log Out
           </button>
         )}
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasRight"
+          aria-controls="offcanvasRight"
+        >
+          ...
+        </button>
+
+        <div
+          class="offcanvas offcanvas-end"
+          tabindex="-1"
+          id="offcanvasRight"
+          aria-labelledby="offcanvasRightLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+            <button
+              type="button"
+              class="btn-close text-reset"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item"><a className="dropdown-item" href="#">
+                  Crear Publicacion
+                </a></li>
+              <li className="list-group-item"><a className="dropdown-item" href="#">
+                  Favoritos
+                </a></li>
+              <li className="list-group-item"><a className="dropdown-item" href="#">
+                  Perfil
+                </a></li>
+            </ul>
+          </div>
+        </div>9
       </div>
     </nav>
   );
