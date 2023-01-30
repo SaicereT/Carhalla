@@ -5,6 +5,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       accessToken: "",
       refreshToken: "",
       posts: [],
+      userPosts: [],
+      userFavorites: [],
+      
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -60,6 +63,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           refreshToken: refresh,
         });
       },
+      getAuthorizationHeader: () => {
+        let { accessToken } = getStore();
+        return { Authorization: "Bearer " + accessToken };
+      },
       getPosts: async () => {
         let response = await fetch(process.env.BACKEND_URL + "/api/posts");
         if (!response.ok) {
@@ -84,32 +91,23 @@ const getState = ({ getStore, getActions, setStore }) => {
         return data.results;
       },
 
-      NewPost: async (data) => {
+      NewPost: async (formdata) => {
+        console.log(formdata);
         let resp = await fetch(process.env.BACKEND_URL + "/api/posts/new", {
           method: "POST",
-          body: JSON.stringify({
-            title: data.title,
-            make: data.make,
-            model: data.model,
-            style: data.style,
-            fuel: data.fuel,
-            transmission: data.transmission,
-            financing: true,
-            doors: data.doors,
-            year: data.year,
-            price: data.price,
-            description: data.description,
-          }),
+          body: formdata,
           headers: {
+            ...getActions().getAuthorizationHeader(),
             "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
           },
         });
       },
-      logOut: async (access) => {
+      logOut: async () => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/logout", {
           method: "POST",
           headers: {
-            Authorization: "Bearer " + access,
+            ...getActions().getAuthorizationHeader(),
           },
         });
         if (resp.status == 200 || 401) {
@@ -122,6 +120,51 @@ const getState = ({ getStore, getActions, setStore }) => {
           localStorage.setItem("refreshToken", "");
           console.log("Logged out");
         }
+      },
+      specificUserPosts: async () => {
+        let store = getStore();
+        let resp = await fetch(process.env.BACKEND_URL + "/api/user_posts", {
+          headers: {
+            ...getActions().getAuthorizationHeader(),
+          },
+        });
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+        let data = await resp.json();
+        store.userPosts = data.results;
+        setStore(store);
+      },
+
+      getUserInfo: async () => {
+        let resp = await fetch(process.env.BACKEND_URL + "/api/user_info", {
+          headers: {
+            ...getActions().getAuthorizationHeader(),
+          },
+        });
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+        let data = await resp.json();
+        console.log(data);
+        return data.results;
+      },
+      getUserFavorites: async () => {
+        let store = getStore();
+        let resp = await fetch(process.env.BACKEND_URL + "/api/favorites", {
+          headers: {
+            ...getActions().getAuthorizationHeader(),
+          },
+        });
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+        let data = await resp.json();
+        store.userFavorites = data.results;
+        setStore(store);
       },
       /*Nueva action arriba de esta linea*/
     },

@@ -18,26 +18,10 @@ export const AddPost = () => {
     event.preventDefault();
     if (event.target.checkValidity()) {
       let formData = new FormData(event.target);
-      let data = {};
-      let campos = [
-        "title",
-        "make",
-        "model",
-        "style",
-        "fuel",
-        "transmission",
-        "financing",
-        "doors",
-        "year",
-        "price",
-        "description",
-        "photos",
-      ];
-      campos.forEach((campo) => {
-        data[campo] = formData.get(campo);
-      });
-      console.log(data);
-      store.actions.NewPost(data);
+      console.log(formData);
+      let files = event.target.elements["postPic"].files;
+      if (files.length == 0) formData.delete("postPic");
+      actions.NewPost(formData);
     }
   };
 
@@ -136,7 +120,7 @@ export const AddPost = () => {
         <div className="d-flex grid gap-3">
           <Form.Group controlId="formFileMultiple" className="mb-3">
             <Form.Label>Choose multiple car photos</Form.Label>
-            <Form.Control type="file" multiple name="photos" />
+            <Form.Control type="file" multiple name="postPic" />
           </Form.Group>
         </div>
         <Button type="submit">Agree New Post</Button>
