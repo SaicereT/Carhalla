@@ -26,7 +26,7 @@ export const PostDetails = (props) => {
             <p className="card-text">{props.doors}</p>
             <p className="card-text">{props.description}</p>
             <div className="card-body d-flex justify-content-between">
-              <Link to={-1}>
+              <Link to="{-1}">
                 <button type="button" className="btn btn-outline-primary">
                   Go back!
                 </button>
