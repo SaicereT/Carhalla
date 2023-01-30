@@ -23,7 +23,7 @@ const PostCardPrivate = (props) => {
       </ul>
 
       <div className="card-body d-flex justify-content-between">
-        <Link to={`/posts/${props.id}`}>
+        <Link to={`/postsprivate/${props.id}`}>
           <button type="button" className="btn btn-outline-info">
             Info
           </button>

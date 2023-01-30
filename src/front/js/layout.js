@@ -11,7 +11,7 @@ import { Footer } from "./component/footer";
 import { PostDetailsPage } from "./pages/postDetailsPage.jsx";
 import { AccountRecovery } from "./pages/AccountRecovery.jsx";
 import { Profile } from "./pages/profile_page.jsx";
-
+import { PostDetailsPagePrivate } from "./pages/postDetailsPagePrivate.jsx";
 
 //create your first component
 const Layout = () => {
@@ -26,6 +26,10 @@ const Layout = () => {
           <Navbar />
           <Routes>
             <Route element={<Frontpage />} path="/" />
+            <Route
+              element={<PostDetailsPagePrivate />}
+              path="/postsprivate/:postid"
+            />
             <Route element={<PostDetailsPage />} path="/posts/:postid" />
             <Route element={<FormUser />} path="/formUser" />
             <Route element={<AddPost />} path="/addPost" />

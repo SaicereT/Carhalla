@@ -2,9 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext.js";
-import PostCard from "./PostCard.jsx";
+import PostCardPrivate from "./PostCard_private.jsx";
 
-export const PostDetails = (props) => {
+export const PostDetailsPrivate = (props) => {
   const { store, actions } = useContext(Context);
 
   return (
@@ -26,7 +26,7 @@ export const PostDetails = (props) => {
             <p className="card-text">{props.doors}</p>
             <p className="card-text">{props.description}</p>
             <div className="card-body d-flex justify-content-between">
-              <Link to="{-1}">
+              <Link to="/">
                 <button type="button" className="btn btn-outline-primary">
                   Go back!
                 </button>
@@ -34,6 +34,7 @@ export const PostDetails = (props) => {
               <button type="button" className="btn btn-outline-danger">
                 <i className="bi bi-heart-fill"></i>
               </button>
+              <button>delete post</button>
             </div>
             <p className="card-text">
               <small className="text-muted">Last updated 3 mins ago</small>
