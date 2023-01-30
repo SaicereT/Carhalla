@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -11,6 +12,7 @@ import { Context } from "../store/appContext";
 export function FormUser() {
   const [validated, setValidated] = useState(false);
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -31,12 +33,15 @@ export function FormUser() {
         data[campo] = formData.get(campo);
       });
       console.log(data);
-      actions.NewUser(data);
+      let resp = actions.NewUser(data);
+      if (resp) {
+        navigate("/");
+      }
     }
   };
 
   return (
-    <div className="container">
+    <div className="container mt-6">
       <Form onSubmit={(event) => handleSubmit(event)}>
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="firstname">
