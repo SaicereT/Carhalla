@@ -41,7 +41,7 @@ class Users(db.Model):
 class Posts(db.Model):
     __tablename__="posts"
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(40), unique=False, nullable=False)
+    title = db.Column(db.String(240), unique=False, nullable=False)
     make = db.Column(db.String(120), unique=False, nullable=False)
     model = db.Column(db.String(120), unique=False, nullable=False)
     style = db.Column(db.String(120), unique=False, nullable=False)
@@ -98,9 +98,13 @@ class Fav_posts(db.Model):
 
     def serialize(self):
         return {
-            "Fav #:":self.id,
-            "post":self.post.title,
+            "id:":self.post.id,
+            "title":self.post.title,
             "user_id":self.user_id,
+            "model":self.post.model,
+            "year":self.post.year,
+            "price":self.post.price,
+
         }
 
 class Images(db.Model):

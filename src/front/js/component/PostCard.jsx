@@ -14,12 +14,14 @@ const PostCard = (props) => {
         <h5 className="card-title">{props.title}</h5>
         <p className="card-text">Description</p>
       </div>
+      
       <ul className="list-group list-group-flush">
-        <li className="list-group-item">Make: {props.make}</li>
-        <li className="list-group-item">Model: {props.model}</li>
-        <li className="list-group-item">Price: {props.price}</li>
-        <li className="list-group-item">Year: {props.year}</li>
-      </ul>
+      <li className="list-group-item">Make: {props.make}</li>
+      <li className="list-group-item">Model: {props.model}</li>
+      <li className="list-group-item">Price: {props.price}</li>
+      <li className="list-group-item">Year: {props.year}</li>
+    </ul>
+    
       <div className="card-body d-flex justify-content-between">
         <Link to={`/posts/${props.id}`}>
           <button type="button" className="btn btn-outline-info">

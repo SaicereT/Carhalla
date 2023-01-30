@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
+import carhalalogo from "../../img/carhalalogo.png";
 
 export const Navbar = () => {
   const [validated, setValidated] = useState(false);
@@ -25,15 +26,19 @@ export const Navbar = () => {
     }
   };
   const handleLogout = () => {
-    let access = store.accessToken;
-    actions.logOut(access);
+    actions.logOut();
   };
 
   return (
-    <nav className="navbar navbar-light bg-light">
+    <nav className="navbar navbar-dark bg-dark">
       <div className="container-fluid">
         <Link to="/">
-          <span className="navbar-brand mb-0 h1 ms-3">React Boilerplate</span>
+          <img
+            style={{ height: "80px" }}
+            className="ms-2"
+            src={carhalalogo}
+            alt="/"
+          />
         </Link>
         {store.accessToken == "" || null || undefined ? (
           <div className="ml-auto d-flex me-3">

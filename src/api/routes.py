@@ -53,7 +53,31 @@ def user_logout():
 def get_user():
     user=Users.query.all()
     return list(map(lambda item: item.serialize(),user)), 200
+    
+#info de un usuario
+@api.route('/user_info', methods=['GET'])
+@jwt_required()
+def get_user_info():
+    user_id=get_jwt_identity()
+    if user_id:
+        user=Users.query.filter(Users.id==user_id).first()
+        return jsonify({"results": user.serialize()}), 200
+    return jsonify({"msg":"No User Found"})
+    
 
+#Traer las publicaciones de un usuario
+@api.route('/user_posts', methods=['GET'])
+@jwt_required()
+def get_user_posts():
+    user_id=get_jwt_identity()
+    if user_id:
+        user_posts=Posts.query.filter(Posts.user_id==user_id).all()
+        if user_posts is None:
+            return jsonify({"msg":"No posts found"}), 404
+        return jsonify({"results":list(map(lambda item: item.serializeCompact(),user_posts))}), 200
+    return jsonify({"msg":"Unauthorized request"}), 401
+
+#Crear una cuenta
 @api.route('/signup', methods = ['POST'])
 def add_user():
     body = json.loads(request.data)
@@ -96,7 +120,7 @@ def add_user():
 def get_Fav_post():
     user_id=get_jwt_identity()
     fav_posts=Fav_posts.query.filter(Fav_posts.user_id==user_id).all()
-    return list(map(lambda item: item.serialize(),fav_posts)), 200
+    return ({"results":list(map(lambda item: item.serialize(),fav_posts))}), 200
 
 #agregar un favorito
 @api.route('/favorites/<int:fav_id>', methods=['POST'])
@@ -144,6 +168,8 @@ def get_posts():
 @api.route('/posts/<int:post_param>', methods=['GET'])
 def get_post_detail(post_param):
     post=Posts.query.filter(Posts.id==post_param).first()
+    if post is None:
+        return jsonify({"msg":"No post found"})
     return jsonify({"results": post.serializeFull()}), 200
 
 #agregar una nueva publicacion
@@ -169,11 +195,10 @@ def add_post():
             body[i]=bool(request.form.get(i))
         else:
             body[i]=request.form.get(i)
-            body[i] = body[i].strip()
-
+            #body[i] = body[i].strip()
+        #print(request.form.get(i))
         if (body[i] == ""):
             return jsonify({"msg":"There are empty values"}), 404
-
     new_post = Posts(
         title=body["title"],
         make=body["make"],
@@ -188,24 +213,26 @@ def add_post():
         description=body["description"],
         user_id=user_id
     )
+    print(new_post)
     db.session.add(new_post)
     db.session.flush()
 
     files=request.files.getlist('postPic')
     i=1 #buscar cuantas imagenes tine el post para saber de donde van a contar las imagenes nuevas
     for file in files:
-        extension=file.filename.split(".")[1]
-        temp = tempfile.NamedTemporaryFile(delete=False)
-        file.save(temp.name)
-        bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
-        filename="posts/"+ str(new_post.id) +"/" +str(i)+ "." + extension
-        resource = bucket.blob(filename)
-        resource.upload_from_filename(temp.name,content_type="image/"+extension)
-        newImage=Images(resource_path=filename, description="Picture for post " + str(new_post.id))
-        newImage.post_id=new_post.id
-        db.session.add(newImage)
-        db.session.flush()
-        i=i+1
+        if file.filename!="":
+            extension=file.filename.split(".")[1]
+            temp = tempfile.NamedTemporaryFile(delete=False)
+            file.save(temp.name)
+            bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+            filename="posts/"+ str(new_post.id) +"/" +str(i)+ "." + extension
+            resource = bucket.blob(filename)
+            resource.upload_from_filename(temp.name,content_type="image/"+extension)
+            newImage=Images(resource_path=filename, description="Picture for post " + str(new_post.id))
+            newImage.post_id=new_post.id
+            db.session.add(newImage)
+            db.session.flush()
+            i=i+1
     db.session.commit()
     return jsonify({"msg":"New post uploaded"}), 200
 
