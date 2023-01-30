@@ -85,9 +85,7 @@ export const Navbar = () => {
                   </button>
                 </form>
                 <div className="dropdown-divider"></div>
-                <a className="dropdown-item" href="#">
-                  Forgot password?
-                </a>
+                <Link to="/accountRecovery">Forgot Password?</Link>
               </div>
             </div>
             <Link to="/formUser">
