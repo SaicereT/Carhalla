@@ -6,6 +6,7 @@ import PostCardPrivate from "./PostCard_private.jsx";
 
 export const PostDetailsPrivate = (props) => {
   const { store, actions } = useContext(Context);
+  const { postid } = useParams();
 
   return (
     <div className="card mb-3">
@@ -26,7 +27,9 @@ export const PostDetailsPrivate = (props) => {
             <p className="card-text">{props.doors}</p>
             <p className="card-text">{props.description}</p>
             <div className="card-body d-flex justify-content-between">
-              <button onClick={() => actions.DeletePost()}>delete post</button>
+              <button onClick={() => actions.DeletePost(postid)}>
+                delete post
+              </button>
               <Link to="/profile_page">
                 <button type="button" className="btn btn-outline-primary">
                   Go back!
