@@ -26,15 +26,12 @@ export const PostDetailsPrivate = (props) => {
             <p className="card-text">{props.doors}</p>
             <p className="card-text">{props.description}</p>
             <div className="card-body d-flex justify-content-between">
-              <Link to="/">
+              <button onClick={() => actions.DeletePost()}>delete post</button>
+              <Link to="/profile_page">
                 <button type="button" className="btn btn-outline-primary">
                   Go back!
                 </button>
               </Link>
-              <button type="button" className="btn btn-outline-danger">
-                <i className="bi bi-heart-fill"></i>
-              </button>
-              <button>delete post</button>
             </div>
             <p className="card-text">
               <small className="text-muted">Last updated 3 mins ago</small>

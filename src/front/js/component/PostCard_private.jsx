@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 const PostCardPrivate = (props) => {
+  const { store, actions } = useContext(Context);
   return (
     <div className="card" /*style="width: 18rem;"*/>
       <img
@@ -28,7 +29,11 @@ const PostCardPrivate = (props) => {
             Info
           </button>
         </Link>
-        <button>Delete post</button>
+        <Link to={"/profile_page"}>
+          <button onClick={() => actions.DeletePost(props.id)}>
+            Delete post
+          </button>
+        </Link>
         <button type="button" className="btn btn-outline-danger">
           <i className="bi bi-heart-fill"></i>
         </button>

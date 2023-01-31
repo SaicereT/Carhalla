@@ -100,6 +100,17 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         });
       },
+      DeletePost: async (postid) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/posts/delete/" + postid,
+          {
+            method: "DELETE",
+            headers: {
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+      },
       logOut: async () => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/logout", {
           method: "POST",
