@@ -117,9 +117,9 @@ const getState = ({ getStore, getActions, setStore }) => {
               },
             }
           );
-          let postindex = posts.findIndex((post) => post.id == postid);
-          newPosts.splice(postindex);
-          console.log(postindex);
+          let postindex = userPosts.findIndex((post) => post.post_id == postid);
+          newPosts.splice(postindex, 1);
+          console.log(newPosts);
           setStore({ userPosts: newPosts });
         }
       },
