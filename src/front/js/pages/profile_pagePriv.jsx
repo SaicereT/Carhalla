@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import UserPostsTab from "../component/UserPostsTabPriv.jsx";
-import UserInfo from "../component/UserInfoPriv.jsx";
+import UserPostsTabPriv from "../component/UserPostsTabPriv.jsx";
+import UserInfoPriv from "../component/UserInfoPriv.jsx";
 import UserFavorites from "../component/UserFavorites.jsx";
 import { Context } from "../store/appContext.js";
 
@@ -79,7 +79,7 @@ export const ProfilePriv = () => {
           aria-labelledby="home-tab"
           tabIndex="0"
         >
-          <UserInfo
+          <UserInfoPriv
             address={data.address}
             age={data.age}
             country={data.country}
@@ -98,7 +98,7 @@ export const ProfilePriv = () => {
           aria-labelledby="profile-tab"
           tabIndex="0"
         >
-          <UserPostsTab />
+          <UserPostsTabPriv />
         </div>
         <div
           className="tab-pane fade"

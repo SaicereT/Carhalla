@@ -67,6 +67,8 @@ export const Profile = () => {
           <UserInfoPub
             email={data.email}
             firstname={data.firstname}
+            id={data.post_id}
+            is_active={data.is_active}
             lastname={data.lastname}
             telnumber={data.telnumber}
           />

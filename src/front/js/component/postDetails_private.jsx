@@ -2,10 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext.js";
-import PostCard from "./PostCard.jsx";
+import PostCardPrivate from "./PostCard_private.jsx";
+import { useNavigate } from "react-router-dom";
 
-export const PostDetails = (props) => {
+export const PostDetailsPrivate = (props) => {
+  const navigate = useNavigate();
   const { store, actions } = useContext(Context);
+  const { postid } = useParams();
 
   return (
     <div className="card mb-3">
@@ -27,13 +30,18 @@ export const PostDetails = (props) => {
             <p className="card-text">{props.description}</p>
             <div className="card-body d-flex justify-content-between">
               <Link to={-1}>
-                <button type="button" className="btn btn-outline-primary">
+                <button
+                  className="btn btn-danger"
+                  onClick={() => actions.DeletePost(postid)}
+                >
+                  Delete
+                </button>
+              </Link>
+              <Link to="/profile_pagePriv">
+                <button className="btn btn-secondary" type="button">
                   Go back!
                 </button>
               </Link>
-              <button type="button" className="btn btn-outline-danger">
-                <i className="bi bi-heart-fill"></i>
-              </button>
             </div>
             <p className="card-text">
               <small className="text-muted">Last updated 3 mins ago</small>
