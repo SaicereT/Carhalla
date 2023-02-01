@@ -3,8 +3,10 @@ import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext.js";
 import PostCardPrivate from "./PostCard_private.jsx";
+import { useNavigate } from "react-router-dom";
 
 export const PostDetailsPrivate = (props) => {
+  const navigate = useNavigate();
   const { store, actions } = useContext(Context);
   const { postid } = useParams();
 

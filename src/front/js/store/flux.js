@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 const getState = ({ getStore, getActions, setStore }) => {
+  const [posts, setPosts] = useState([]);
   return {
     store: {
       accessToken: "",
@@ -101,15 +103,25 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
       },
       DeletePost: async (postid) => {
-        let resp = await fetch(
-          process.env.BACKEND_URL + "/api/posts/delete/" + postid,
-          {
-            method: "DELETE",
-            headers: {
-              ...getActions().getAuthorizationHeader(),
-            },
-          }
-        );
+        let { userPosts } = getStore();
+        let newPosts = [...userPosts];
+        console.log(userPosts);
+        if (userPosts.length > 0) {
+          setPosts(newPosts);
+          let resp = await fetch(
+            process.env.BACKEND_URL + "/api/posts/delete/" + postid,
+            {
+              method: "DELETE",
+              headers: {
+                ...getActions().getAuthorizationHeader(),
+              },
+            }
+          );
+          let postindex = posts.findIndex((post) => post.id == postid);
+          newPosts.splice(postindex);
+          console.log(postindex);
+          setStore({ userPosts: newPosts });
+        }
       },
       logOut: async () => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/logout", {

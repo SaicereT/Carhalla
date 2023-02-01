@@ -21,7 +21,7 @@ export const PostDetailsPagePrivate = () => {
             <PostDetailsPrivate
               make={data.make}
               model={data.model}
-              id={data.post_id}
+              id={postid}
               price={data.price}
               title={data.title}
               year={data.year}

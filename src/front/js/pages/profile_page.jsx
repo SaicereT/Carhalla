@@ -85,7 +85,7 @@ export const Profile = () => {
             country={data.country}
             email={data.email}
             firstname={data.firstname}
-            id={data.id}
+            id={data.post_id}
             is_active={data.is_active}
             lastname={data.lastname}
             telnumber={data.telnumber}
