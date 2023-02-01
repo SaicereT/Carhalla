@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import UserPostsTabPub from "../component/UserPostsTabPub.jsx";
-import UserInfoPub from "../component/UserInfoPub.jsx";
+import UserPostsTab from "../component/UserPostsTabPriv.jsx";
+import UserInfo from "../component/UserInfoPriv.jsx";
+import UserFavorites from "../component/UserFavorites.jsx";
 import { Context } from "../store/appContext.js";
 
-export const Profile = () => {
+export const ProfilePriv = () => {
   const { store, actions } = useContext(Context);
   const [data, setData] = useState({});
 
@@ -55,6 +56,20 @@ export const Profile = () => {
             My posts
           </button>
         </li>
+        <li className="nav-item" role="presentation">
+          <button
+            className="nav-link"
+            id="contact-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#contact-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="contact-tab-pane"
+            aria-selected="false"
+          >
+            Favorites
+          </button>
+        </li>
       </ul>
       <div className="tab-content" id="myTabContent">
         <div
@@ -64,10 +79,13 @@ export const Profile = () => {
           aria-labelledby="home-tab"
           tabIndex="0"
         >
-          <UserInfoPub
+          <UserInfo
+            address={data.address}
+            age={data.age}
+            country={data.country}
             email={data.email}
             firstname={data.firstname}
-            id={data.post_id}
+            id={data.id}
             is_active={data.is_active}
             lastname={data.lastname}
             telnumber={data.telnumber}
@@ -80,7 +98,16 @@ export const Profile = () => {
           aria-labelledby="profile-tab"
           tabIndex="0"
         >
-          <UserPostsTabPub />
+          <UserPostsTab />
+        </div>
+        <div
+          className="tab-pane fade"
+          id="contact-tab-pane"
+          role="tabpanel"
+          aria-labelledby="contact-tab"
+          tabIndex="0"
+        >
+          <UserFavorites />
         </div>
       </div>
     </div>
