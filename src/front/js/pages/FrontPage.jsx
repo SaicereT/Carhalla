@@ -23,11 +23,11 @@ export const Frontpage = () => {
   }
   return (
     <div className="jumbotron">
-      <h1 className="display-4">Home Page</h1>
+      <h1 className="display-4 ">Home Page</h1>
       <div className="container">
         <div className="row justify-content-between">
           {store.posts.map((post) => (
-            <div className="col-4 mb-3 " key={post.post_id}>
+            <div className="col-4 mb-3  " key={post.post_id}>
               <PostCard
                 make={post.make}
                 model={post.model}
