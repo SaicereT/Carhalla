@@ -37,7 +37,7 @@ export const PostDetailsPrivate = (props) => {
                   Delete
                 </button>
               </Link>
-              <Link to="/profile_page">
+              <Link to="/profile_pagePriv">
                 <button className="btn btn-secondary" type="button">
                   Go back!
                 </button>
