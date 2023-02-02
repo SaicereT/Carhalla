@@ -163,6 +163,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         store.userFavorites = data.results;
         setStore(store);
       },
+      handleFavorites: async (favId) => {},
       /*Nueva action arriba de esta linea*/
     },
   };
