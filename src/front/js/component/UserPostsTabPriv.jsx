@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-import PostCard from "./PostCard.jsx";
+import PostCardPrivate from "./PostCard_private.jsx";
 
 const UserPostsTab = () => {
   const { store, actions } = useContext(Context);
@@ -14,13 +14,13 @@ const UserPostsTab = () => {
       <div className="row justify-content-between">
         {store.userPosts.map((post) => (
           <div className="col-4 mb-3" key={post.post_id}>
-            <PostCard
+            <PostCardPrivate
               make={post.make}
               model={post.model}
               id={post.post_id}
               price={post.price}
               title={post.title}
-              year={post.year}  
+              year={post.year}
             />
           </div>
         ))}
