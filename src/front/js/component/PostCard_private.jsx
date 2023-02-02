@@ -11,6 +11,14 @@ const PostCardPrivate = (props) => {
         className="card-img-top"
         alt="..."
       />
+      <ul className="list-group list-group-flush">
+        <li className="list-group-item">
+          <button class="btn btn-success">
+            Impulse your post {"  "}
+            <i class="bi bi-rocket-takeoff"></i>
+          </button>
+        </li>
+      </ul>
       <div className="card-body">
         <h5 className="card-title">{props.title}</h5>
         <p className="card-text">Description</p>
