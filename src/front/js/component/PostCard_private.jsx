@@ -37,7 +37,11 @@ const PostCardPrivate = (props) => {
             Delete post
           </button>
         </Link>
-        <button type="button" className="btn btn-outline-danger">
+        <button
+          type="button"
+          className="btn btn-outline-danger"
+          onClick={() => actions.handleFavorites(props.id)}
+        >
           <i className="bi bi-heart-fill"></i>
         </button>
       </div>

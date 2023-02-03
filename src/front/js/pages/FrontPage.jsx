@@ -9,11 +9,13 @@ export const Frontpage = () => {
 
   useEffect(() => {
     actions.getPosts();
-    // clean up code
     window.removeEventListener("scroll", eventScroll);
     window.addEventListener("scroll", eventScroll, { passive: true });
     return () => window.removeEventListener("scroll", eventScroll);
   }, []);
+  useEffect(() => {
+    if (store.accessToken) actions.getUserFavorites();
+  }, [store.accessToken]);
 
   function eventScroll(e) {
     let pos = window.scrollY + window.innerHeight;

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 const getState = ({ getStore, getActions, setStore }) => {
   const [posts, setPosts] = useState([]);
+  const [favs, setFavs] = useState([]);
   return {
     store: {
       accessToken: "",
@@ -186,7 +187,41 @@ const getState = ({ getStore, getActions, setStore }) => {
         store.userFavorites = data.results;
         setStore(store);
       },
-      handleFavorites: async (favId) => {},
+      handleFavorites: async (postid) => {
+        let { userFavorites } = getStore();
+        let newFavorites = [...userFavorites];
+        let favIndex = userFavorites.findIndex(
+          (favorite) => favorite.post_id == postid
+        );
+        console.log(favIndex);
+        console.log(postid);
+        if (favIndex == -1) {
+          let respAdd = await fetch(
+            process.env.BACKEND_URL + "/api/favorites/" + postid,
+            {
+              method: "POST",
+              headers: {
+                ...getActions().getAuthorizationHeader(),
+              },
+            }
+          );
+          setStore;
+        } else {
+          let favId = userFavorites[favIndex].id;
+          let respDel = await fetch(
+            process.env.BACKEND_URL + "/api/favorites/" + favId,
+            {
+              method: "DELETE",
+              headers: {
+                ...getActions().getAuthorizationHeader(),
+              },
+            }
+          );
+          newFavorites.splice(favIndex, 1);
+          console.log(favId);
+          setStore({ userFavorites: newFavorites });
+        }
+      },
       /*Nueva action arriba de esta linea*/
     },
   };
