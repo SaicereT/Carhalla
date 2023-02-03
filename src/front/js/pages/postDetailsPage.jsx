@@ -12,6 +12,10 @@ export const PostDetailsPage = () => {
   useEffect(() => {
     actions.getPostDetails(postid).then((resp) => setData(resp));
   }, []);
+
+  useEffect(() => {
+    if (store.accessToken) actions.getUserFavorites();
+  }, [store.accessToken]);
   return (
     <div className="jumbotron">
       <h1 className="display-4">Home Page</h1>
@@ -21,7 +25,7 @@ export const PostDetailsPage = () => {
             <PostDetails
               make={data.make}
               model={data.model}
-              id={data.post_id}
+              id={postid}
               price={data.price}
               title={data.title}
               year={data.year}

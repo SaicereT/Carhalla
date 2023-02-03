@@ -7,7 +7,7 @@ const PostCard = (props) => {
   return (
     <div className="card" /*style="width: 18rem;"*/>
       <img
-        src="https://i.picsum.photos/id/670/500/500.jpg?hmac=N38FiXBMkkVNLkU8iurtSmZLgBc-wDkQJ5yCaCwJrIk"
+        src="https://picsum.photos/500/500"
         className="card-img-top"
         alt="..."
       />
@@ -32,7 +32,7 @@ const PostCard = (props) => {
         <button
           type="button"
           className="btn btn-outline-danger"
-          onClick={() => actions.handleFavorites(props)}
+          onClick={() => actions.handleFavorites(props.id)}
         >
           <i className="bi bi-heart-fill"></i>
         </button>

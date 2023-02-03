@@ -120,7 +120,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           let postindex = userPosts.findIndex((post) => post.post_id == postid);
           newPosts.splice(postindex, 1);
-          console.log(newPosts);
           setStore({ userPosts: newPosts });
         }
       },
@@ -205,7 +204,12 @@ const getState = ({ getStore, getActions, setStore }) => {
               },
             }
           );
-          setStore;
+          let data = await respAdd.json();
+          if (data) {
+            setStore({
+              userFavorites: [...userFavorites, data.results],
+            });
+          }
         } else {
           let favId = userFavorites[favIndex].id;
           let respDel = await fetch(

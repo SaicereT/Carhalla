@@ -13,6 +13,10 @@ export const ProfilePriv = () => {
     if (store.accessToken) actions.getUserInfo().then((resp) => setData(resp));
   }, [store.accessToken]);
 
+  useEffect(() => {
+    if (store.accessToken) actions.getUserFavorites();
+  }, [store.accessToken]);
+
   return (
     <div className="container">
       <div className="float-md-start  " style={{ marginRight: "25px" }}>

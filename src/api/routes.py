@@ -139,9 +139,9 @@ def add_favorite(fav_id):
     new_fav_post=Fav_posts(user_id = user_id, post_id= fav_id)
     db.session.add(new_fav_post)
     db.session.commit()
-    created_fav=Fav_posts.query.filter(Fav_posts.post_id==fav_id, Fav_posts.user_id==user_id).first()
     db.session.refresh(new_fav_post)
-    return jsonify({"results": created_fav.serialize}), 200
+    created_fav=Fav_posts.query.filter(Fav_posts.post_id==fav_id, Fav_posts.user_id==user_id).first()
+    return jsonify({"results": created_fav.serialize()}), 200
 
 #quitar un favorito
 @api.route('/favorites/<int:fav_id>', methods=['DELETE'])

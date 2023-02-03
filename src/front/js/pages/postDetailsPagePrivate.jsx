@@ -12,6 +12,10 @@ export const PostDetailsPagePrivate = () => {
   useEffect(() => {
     actions.getPostDetails(postid).then((resp) => setData(resp));
   }, []);
+
+  useEffect(() => {
+    if (store.accessToken) actions.getUserFavorites();
+  }, [store.accessToken]);
   return (
     <div className="jumbotron">
       <h1 className="display-4">Home Page</h1>

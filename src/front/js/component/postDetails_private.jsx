@@ -42,6 +42,13 @@ export const PostDetailsPrivate = (props) => {
                   Go back!
                 </button>
               </Link>
+              <button
+                type="button"
+                className="btn btn-outline-danger"
+                onClick={() => actions.handleFavorites(props.id)}
+              >
+                <i className="bi bi-heart-fill"></i>
+              </button>
             </div>
             <p className="card-text">
               <small className="text-muted">Last updated 3 mins ago</small>
