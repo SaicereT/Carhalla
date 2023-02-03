@@ -3,23 +3,41 @@ import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext.js";
 import PostCard from "../component/PostCard.jsx";
+import { useSearchParams } from "react-router-dom";
 
 export const Frontpage = () => {
   const { store, actions } = useContext(Context);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [endOfPage, setendOfPage] = useState(false);
 
   useEffect(() => {
     actions.getPosts();
-    // clean up code
     window.removeEventListener("scroll", eventScroll);
     window.addEventListener("scroll", eventScroll, { passive: true });
     return () => window.removeEventListener("scroll", eventScroll);
   }, []);
 
+  useEffect(() => {
+    if (endOfPage) {
+      actions.getPosts(pageNumber + 1, true).then((result) => {
+        if (result) setPageNumber(pageNumber + 1);
+      });
+    }
+  }, [endOfPage]);
+
   function eventScroll(e) {
     let pos = window.scrollY + window.innerHeight;
     let height = document.getElementById("app").scrollHeight;
-    //console.log(app.scrollHeight);
-    if (pos == height) console.log("fin");
+    if (pos == height) {
+      setendOfPage(true);
+    } else {
+      setendOfPage(false);
+    }
+  }
+
+  function addPage() {
+    setPageNumber(pageNumber + 1);
+    console.log(pageNumber);
   }
   return (
     <div className="jumbotron">
