@@ -71,6 +71,7 @@ class Posts(db.Model):
     
     def serializeFull(self):
        return {
+        "post_id":self.id,
         "title":self.title,
         "make":self.make,
         "model":self.model,

@@ -8,6 +8,7 @@ import { useSearchParams } from "react-router-dom";
 export const Frontpage = () => {
   const { store, actions } = useContext(Context);
   const [pageNumber, setPageNumber] = useState(1);
+  const [endOfPage, setendOfPage] = useState(false);
 
   useEffect(() => {
     actions.getPosts();
@@ -16,13 +17,21 @@ export const Frontpage = () => {
     return () => window.removeEventListener("scroll", eventScroll);
   }, []);
 
+  useEffect(() => {
+    if (endOfPage) {
+      actions.getPosts(pageNumber + 1, true).then((result) => {
+        if (result) setPageNumber(pageNumber + 1);
+      });
+    }
+  }, [endOfPage]);
+
   function eventScroll(e) {
     let pos = window.scrollY + window.innerHeight;
     let height = document.getElementById("app").scrollHeight;
     if (pos == height) {
-      console.log("End of Page");
-      setPageNumber(pageNumber + 1);
-      console.log(pageNumber);
+      setendOfPage(true);
+    } else {
+      setendOfPage(false);
     }
   }
 
@@ -34,13 +43,6 @@ export const Frontpage = () => {
     <div className="jumbotron">
       <h1 className="display-4">Home Page</h1>
       <div className="container">
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => addPage()}
-        >
-          Add page
-        </button>
         <div className="row justify-content-between">
           {store.posts.map((post) => (
             <div className="col-4 mb-3 " key={post.post_id}>

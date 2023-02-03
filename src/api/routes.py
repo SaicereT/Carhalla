@@ -161,11 +161,9 @@ def delete_favorite(fav_id):
 @api.route('/posts', methods=['GET'])
 def get_posts():
     pagenum = request.args.get('page', 1, type=int)
-    total_pages=Posts.query.paginate(page=1, per_page=21)
-    if pagenum > total_pages.pages:
-        return jsonify({"msg":"No more pages"}), 404
-    posts=Posts.query.paginate(page=pagenum, per_page=21)
-    return jsonify({"results":list(map(lambda item: item.serializeCompact(),posts))}), 200
+
+    posts=Posts.query.order_by(Posts.financing.desc()).order_by(Posts.id.desc()).paginate(page=pagenum, per_page=21, error_out=False)
+    return jsonify({"results":list(map(lambda item: item.serializeFull(),posts))}), 200
 
 #traer toda la info de solo una
 @api.route('/posts/<int:post_param>', methods=['GET'])
@@ -195,7 +193,7 @@ def add_post():
     }
     for i in body:
         if(i=="financing"):
-            body[i]=bool(request.form.get(i))
+            body[i]=request.form.get(i)=="true" #bool(request.form.get(i))
         else:
             body[i]=request.form.get(i)
             #body[i] = body[i].strip()
