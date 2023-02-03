@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 const getState = ({ getStore, getActions, setStore }) => {
   const [posts, setPosts] = useState([]);
-  const [favs, setFavs] = useState([]);
   return {
     store: {
       accessToken: "",

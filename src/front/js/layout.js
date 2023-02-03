@@ -9,7 +9,10 @@ import { AddPost } from "./pages/addPost.jsx";
 import { Navbar } from "./component/navbar.jsx";
 import { Footer } from "./component/footer";
 import { PostDetailsPage } from "./pages/postDetailsPage.jsx";
+import { AccountRecovery } from "./pages/AccountRecovery.jsx";
 import { Profile } from "./pages/profile_page.jsx";
+import { ProfilePriv } from "./pages/profile_pagePriv.jsx";
+import { PostDetailsPagePrivate } from "./pages/postDetailsPagePrivate.jsx";
 
 //create your first component
 const Layout = () => {
@@ -24,10 +27,16 @@ const Layout = () => {
           <Navbar />
           <Routes>
             <Route element={<Frontpage />} path="/" />
+            <Route
+              element={<PostDetailsPagePrivate />}
+              path="/postsprivate/:postid"
+            />
             <Route element={<PostDetailsPage />} path="/posts/:postid" />
             <Route element={<FormUser />} path="/formUser" />
             <Route element={<AddPost />} path="/addPost" />
             <Route element={<Profile />} path="/profile_page" />
+            <Route element={<ProfilePriv />} path="/profile_pagePriv" />
+            <Route element={<AccountRecovery />} path="/accountRecovery" />
             <Route element={<h1>Not found!</h1>} path="*" />
           </Routes>
           <Footer />
