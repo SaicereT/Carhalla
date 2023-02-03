@@ -69,16 +69,27 @@ const getState = ({ getStore, getActions, setStore }) => {
         let { accessToken } = getStore();
         return { Authorization: "Bearer " + accessToken };
       },
-      getPosts: async () => {
-        let response = await fetch(process.env.BACKEND_URL + "/api/posts");
+      getPosts: async (page = 1, append = false) => {
+        let response = await fetch(
+          process.env.BACKEND_URL + "/api/posts?page=" + page
+        );
         if (!response.ok) {
           console.log(response.status + ": " + response.statusText);
           return;
         }
         let data = await response.json();
+        if (data.results.length == 0) {
+          return false;
+        }
         let newStore = getStore();
-        newStore.posts = data.results;
-        setStore(newStore);
+        if (append) {
+          setStore({ posts: [...newStore.posts, ...data.results] });
+          return true;
+        } else {
+          newStore.posts = data.results;
+          setStore(newStore);
+          return true;
+        }
       },
       getPostDetails: async (postid) => {
         let response = await fetch(
@@ -209,6 +220,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             setStore({
               userFavorites: [...userFavorites, data.results],
             });
+          if (respAdd) {
+            let new_fav = await respAdd.json();
           }
         } else {
           let favId = userFavorites[favIndex].id;

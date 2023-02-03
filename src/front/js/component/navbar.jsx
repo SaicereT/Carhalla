@@ -31,7 +31,7 @@ export const Navbar = () => {
 
   return (
     <nav className="navbar navbar-dark bg-dark">
-      <div className="container-fluid">
+      <div className="container-fluid d-flex bd-highlight mb-3">
         <Link to="/">
           <img
             style={{ height: "80px" }}
@@ -41,8 +41,8 @@ export const Navbar = () => {
           />
         </Link>
         {store.accessToken == "" || null || undefined ? (
-          <div className="ml-auto d-flex me-3">
-            <div className="dropdown me-2">
+          <div className="ms-auto p-2 d-flex bd-highlight">
+            <div className="dropdown me-3">
               <button
                 type="button"
                 className="btn btn-primary dropdown-toggle"
@@ -94,17 +94,56 @@ export const Navbar = () => {
               </div>
             </div>
             <Link to="/formUser">
-              <button className="btn btn-primary">Sign up</button>
+              <button className="btn btn-primary me-3">Sign up</button>
             </Link>
           </div>
         ) : (
-          <button
-            type="button"
-            className="btn btn-danger"
-            onClick={() => handleLogout()}
-          >
-            Log Out
-          </button>
+          <div>
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={() => handleLogout()}
+            >
+              Log Out
+            </button>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+              ...
+            </button>
+
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasRight"
+              aria-labelledby="offcanvasRightLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 id="offcanvasRightLabel">More Info</h5>
+                <button
+                  type="button"
+                  class="btn-close text-reset"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">
+                <a className="dropdown-item" href="#">
+                  Crear Publicacion
+                </a>
+                <a className="dropdown-item" href="#">
+                  Favoritos
+                </a>
+                <a className="dropdown-item" href="#">
+                  Publicaciones
+                </a>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </nav>

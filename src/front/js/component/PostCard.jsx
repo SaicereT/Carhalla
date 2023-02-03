@@ -4,8 +4,10 @@ import { Context } from "../store/appContext";
 
 const PostCard = (props) => {
   const { store, actions } = useContext(Context);
+  /*agrega el prop de pago en vez del financiado y en vez de false el prop para que lo iguale "false lo oculta, true lo muestra"*/
+  let boost = true;
   return (
-    <div className="card" /*style="width: 18rem;"*/>
+    <div className="card">
       <img
         src="https://picsum.photos/500/500"
         className="card-img-top"
@@ -21,6 +23,11 @@ const PostCard = (props) => {
         <li className="list-group-item">Model: {props.model}</li>
         <li className="list-group-item">Price: {props.price}</li>
         <li className="list-group-item">Year: {props.year}</li>
+        {boost && (
+          <li className="list-group-item">
+            <i class="bi bi-lightning-charge">Premium</i> {props.financing}
+          </li>
+        )}
       </ul>
 
       <div className="card-body d-flex justify-content-between">
