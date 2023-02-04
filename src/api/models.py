@@ -111,6 +111,7 @@ class Fav_posts(db.Model):
             "model":self.post.model,
             "year":self.post.year,
             "price":self.post.price,
+            "premium":self.post.premium,
 
         }
 
