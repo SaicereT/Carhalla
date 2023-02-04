@@ -107,7 +107,7 @@ export const Navbar = () => {
               Log Out
             </button>
             <button
-              class="btn btn-primary"
+              className="btn btn-primary"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
@@ -117,21 +117,21 @@ export const Navbar = () => {
             </button>
 
             <div
-              class="offcanvas offcanvas-end"
-              tabindex="-1"
+              className="offcanvas offcanvas-end"
+              tabIndex="-1"
               id="offcanvasRight"
               aria-labelledby="offcanvasRightLabel"
             >
-              <div class="offcanvas-header">
+              <div className="offcanvas-header">
                 <h5 id="offcanvasRightLabel">More Info</h5>
                 <button
                   type="button"
-                  class="btn-close text-reset"
+                  className="btn-close text-reset"
                   data-bs-dismiss="offcanvas"
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="offcanvas-body">
+              <div className="offcanvas-body">
                 <a className="dropdown-item" href="#">
                   Crear Publicacion
                 </a>

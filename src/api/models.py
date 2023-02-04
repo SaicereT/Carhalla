@@ -41,6 +41,7 @@ class Users(db.Model):
 class Posts(db.Model):
     __tablename__="posts"
     id = db.Column(db.Integer, primary_key=True)
+    premium = db.Column(db.Boolean(), unique=False, nullable=True)
     title = db.Column(db.String(240), unique=False, nullable=False)
     make = db.Column(db.String(120), unique=False, nullable=False)
     model = db.Column(db.String(120), unique=False, nullable=False)
@@ -52,6 +53,7 @@ class Posts(db.Model):
     year = db.Column(db.Integer, unique=False, nullable=False)
     price = db.Column(db.Integer, unique=False, nullable=False)
     description = db.Column(db.String(240), unique=False, nullable=False)
+    miles = db.Column(db.Integer, unique=False, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     user = db.relationship(Users)
 
@@ -66,7 +68,9 @@ class Posts(db.Model):
         "make":self.make,
         "model":self.model,
         "price":self.price,
-        "post_id":self.id
+        "post_id":self.id,
+        "is_premium":self.premium,
+        "miles":self.miles
         }
     
     def serializeFull(self):
@@ -83,7 +87,9 @@ class Posts(db.Model):
         "year":self.year,
         "price":self.price,
         "description":self.description,
-        "user_id":self.user_id
+        "user_id":self.user_id,
+        "miles":self.miles,
+        "premium":self.premium
         }
 
 class Fav_posts(db.Model):
