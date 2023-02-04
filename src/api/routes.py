@@ -161,8 +161,7 @@ def delete_favorite(fav_id):
 @api.route('/posts', methods=['GET'])
 def get_posts():
     pagenum = request.args.get('page', 1, type=int)
-
-    posts=Posts.query.order_by(Posts.financing.desc()).order_by(Posts.id.desc()).paginate(page=pagenum, per_page=21, error_out=False)
+    posts=Posts.query.order_by(Posts.premium.desc()).order_by(Posts.id.desc()).paginate(page=pagenum, per_page=21, error_out=False)
     return jsonify({"results":list(map(lambda item: item.serializeFull(),posts))}), 200
 
 #traer toda la info de solo una
@@ -190,14 +189,17 @@ def add_post():
         "year":"",
         "price":"",
         "description":"",
+        "miles":"",
+        "premium":"",
     }
     for i in body:
         if(i=="financing"):
             body[i]=request.form.get(i)=="true" #bool(request.form.get(i))
+        elif(i=="premium"):
+            body[i]=request.form.get(i)=="true"
         else:
             body[i]=request.form.get(i)
             #body[i] = body[i].strip()
-        #print(request.form.get(i))
         if (body[i] == ""):
             return jsonify({"msg":"There are empty values"}), 404
     new_post = Posts(
@@ -212,6 +214,8 @@ def add_post():
         year=body["year"],
         price=body["price"],
         description=body["description"],
+        miles=body["miles"],
+        premium=body["premium"],
         user_id=user_id
     )
     print(new_post)

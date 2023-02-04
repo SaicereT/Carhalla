@@ -103,6 +103,15 @@ export const AddPost = () => {
               name="year"
             />
           </Form.Group>
+          <Form.Group as={Col} md="2">
+            <Form.Label>Miles</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Miles"
+              required
+              name="miles"
+            />
+          </Form.Group>
           <Form.Group as={Col} md="3">
             <Form.Label>Price</Form.Label>
             <Form.Control
