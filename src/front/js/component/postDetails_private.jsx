@@ -10,6 +10,10 @@ export const PostDetailsPrivate = (props) => {
   const { store, actions } = useContext(Context);
   const { postid } = useParams();
 
+  useEffect(() => {
+    if (store.accessToken) actions.getUserFavorites();
+  }, [store.accessToken]);
+
   return (
     <div className="card mb-3">
       <div className="row g-0">
@@ -42,6 +46,13 @@ export const PostDetailsPrivate = (props) => {
                   Go back!
                 </button>
               </Link>
+              <button
+                type="button"
+                className="btn btn-outline-danger"
+                onClick={() => actions.handleFavorites(props.id)}
+              >
+                <i className="bi bi-heart-fill"></i>
+              </button>
             </div>
             <p className="card-text">
               <small className="text-muted">Last updated 3 mins ago</small>

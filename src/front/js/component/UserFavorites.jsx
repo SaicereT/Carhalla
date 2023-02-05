@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-import PostCardPrivate from "./PostCard_private.jsx";
+import PostCard from "./PostCard.jsx";
 
 const UserFavorites = () => {
   const { store, actions } = useContext(Context);
@@ -14,7 +14,7 @@ const UserFavorites = () => {
       <div className="row justify-content-between">
         {store.userFavorites.map((post) => (
           <div className="col-4 mb-3" key={post.post_id}>
-            <PostCardPrivate
+            <PostCard
               make={post.make}
               model={post.model}
               id={post.post_id}
