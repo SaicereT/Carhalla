@@ -18,6 +18,10 @@ export const Frontpage = () => {
   }, []);
 
   useEffect(() => {
+    if (store.accessToken) actions.getUserFavorites();
+  }, [store.accessToken]);
+
+  useEffect(() => {
     if (endOfPage) {
       actions.getPosts(pageNumber + 1, true).then((result) => {
         if (result) setPageNumber(pageNumber + 1);
@@ -35,10 +39,6 @@ export const Frontpage = () => {
     }
   }
 
-  function addPage() {
-    setPageNumber(pageNumber + 1);
-    console.log(pageNumber);
-  }
   return (
     <div className="jumbotron">
       <h1 className="display-4 ">Home Page</h1>

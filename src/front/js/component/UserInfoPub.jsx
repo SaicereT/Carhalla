@@ -10,14 +10,10 @@ const UserInfoPub = (props) => {
         </div>
         <div className="col-md-8">
           <div className="card-body">
-            <h5 className="card-title">Card title</h5>
-            <p className="card-text">{props.email}</p>
-            <p className="card-text">{props.firstname}</p>
-            <p className="card-text">{props.lastname}</p>
-            <p className="card-text">{props.telnumber}</p>
-            <p className="card-text">
-              <small className="text-muted">Last updated 3 mins ago</small>
-            </p>
+            <h5 className="card-title">Profile Info</h5>
+            <p className="card-text">Email: {props.email}</p>
+            <p className="card-text">Username: {props.username}</p>
+            <p className="card-text">Telephone Number: {props.telnumber}</p>
           </div>
         </div>
       </div>

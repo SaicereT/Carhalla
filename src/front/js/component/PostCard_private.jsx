@@ -13,9 +13,9 @@ const PostCardPrivate = (props) => {
       />
       <ul className="list-group list-group-flush">
         <li className="list-group-item">
-          <button class="btn btn-success">
+          <button className="btn btn-success">
             Impulse your post {"  "}
-            <i class="bi bi-rocket-takeoff"></i>
+            <i className="bi bi-rocket-takeoff"></i>
           </button>
         </li>
       </ul>
@@ -45,7 +45,11 @@ const PostCardPrivate = (props) => {
             Delete post
           </button>
         </Link>
-        <button type="button" className="btn btn-outline-danger">
+        <button
+          type="button"
+          className="btn btn-outline-danger"
+          onClick={() => actions.handleFavorites(props.id)}
+        >
           <i className="bi bi-heart-fill"></i>
         </button>
       </div>
