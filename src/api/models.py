@@ -70,7 +70,9 @@ class Posts(db.Model):
         "price":self.price,
         "post_id":self.id,
         "is_premium":self.premium,
-        "miles":self.miles
+        "miles":self.miles,
+        "telnumber":self.user.telnumber
+        
         }
     
     def serializeFull(self):
@@ -89,7 +91,8 @@ class Posts(db.Model):
         "description":self.description,
         "user_id":self.user_id,
         "miles":self.miles,
-        "premium":self.premium
+        "premium":self.premium,
+        "telnumber":self.user.telnumber
         }
 
 class Fav_posts(db.Model):

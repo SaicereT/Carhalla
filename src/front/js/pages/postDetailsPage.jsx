@@ -31,6 +31,7 @@ export const PostDetailsPage = () => {
               financing={data.financing}
               doors={data.doors}
               description={data.description}
+              telnumber={data.telnumber}
             />
           </div>
         </div>
