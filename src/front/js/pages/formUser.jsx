@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import PasswordChecklist from "react-password-checklist";
 
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -29,6 +30,7 @@ export function FormUser() {
         "address",
         "phone",
         "password",
+        "profilePic",
       ];
       campos.forEach((campo) => {
         data[campo] = formData.get(campo);
@@ -42,7 +44,7 @@ export function FormUser() {
   };
 
   return (
-    <div className="container mt-6">
+    <div className="container" style={{ marginTop: "3%" }}>
       <Form onSubmit={(event) => handleSubmit(event)}>
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="firstname">
@@ -56,7 +58,7 @@ export function FormUser() {
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="4" controlId="validationCustom02">
-            <Form.Label>Lastname</Form.Label>
+            <Form.Label>Last name</Form.Label>
             <Form.Control
               required
               type="text"
@@ -65,7 +67,7 @@ export function FormUser() {
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
-          <Form.Group as={Col} md="4" controlId="validationCustom03">
+          <Form.Group as={Col} md="1" controlId="validationCustom03">
             <Form.Label>Age</Form.Label>
             <Form.Control required type="number" placeholder="Age" name="age" />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -85,7 +87,7 @@ export function FormUser() {
           </Form.Group>
 
           <Form.Group as={Col} md="4" controlId="validationCustom05">
-            <Form.Label>username</Form.Label>
+            <Form.Label>Username</Form.Label>
             <Form.Control
               required
               type="text"
@@ -97,7 +99,6 @@ export function FormUser() {
             </Form.Control.Feedback>
           </Form.Group>
         </Row>
-
         <Row className="mb-3">
           <Form.Group as={Col} md="6" controlId="validationCustom06">
             <Form.Label>City</Form.Label>
@@ -131,8 +132,57 @@ export function FormUser() {
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="5" controlId="formFile" className="mb-3">
-            <Form.Label>File</Form.Label>
-            <Form.Control type="file" />
+            <Button
+              type="button"
+              className="btn btn-success"
+              style={{ marginTop: "30px" }}
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              Upload profile picture
+            </Button>
+            <div
+              className="modal fade"
+              id="exampleModal"
+              tabIndex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">
+                      You can upload, later
+                    </h5>
+                  </div>
+                  <div className="modal-body">
+                    <Form.Group controlId="formFileMultiple" className="mb-3">
+                      <Form.Label>Choose your profile picture</Form.Label>
+                      <Form.Control type="file" name="profilePic" />
+                    </Form.Group>
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-dismiss="modal"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="submit"
+                      aria-label="Close"
+                      className="btn btn-primary"
+                      data-bs-dismiss="modal"
+                    >
+                      Save and send
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </Form.Group>
         </Row>
         <Form.Group className="mb-3">
@@ -144,19 +194,29 @@ export function FormUser() {
           />
         </Form.Group>
         <Form.Group as={Col} md="3">
-          <Form.Label htmlFor="inputPassword5">Password</Form.Label>
+          <Form.Label
+            htmlFor="password"
+            onChange={(e) => setPassword(e.target.value)}
+          >
+            Password
+          </Form.Label>
           <Form.Control
             required
             type="password"
-            id="inputPassword5"
+            id="password"
             aria-describedby="passwordHelpBlock"
             name="password"
           />
-          <Form.Label htmlFor="inputPasswordRE">Repeat Password</Form.Label>
+          <Form.Label
+            htmlFor="password2"
+            onChange={(e) => setPassword2(e.target.value)}
+          >
+            Repeat Password
+          </Form.Label>
           <Form.Control
             required
             type="password"
-            id="inputPasswordRE"
+            id="password2"
             aria-describedby="passwordHelpBlock"
           />
         </Form.Group>
@@ -164,7 +224,6 @@ export function FormUser() {
           Your password must be 8-20 characters long, contain letters and
           numbers, and must not contain spaces, special characters, or emoji.
         </Form.Text>
-
         <div>
           <Button type="submit">Send submit</Button>
         </div>
