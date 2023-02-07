@@ -63,6 +63,29 @@ def get_user_info():
         return jsonify({"results": user.serialize()}), 200
     return jsonify({"msg":"No User Found"})
 
+#actualizar publicacion
+@api.route('/user_info/update', methods = ['PUT'])
+@jwt_required()
+def update_user_info():
+    user_id=get_jwt_identity()
+    body = json.loads(request.data)
+    for key in body:
+        if (type(body[key]) != bool):
+            body[key] = body[key].strip()
+
+    #for key in body:
+    #    if (body[key] == ""):
+    #        return jsonify({"msg":"There are empty values"}), 404
+
+    user = Users.query.get(user_id)
+    for key in body:
+        if (body[key] != ""):
+            for col in user.serialize():
+                if key == col and key != "id":
+                    setattr(user, col, body[key])
+    db.session.commit()
+    return jsonify({'msg':'User Updated'}), 200
+
 @api.route('/user_info/<int:user_id>', methods=['GET'])
 @jwt_required()
 def get_user_info_pub(user_id):
