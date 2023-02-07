@@ -2,10 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext.js";
-import PostCard from "./PostCard.jsx";
+import PostCardPrivate from "./PostCard_private.jsx";
+import { useNavigate } from "react-router-dom";
 
-export const PostDetails = (props) => {
+export const PostDetailsPrivate = (props) => {
+  const navigate = useNavigate();
   const { store, actions } = useContext(Context);
+  const { postid } = useParams();
 
   useEffect(() => {
     if (store.accessToken) actions.getUserFavorites();
@@ -29,37 +32,28 @@ export const PostDetails = (props) => {
             <p className="card-text">{props.financing}</p>
             <p className="card-text">{props.doors}</p>
             <p className="card-text">{props.description}</p>
-            {store.accessToken == "" || null || undefined ? (
-              <div className="card-body d-flex justify-content-between">
-                {" "}
-                <Link to={-1}>
-                  <button type="button" className="btn btn-outline-primary">
-                    Go back!
-                  </button>
-                </Link>
-              </div>
-            ) : (
-              <div className="card-body d-flex justify-content-between">
-                {" "}
-                <Link to={-1}>
-                  <button type="button" className="btn btn-outline-primary">
-                    Go back!
-                  </button>
-                </Link>
+            <div className="card-body d-flex justify-content-between">
+              <Link to={-1}>
                 <button
-                  type="button"
-                  className="btn btn-outline-danger"
-                  onClick={() => actions.handleFavorites(props.id)}
+                  className="btn btn-danger"
+                  onClick={() => actions.DeletePost(postid)}
                 >
-                  <i className="bi bi-heart-fill"></i>
+                  Delete
                 </button>
-                <Link to={`/profile_page/${props.userid}`}>
-                  <button type="button" className="btn btn-outline-warning">
-                    View {props.username}'s account
-                  </button>
-                </Link>
-              </div>
-            )}
+              </Link>
+              <Link to="/profile_pagePriv">
+                <button className="btn btn-secondary" type="button">
+                  Go back!
+                </button>
+              </Link>
+              <button
+                type="button"
+                className="btn btn-outline-danger"
+                onClick={() => actions.handleFavorites(props.id)}
+              >
+                <i className="bi bi-heart-fill"></i>
+              </button>
+            </div>
             <p className="card-text">
               <small className="text-muted">Last updated 3 mins ago</small>
             </p>

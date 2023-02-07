@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -11,6 +12,7 @@ import { Context } from "../store/appContext";
 export function FormUser() {
   const [validated, setValidated] = useState(false);
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -22,6 +24,7 @@ export function FormUser() {
         "lastname",
         "age",
         "email",
+        "username",
         "city",
         "address",
         "phone",
@@ -31,12 +34,15 @@ export function FormUser() {
         data[campo] = formData.get(campo);
       });
       console.log(data);
-      actions.NewUser(data);
+      let resp = actions.NewUser(data);
+      if (resp) {
+        navigate("/");
+      }
     }
   };
 
   return (
-    <div className="container">
+    <div className="container mt-6">
       <Form onSubmit={(event) => handleSubmit(event)}>
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="firstname">
@@ -77,17 +83,30 @@ export function FormUser() {
               Porfavor Agregar un correo
             </Form.Control.Feedback>
           </Form.Group>
+
+          <Form.Group as={Col} md="4" controlId="validationCustom05">
+            <Form.Label>username</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              placeholder="Username"
+              name="username"
+            />
+            <Form.Control.Feedback type="invalid">
+              Please enter a username
+            </Form.Control.Feedback>
+          </Form.Group>
         </Row>
 
         <Row className="mb-3">
-          <Form.Group as={Col} md="6" controlId="validationCustom05">
+          <Form.Group as={Col} md="6" controlId="validationCustom06">
             <Form.Label>City</Form.Label>
             <Form.Control type="text" placeholder="City" required name="city" />
             <Form.Control.Feedback type="invalid">
               Please provide a valid city.
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group as={Col} md="6" controlId="validationCustom06">
+          <Form.Group as={Col} md="6" controlId="validationCustom07">
             <Form.Label>Adress</Form.Label>
             <Form.Control
               type="text"
@@ -99,7 +118,7 @@ export function FormUser() {
               Please provide a valid city.
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group as={Col} md="3" controlId="validationCustom07">
+          <Form.Group as={Col} md="3" controlId="validationCustom08">
             <Form.Label>Phone</Form.Label>
             <Form.Control
               type="num"

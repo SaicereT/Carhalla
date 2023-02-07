@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 const getState = ({ getStore, getActions, setStore }) => {
+  const [posts, setPosts] = useState([]);
   return {
     store: {
       accessToken: "",
       refreshToken: "",
       posts: [],
       userPosts: [],
+      userPostsPub: [],
       userFavorites: [],
-      
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -16,6 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           method: "POST",
           body: JSON.stringify({
             email: data.email,
+            username: data.username,
             password: data.password,
             firstname: data.firstname,
             lastname: data.lastname,
@@ -67,16 +70,27 @@ const getState = ({ getStore, getActions, setStore }) => {
         let { accessToken } = getStore();
         return { Authorization: "Bearer " + accessToken };
       },
-      getPosts: async () => {
-        let response = await fetch(process.env.BACKEND_URL + "/api/posts");
+      getPosts: async (page = 1, append = false) => {
+        let response = await fetch(
+          process.env.BACKEND_URL + "/api/posts?page=" + page
+        );
         if (!response.ok) {
           console.log(response.status + ": " + response.statusText);
           return;
         }
         let data = await response.json();
+        if (data.results.length == 0) {
+          return false;
+        }
         let newStore = getStore();
-        newStore.posts = data.results;
-        setStore(newStore);
+        if (append) {
+          setStore({ posts: [...newStore.posts, ...data.results] });
+          return true;
+        } else {
+          newStore.posts = data.results;
+          setStore(newStore);
+          return true;
+        }
       },
       getPostDetails: async (postid) => {
         let response = await fetch(
@@ -98,10 +112,29 @@ const getState = ({ getStore, getActions, setStore }) => {
           body: formdata,
           headers: {
             ...getActions().getAuthorizationHeader(),
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
           },
         });
+      },
+      DeletePost: async (postid) => {
+        let { userPosts } = getStore();
+        let newPosts = [...userPosts];
+        console.log(userPosts);
+        if (userPosts.length > 0) {
+          setPosts(newPosts);
+          let resp = await fetch(
+            process.env.BACKEND_URL + "/api/posts/delete/" + postid,
+            {
+              method: "DELETE",
+              headers: {
+                ...getActions().getAuthorizationHeader(),
+              },
+            }
+          );
+          let postindex = userPosts.findIndex((post) => post.post_id == postid);
+          newPosts.splice(postindex, 1);
+          console.log(newPosts);
+          setStore({ userPosts: newPosts });
+        }
       },
       logOut: async () => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/logout", {
@@ -136,6 +169,24 @@ const getState = ({ getStore, getActions, setStore }) => {
         store.userPosts = data.results;
         setStore(store);
       },
+      specificUserPostsPub: async (userid) => {
+        let store = getStore();
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/user_posts/" + userid,
+          {
+            headers: {
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+        let data = await resp.json();
+        store.userPostsPub = data.results;
+        setStore(store);
+      },
 
       getUserInfo: async () => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/user_info", {
@@ -143,6 +194,23 @@ const getState = ({ getStore, getActions, setStore }) => {
             ...getActions().getAuthorizationHeader(),
           },
         });
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+        let data = await resp.json();
+        console.log(data);
+        return data.results;
+      },
+      getUserInfoPub: async (userid) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/user_info/" + userid,
+          {
+            headers: {
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
         if (!resp.ok) {
           console.log(resp.status + ": " + resp.statusText);
           return;
@@ -165,6 +233,46 @@ const getState = ({ getStore, getActions, setStore }) => {
         let data = await resp.json();
         store.userFavorites = data.results;
         setStore(store);
+      },
+      handleFavorites: async (postid) => {
+        let { userFavorites } = getStore();
+        let newFavorites = [...userFavorites];
+        let favIndex = userFavorites.findIndex(
+          (favorite) => favorite.post_id == postid
+        );
+        console.log(favIndex);
+        console.log(postid);
+        if (favIndex == -1) {
+          let respAdd = await fetch(
+            process.env.BACKEND_URL + "/api/favorites/" + postid,
+            {
+              method: "POST",
+              headers: {
+                ...getActions().getAuthorizationHeader(),
+              },
+            }
+          );
+          if (respAdd) {
+            let new_fav = await respAdd.json();
+            setStore({
+              userFavorites: [...userFavorites, new_fav.results],
+            });
+          }
+        } else {
+          let favId = userFavorites[favIndex].id;
+          let respDel = await fetch(
+            process.env.BACKEND_URL + "/api/favorites/" + favId,
+            {
+              method: "DELETE",
+              headers: {
+                ...getActions().getAuthorizationHeader(),
+              },
+            }
+          );
+          newFavorites.splice(favIndex, 1);
+          console.log(favId);
+          setStore({ userFavorites: newFavorites });
+        }
       },
       /*Nueva action arriba de esta linea*/
     },

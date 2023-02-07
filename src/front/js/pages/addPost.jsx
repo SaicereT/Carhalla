@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import Select from "react-select";
+import { useNavigate } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -13,6 +14,7 @@ import { FormCheck } from "react-bootstrap";
 export const AddPost = () => {
   const [validated, setValidated] = useState(false);
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,15 +23,18 @@ export const AddPost = () => {
       console.log(formData);
       let files = event.target.elements["postPic"].files;
       if (files.length == 0) formData.delete("postPic");
-      actions.NewPost(formData);
+      let resp = actions.NewPost(formData);
+      if (resp) {
+        navigate("/");
+      }
     }
   };
 
   return (
     <div className="container">
       <Form onSubmit={(event) => handleSubmit(event)}>
-        <Row className="mb-3">
-          <Form.Group as={Col} md="6">
+        <Row className="mb-3 mt-5">
+          <Form.Group as={Col} md="3">
             <Form.Label>Model</Form.Label>
             <Form.Control
               type="text"
@@ -38,11 +43,11 @@ export const AddPost = () => {
               name="model"
             />
           </Form.Group>
-          <Form.Group as={Col} md="6">
+          <Form.Group as={Col} md="2">
             <Form.Label>Make</Form.Label>
             <Form.Control type="text" placeholder="Make" required name="make" />
           </Form.Group>
-          <Form.Group as={Col} md="6">
+          <Form.Group as={Col} md="4">
             <Form.Label>Title</Form.Label>
             <Form.Control
               type="text"
@@ -51,8 +56,8 @@ export const AddPost = () => {
               name="title"
             />
           </Form.Group>
-          <Form.Group as={Col} md="6">
-            <Form.Label>style</Form.Label>
+          <Form.Group as={Col} md="2">
+            <Form.Label>Style</Form.Label>
             <Form.Control
               type="text"
               placeholder="Style"
@@ -60,7 +65,7 @@ export const AddPost = () => {
               name="style"
             />
           </Form.Group>
-          <Form.Group as={Col} md="6">
+          <Form.Group as={Col} md="3">
             <Form.Label>Fuel</Form.Label>
             <Form.Select name="fuel">
               <option value="gasoline">Gasoline</option>
@@ -70,7 +75,7 @@ export const AddPost = () => {
             </Form.Select>
           </Form.Group>
 
-          <Form.Group as={Col} md="6">
+          <Form.Group as={Col} md="3">
             <Form.Label>Transmission</Form.Label>
             <Form.Select name="transmission">
               <option value="Manual">Manual</option>
@@ -78,18 +83,18 @@ export const AddPost = () => {
               <option value="CVT">CVT</option>
             </Form.Select>
           </Form.Group>
-          <Form.Group as={Col} md="6">
+          <Form.Group as={Col} md="1">
             <Form.Label>Financing</Form.Label>
             <Form.Check name="financing" />
           </Form.Group>
-          <Form.Group as={Col} md="6">
+          <Form.Group as={Col} md="2">
             <Form.Label>Doors</Form.Label>
             <Form.Select name="doors">
               <option value="3">3</option>
               <option value="4">4 or more</option>
             </Form.Select>
           </Form.Group>
-          <Form.Group as={Col} md="6">
+          <Form.Group as={Col} md="2">
             <Form.Label>Year</Form.Label>
             <Form.Control
               type="number"
@@ -98,7 +103,16 @@ export const AddPost = () => {
               name="year"
             />
           </Form.Group>
-          <Form.Group as={Col} md="6">
+          <Form.Group as={Col} md="2">
+            <Form.Label>Miles</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Miles"
+              required
+              name="miles"
+            />
+          </Form.Group>
+          <Form.Group as={Col} md="3">
             <Form.Label>Price</Form.Label>
             <Form.Control
               type="number"
@@ -107,7 +121,7 @@ export const AddPost = () => {
               name="price"
             />
           </Form.Group>
-          <Form.Group as={Col} md="12">
+          <Form.Group as={Col} md="11">
             <Form.Label>Description</Form.Label>
             <Form.Control
               type="text"
@@ -117,13 +131,73 @@ export const AddPost = () => {
             />
           </Form.Group>
         </Row>
-        <div className="d-flex grid gap-3">
-          <Form.Group controlId="formFileMultiple" className="mb-3">
-            <Form.Label>Choose multiple car photos</Form.Label>
-            <Form.Control type="file" multiple name="postPic" />
-          </Form.Group>
+
+        <Button
+          type="button"
+          className="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
+          Next step
+        </Button>
+        <div
+          className="modal fade"
+          id="exampleModal"
+          tabIndex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
+                  Add photos now?
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <div className="d-flex grid gap-3">
+                  <Form.Group controlId="formFileMultiple" className="mb-3">
+                    <Form.Label>Choose multiple car photos</Form.Label>
+                    <Form.Control type="file" multiple name="postPic" />
+                  </Form.Group>
+                </div>
+              </div>
+              <div className="modal-footer d-flex">
+                <div className="p-2 flex-grow-1">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    aria-label="Close"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+                <button
+                  type="submit"
+                  className="btn btn-secondary "
+                  data-bs-dismiss="modal"
+                >
+                  skip
+                </button>
+
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  data-bs-dismiss="modal"
+                >
+                  upload pictures
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <Button type="submit">Agree New Post</Button>
       </Form>
     </div>
   );

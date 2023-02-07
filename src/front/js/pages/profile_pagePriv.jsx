@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
-import UserPostsTabPub from "../component/UserPostsTabPub.jsx";
-import UserInfoPub from "../component/UserInfoPub.jsx";
+import { Link } from "react-router-dom";
+import UserPostsTabPriv from "../component/UserPostsTabPriv.jsx";
+import UserInfoPriv from "../component/UserInfoPriv.jsx";
+import UserFavorites from "../component/UserFavorites.jsx";
 import { Context } from "../store/appContext.js";
 
-export const Profile = () => {
+export const ProfilePriv = () => {
   const { store, actions } = useContext(Context);
-  const { userid } = useParams();
   const [data, setData] = useState({});
 
   useEffect(() => {
-    if (store.accessToken)
-      actions.getUserInfoPub(userid).then((resp) => setData(resp));
+    if (store.accessToken) actions.getUserInfo().then((resp) => setData(resp));
   }, [store.accessToken]);
 
   return (
@@ -40,7 +39,7 @@ export const Profile = () => {
             aria-controls="home-tab-pane"
             aria-selected="true"
           >
-            {data.username}'s Profile Info
+            Profile Info
           </button>
         </li>
         <li className="nav-item" role="presentation">
@@ -54,23 +53,41 @@ export const Profile = () => {
             aria-controls="profile-tab-pane"
             aria-selected="false"
           >
-            {data.username}'s posts
+            My posts
+          </button>
+        </li>
+        <li className="nav-item" role="presentation">
+          <button
+            className="nav-link"
+            id="contact-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#contact-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="contact-tab-pane"
+            aria-selected="false"
+          >
+            Favorites
           </button>
         </li>
       </ul>
       <div className="tab-content" id="myTabContent">
         <div
-          className="tab-pane fade"
+          className="tab-pane fade show active"
           id="home-tab-pane"
           role="tabpanel"
-          aria-labelledby="home-tab show active"
+          aria-labelledby="home-tab"
           tabIndex="0"
         >
-          <UserInfoPub
+          <UserInfoPriv
+            address={data.address}
+            age={data.age}
+            country={data.country}
             email={data.email}
-            username={data.username}
-            id={userid}
+            firstname={data.firstname}
+            id={data.id}
             is_active={data.is_active}
+            lastname={data.lastname}
             telnumber={data.telnumber}
           />
         </div>
@@ -81,7 +98,16 @@ export const Profile = () => {
           aria-labelledby="profile-tab"
           tabIndex="0"
         >
-          <UserPostsTabPub userid={userid} />
+          <UserPostsTabPriv />
+        </div>
+        <div
+          className="tab-pane fade"
+          id="contact-tab-pane"
+          role="tabpanel"
+          aria-labelledby="contact-tab"
+          tabIndex="0"
+        >
+          <UserFavorites />
         </div>
       </div>
     </div>
