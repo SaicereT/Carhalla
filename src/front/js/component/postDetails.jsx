@@ -35,14 +35,14 @@ export const PostDetails = (props) => {
                 <i className="bi bi-heart-fill"></i>
               </button>
             </div>
-            
-                <a
-                  href={`https://api.whatsapp.com/send?phone=${props.telnumber}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Click Here To Chat
-                </a>
+            <a
+              class="btn btn-primary"
+              role="button"
+              href={`https://api.whatsapp.com/send?phone=${props.telnumber}`}
+            >
+              <i class="bi bi-whatsapp"> Click Here To Chat</i>
+              
+            </a>
             <p className="card-text">
               <small className="text-muted">Last updated 3 mins ago</small>
             </p>

@@ -138,7 +138,9 @@ export const Navbar = () => {
                 <a className="dropdown-item" href="#">
                   Favoritos
                 </a>
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" href="#"
+                data-bs-toggle="tab"
+                data-bs-target="#profile-tab-pane">
                   Publicaciones
                 </a>
               </div>
