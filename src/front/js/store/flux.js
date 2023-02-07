@@ -32,6 +32,11 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Content-Type": "application/json",
           },
         });
+        if (respuesta.status == 200) {
+          return true;
+        } else {
+          false;
+        }
       },
       LogOn: async (data) => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/login", {
@@ -272,6 +277,30 @@ const getState = ({ getStore, getActions, setStore }) => {
           newFavorites.splice(favIndex, 1);
           console.log(favId);
           setStore({ userFavorites: newFavorites });
+        }
+      },
+      updateProfileInfo: async (data) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/user_info/update",
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              email: data.email,
+              username: data.username,
+              telnumber: data.phone,
+              address: data.address,
+              country: data.city,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (resp.status == 200) {
+          return true;
+        } else {
+          return false;
         }
       },
       /*Nueva action arriba de esta linea*/
