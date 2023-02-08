@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import UserPostsTabPub from "../component/UserPostsTabPub.jsx";
 import UserInfoPub from "../component/UserInfoPub.jsx";
@@ -8,9 +8,14 @@ export const Profile = () => {
   const { store, actions } = useContext(Context);
   const [data, setData] = useState({});
 
+
+
+
   useEffect(() => {
     if (store.accessToken) actions.getUserInfo().then((resp) => setData(resp));
+   
   }, [store.accessToken]);
+  
 
   return (
     <div className="container">
@@ -63,6 +68,7 @@ export const Profile = () => {
           role="tabpanel"
           aria-labelledby="home-tab"
           tabIndex="0"
+        
         >
           <UserInfoPub
             email={data.email}
@@ -79,6 +85,7 @@ export const Profile = () => {
           role="tabpanel"
           aria-labelledby="profile-tab"
           tabIndex="0"
+          
         >
           <UserPostsTabPub />
         </div>

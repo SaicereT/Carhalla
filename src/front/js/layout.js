@@ -35,7 +35,7 @@ const Layout = () => {
             <Route element={<FormUser />} path="/formUser" />
             <Route element={<AddPost />} path="/addPost" />
             <Route element={<Profile />} path="/profile_page" />
-            <Route element={<ProfilePriv />} path="/profile_pagePriv" />
+            <Route element={<ProfilePriv />} path="/profile_pagePriv/:tabulacion" />
             <Route element={<AccountRecovery />} path="/accountRecovery" />
             <Route element={<h1>Not found!</h1>} path="*" />
           </Routes>

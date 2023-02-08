@@ -107,40 +107,46 @@ export const Navbar = () => {
               Log Out
             </button>
             <button
-              class="btn btn-primary"
+              className="btn btn-primary mx-3"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
               aria-controls="offcanvasRight"
             >
-              ...
+              Más Info  <i class="bi bi-info-circle"></i>
             </button>
 
             <div
-              class="offcanvas offcanvas-end"
-              tabindex="-1"
+              className="offcanvas offcanvas-end"
+              tabIndex="-1"
               id="offcanvasRight"
               aria-labelledby="offcanvasRightLabel"
             >
-              <div class="offcanvas-header">
-                <h5 id="offcanvasRightLabel">More Info</h5>
+              <div className="offcanvas-header">
+                <h5 id="offcanvasRightLabel">Menú</h5>
                 <button
                   type="button"
-                  class="btn-close text-reset"
+                  className="btn-close text-reset"
                   data-bs-dismiss="offcanvas"
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="offcanvas-body">
-                <a className="dropdown-item" href="#">
-                  Crear Publicacion
-                </a>
-                <a className="dropdown-item" href="#">
-                  Favoritos
-                </a>
-                <a className="dropdown-item" href="#">
+              <div className="offcanvas-body">
+              <Link className="dropdown-item" to="/addPost">
+                  Agregar Publicacion
+                </Link>
+                <Link className="dropdown-item" to="/profile_pagePriv/profile">
+                  Perfil
+                </Link>
+                <Link className="dropdown-item" to="/profile_pagePriv/posts">
                   Publicaciones
-                </a>
+                </Link>
+                <Link
+                  className="dropdown-item"
+                  to="/profile_pagePriv/favorites"
+                >
+                  Favoritos
+                </Link>
               </div>
             </div>
           </div>
