@@ -73,10 +73,6 @@ def update_user_info():
         if (type(body[key]) != bool):
             body[key] = body[key].strip()
 
-    #for key in body:
-    #    if (body[key] == ""):
-    #        return jsonify({"msg":"There are empty values"}), 404
-
     user = Users.query.get(user_id)
     for key in body:
         if (body[key] != ""):
@@ -260,7 +256,6 @@ def add_post():
         premium=body["premium"],
         user_id=user_id
     )
-    print(new_post)
     db.session.add(new_post)
     db.session.flush()
 
@@ -289,13 +284,9 @@ def add_post():
 def update_post(post_param):
     user_id=get_jwt_identity()
     body = json.loads(request.data)
-    for i in body:
-        if (type(body[i]) != bool):
-            body[i] = body[i].strip()
-
-    for i in body:
-        if (body[i] == ""):
-            return jsonify({"msg":"There are empty values"}), 404
+    #for i in body:
+    #    if (type(body[i]) != bool or None):
+    #        body[i] = body[i].strip()
 
     post_exists=Posts.query.filter(Posts.id==post_param).first()
 
@@ -305,19 +296,13 @@ def update_post(post_param):
             return jsonify({"msg":"Not authorized to edit post"})
 
         post = Posts.query.get(post_param)
-        post.title= body["title"]
-        post.make= body["make"]
-        post.model= body["model"]
-        post.style= body["style"]
-        post.fuel= body["fuel"]
-        post.transmission= body["transmission"]
-        post.doors= body["doors"]
-        post.year= body["year"]
-        post.price= body["price"]
-        post.description= body["description"]
-        post.financing= request.json.get('financing')
-        db.session.commit()
-        return jsonify({'msg':'Post Updated'}), 200
+        for key in body:
+            if (body[key] != ""):
+                for col in post.serializeFull():
+                    if key == col and key != "id":
+                        setattr(post, col, body[key])
+                        db.session.commit()
+                        return jsonify({'msg':'Post Updated'}), 200
 
     return jsonify({'msg':'Post does not exist'}), 404
     
