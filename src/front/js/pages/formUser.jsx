@@ -16,8 +16,25 @@ export function FormUser() {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
 
-  const handleSubmit2 = (event) => {
+  const formSchema = Yup.object().shape({
+    password: Yup.string()
+      .required("Password is mendatory")
+      .min(3, "Password must be at 3 char long"),
+    confirmPwd: Yup.string()
+      .required("Password is mendatory")
+      .oneOf([Yup.ref("password")], "Passwords does not match"),
+  });
+  const formOptions = { resolver: yupResolver(formSchema) };
+  const { register, handleSubmit, reset, formState } = useForm(formOptions);
+  const { errors } = formState;
+  function onSubmit(data, event) {
     event.preventDefault();
+    console.log("hola de nuevo");
+    console.log(JSON.stringify(data, null, 4));
+    return false;
+  }
+
+  const submitForm = (data, event) => {
     if (event.target.checkValidity()) {
       let formData = new FormData(event.target);
       let data = {};
@@ -43,24 +60,9 @@ export function FormUser() {
       }
     }
   };
-  const formSchema = Yup.object().shape({
-    password: Yup.string()
-      .required("Password is mendatory")
-      .min(3, "Password must be at 3 char long"),
-    confirmPwd: Yup.string()
-      .required("Password is mendatory")
-      .oneOf([Yup.ref("password")], "Passwords does not match"),
-  });
-  const formOptions = { resolver: yupResolver(formSchema) };
-  const { register, handleSubmit, reset, formState } = useForm(formOptions);
-  const { errors } = formState;
-  function onSubmit(data) {
-    console.log(JSON.stringify(data, null, 4));
-    return false;
-  }
   return (
     <div className="container" style={{ marginTop: "3%" }}>
-      <Form onSubmit={(event) => handleSubmit2(event)}>
+      <Form onSubmit={handleSubmit(submitForm)}>
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="firstname">
             <Form.Label>Name</Form.Label>

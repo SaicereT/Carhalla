@@ -81,7 +81,7 @@
 		"react-bootstrap": "^2.7.0",
 		"react-dom": "^16.8.4",
 		"react-dropdown-select": "^4.9.3",
-		"react-hook-form": "^7.43.0",
+		"react-hook-form": "^7.43.1",
 		"react-hooks-useform": "^0.1.86",
 		"react-password-checklist": "^1.4.3",
 		"react-polyfills": "0.0.1",
