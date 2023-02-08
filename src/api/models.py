@@ -11,6 +11,7 @@ class Users(db.Model):
     __tablename__="users"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    username = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(1000), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
     is_admin = db.Column(db.Boolean(), unique=False, nullable=True)
@@ -28,6 +29,7 @@ class Users(db.Model):
         return {
             "id": self.id,
             "email": self.email,
+            "username": self.username,
             #"photo":self.photo,
             "firstname":self.firstname,
             "is_active":self.is_active,
@@ -36,6 +38,15 @@ class Users(db.Model):
             "address":self.address,
             "country":self.country,
             "age":self.age,
+        }
+    def serializePub(self):
+        return {
+            "id": self.id,
+            "email": self.email,
+            "username": self.username,
+            #"photo":self.photo,
+            "is_active":self.is_active,
+            "telnumber":self.telnumber,
         }
 
 class Posts(db.Model):
@@ -63,6 +74,7 @@ class Posts(db.Model):
     def serializeCompact(self):
        return {
         "title":self.title,
+        "username":self.user.username,
         #"photo":self.photo,
         "year":self.year,
         "make":self.make,
@@ -90,6 +102,7 @@ class Posts(db.Model):
         "price":self.price,
         "description":self.description,
         "user_id":self.user_id,
+        "username":self.user.username,
         "miles":self.miles,
         "premium":self.premium,
         "telnumber":self.user.telnumber
@@ -108,7 +121,8 @@ class Fav_posts(db.Model):
 
     def serialize(self):
         return {
-            "id:":self.post.id,
+            "id":self.id,
+            "post_id":self.post.id,
             "title":self.post.title,
             "user_id":self.user_id,
             "model":self.post.model,

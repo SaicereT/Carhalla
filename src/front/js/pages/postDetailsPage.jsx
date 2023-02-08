@@ -13,28 +13,25 @@ export const PostDetailsPage = () => {
     actions.getPostDetails(postid).then((resp) => setData(resp));
   }, []);
   return (
-    <div className="jumbotron">
+    <div className="container">
       <h1 className="display-4">Home Page</h1>
-      <div className="container">
-        <div className="row justify-content-between">
-          <div className="col-4 mb-3">
-            <PostDetails
-              make={data.make}
-              model={data.model}
-              id={data.post_id}
-              price={data.price}
-              title={data.title}
-              year={data.year}
-              style={data.style}
-              fuel={data.fuel}
-              transmission={data.transmission}
-              financing={data.financing}
-              doors={data.doors}
-              description={data.description}
-              telnumber={data.telnumber}
-            />
-          </div>
-        </div>
+      <div className="row justify-content-between">
+        <PostDetails
+          make={data.make}
+          username={data.username}
+          userid={data.user_id}
+          model={data.model}
+          id={data.post_id}
+          price={data.price}
+          title={data.title}
+          year={data.year}
+          style={data.style}
+          fuel={data.fuel}
+          transmission={data.transmission}
+          financing={data.financing}
+          doors={data.doors}
+          description={data.description}
+        />
       </div>
     </div>
   );

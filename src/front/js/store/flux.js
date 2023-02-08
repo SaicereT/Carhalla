@@ -8,6 +8,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       refreshToken: "",
       posts: [],
       userPosts: [],
+      userPostsPub: [],
       userFavorites: [],
     },
     actions: {
@@ -17,6 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           method: "POST",
           body: JSON.stringify({
             email: data.email,
+            username: data.username,
             password: data.password,
             firstname: data.firstname,
             lastname: data.lastname,
@@ -30,6 +32,11 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Content-Type": "application/json",
           },
         });
+        if (respuesta.status == 200) {
+          return true;
+        } else {
+          false;
+        }
       },
       LogOn: async (data) => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/login", {
@@ -167,6 +174,24 @@ const getState = ({ getStore, getActions, setStore }) => {
         store.userPosts = data.results;
         setStore(store);
       },
+      specificUserPostsPub: async (userid) => {
+        let store = getStore();
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/user_posts/" + userid,
+          {
+            headers: {
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+        let data = await resp.json();
+        store.userPostsPub = data.results;
+        setStore(store);
+      },
 
       getUserInfo: async () => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/user_info", {
@@ -174,6 +199,23 @@ const getState = ({ getStore, getActions, setStore }) => {
             ...getActions().getAuthorizationHeader(),
           },
         });
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+        let data = await resp.json();
+        console.log(data);
+        return data.results;
+      },
+      getUserInfoPub: async (userid) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/user_info/" + userid,
+          {
+            headers: {
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
         if (!resp.ok) {
           console.log(resp.status + ": " + resp.statusText);
           return;
@@ -217,6 +259,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           if (respAdd) {
             let new_fav = await respAdd.json();
+            setStore({
+              userFavorites: [...userFavorites, new_fav.results],
+            });
           }
         } else {
           let favId = userFavorites[favIndex].id;
@@ -232,6 +277,30 @@ const getState = ({ getStore, getActions, setStore }) => {
           newFavorites.splice(favIndex, 1);
           console.log(favId);
           setStore({ userFavorites: newFavorites });
+        }
+      },
+      updateProfileInfo: async (data) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/user_info/update",
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              email: data.email,
+              username: data.username,
+              telnumber: data.phone,
+              address: data.address,
+              country: data.city,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (resp.status == 200) {
+          return true;
+        } else {
+          return false;
         }
       },
       /*Nueva action arriba de esta linea*/
