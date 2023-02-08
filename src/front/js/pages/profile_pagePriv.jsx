@@ -94,6 +94,7 @@ export const ProfilePriv = () => {
             age={data.age}
             country={data.country}
             email={data.email}
+            username={data.username}
             firstname={data.firstname}
             id={data.id}
             is_active={data.is_active}

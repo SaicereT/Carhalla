@@ -108,6 +108,7 @@ export const Navbar = () => {
             </button>
             <button
               className="btn btn-primary mx-3"
+
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
@@ -124,6 +125,7 @@ export const Navbar = () => {
             >
               <div className="offcanvas-header">
                 <h5 id="offcanvasRightLabel">Menú</h5>
+
                 <button
                   type="button"
                   className="btn-close text-reset"
@@ -139,6 +141,7 @@ export const Navbar = () => {
                   Perfil
                 </Link>
                 <Link className="dropdown-item" to="/profile_pagePriv/posts">
+
                   Publicaciones
                 </Link>
                 <Link
@@ -149,6 +152,8 @@ export const Navbar = () => {
                 </Link>
               </div>
             </div>
+
+
           </div>
         )}
       </div>

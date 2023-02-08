@@ -12,7 +12,6 @@ from firebase_admin import storage
 import tempfile
 
 
-
 api = Blueprint('api', __name__)
 
 cripto=Bcrypt(Flask(__name__))
@@ -63,6 +62,37 @@ def get_user_info():
         user=Users.query.filter(Users.id==user_id).first()
         return jsonify({"results": user.serialize()}), 200
     return jsonify({"msg":"No User Found"})
+
+#actualizar publicacion
+@api.route('/user_info/update', methods = ['PUT'])
+@jwt_required()
+def update_user_info():
+    user_id=get_jwt_identity()
+    body = json.loads(request.data)
+    for key in body:
+        if (type(body[key]) != bool):
+            body[key] = body[key].strip()
+
+    #for key in body:
+    #    if (body[key] == ""):
+    #        return jsonify({"msg":"There are empty values"}), 404
+
+    user = Users.query.get(user_id)
+    for key in body:
+        if (body[key] != ""):
+            for col in user.serialize():
+                if key == col and key != "id":
+                    setattr(user, col, body[key])
+    db.session.commit()
+    return jsonify({'msg':'User Updated'}), 200
+
+@api.route('/user_info/<int:user_id>', methods=['GET'])
+@jwt_required()
+def get_user_info_pub(user_id):
+    user=Users.query.filter(Users.id==user_id).first()
+    if user:
+        return jsonify({"results": user.serializePub()}), 200
+    return jsonify({"msg":"No User Found"})
     
 
 #Traer las publicaciones de un usuario
@@ -76,6 +106,15 @@ def get_user_posts():
             return jsonify({"msg":"No posts found"}), 404
         return jsonify({"results":list(map(lambda item: item.serializeCompact(),user_posts))}), 200
     return jsonify({"msg":"Unauthorized request"}), 401
+
+@api.route('/user_posts/<int:user_id>', methods=['GET'])
+@jwt_required()
+def get_user_posts_pub(user_id):
+    user_posts=Posts.query.filter(Posts.user_id==user_id).all()
+    if user_posts is None:
+        return jsonify({"msg":"No posts found"}), 404
+    return jsonify({"results":list(map(lambda item: item.serializeCompact(),user_posts))}), 200
+
 
 #Crear una cuenta
 @api.route('/signup', methods = ['POST'])
@@ -101,6 +140,7 @@ def add_user():
         
     new_user = Users(
         email=body["email"],
+        username=body["username"],
         password=cripto.generate_password_hash(body["password"]).decode('utf-8'),
         is_active=body["is_active"],
         firstname=body["firstname"],
@@ -140,7 +180,8 @@ def add_favorite(fav_id):
     db.session.add(new_fav_post)
     db.session.commit()
     db.session.refresh(new_fav_post)
-    return jsonify({'msg':'Favorite Added'}), 200
+    crated_fav=Fav_posts.query.filter(Fav_posts.post_id==fav_id, Fav_posts.user_id==user_id).first()
+    return jsonify({"results": crated_fav.serialize()}), 200
 
 #quitar un favorito
 @api.route('/favorites/<int:fav_id>', methods=['DELETE'])
@@ -161,8 +202,9 @@ def delete_favorite(fav_id):
 #traer todos los post
 @api.route('/posts', methods=['GET'])
 def get_posts():
-    posts=Posts.query.all()
-    return jsonify({"results":list(map(lambda item: item.serializeCompact(),posts))}), 200
+    pagenum = request.args.get('page', 1, type=int)
+    posts=Posts.query.order_by(Posts.premium.desc()).order_by(Posts.id.desc()).paginate(page=pagenum, per_page=21, error_out=False)
+    return jsonify({"results":list(map(lambda item: item.serializeFull(),posts))}), 200
 
 #traer toda la info de solo una
 @api.route('/posts/<int:post_param>', methods=['GET'])
@@ -189,14 +231,17 @@ def add_post():
         "year":"",
         "price":"",
         "description":"",
+        "miles":"",
+        "premium":"",
     }
     for i in body:
         if(i=="financing"):
-            body[i]=bool(request.form.get(i))
+            body[i]=request.form.get(i)=="true" #bool(request.form.get(i))
+        elif(i=="premium"):
+            body[i]=request.form.get(i)=="true"
         else:
             body[i]=request.form.get(i)
             #body[i] = body[i].strip()
-        #print(request.form.get(i))
         if (body[i] == ""):
             return jsonify({"msg":"There are empty values"}), 404
     new_post = Posts(
@@ -211,6 +256,8 @@ def add_post():
         year=body["year"],
         price=body["price"],
         description=body["description"],
+        miles=body["miles"],
+        premium=body["premium"],
         user_id=user_id
     )
     print(new_post)
