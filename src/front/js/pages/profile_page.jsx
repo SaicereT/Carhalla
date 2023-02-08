@@ -9,10 +9,13 @@ export const Profile = () => {
   const { userid } = useParams();
   const [data, setData] = useState({});
 
+
+
+
   useEffect(() => {
-    if (store.accessToken)
       actions.getUserInfoPub(userid).then((resp) => setData(resp));
   }, [store.accessToken]);
+  
 
   return (
     <div className="container">
@@ -65,6 +68,7 @@ export const Profile = () => {
           role="tabpanel"
           aria-labelledby="home-tab show active"
           tabIndex="0"
+        
         >
           <UserInfoPub
             email={data.email}
@@ -80,6 +84,7 @@ export const Profile = () => {
           role="tabpanel"
           aria-labelledby="profile-tab"
           tabIndex="0"
+          
         >
           <UserPostsTabPub userid={userid} />
         </div>

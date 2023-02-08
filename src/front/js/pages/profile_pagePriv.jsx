@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import UserPostsTabPriv from "../component/UserPostsTabPriv.jsx";
 import UserInfoPriv from "../component/UserInfoPriv.jsx";
 import UserFavorites from "../component/UserFavorites.jsx";
@@ -8,10 +8,20 @@ import { Context } from "../store/appContext.js";
 export const ProfilePriv = () => {
   const { store, actions } = useContext(Context);
   const [data, setData] = useState({});
+  const { tabulacion } = useParams();
 
   useEffect(() => {
     if (store.accessToken) actions.getUserInfo().then((resp) => setData(resp));
+    var offcanvasTab = document.querySelector("#" + tabulacion);
+    var tab = new bootstrap.Tab(offcanvasTab);
+    tab.show();
   }, [store.accessToken]);
+
+  useEffect(() => {
+    var offcanvasTab = document.querySelector("#" + tabulacion);
+    var tab = new bootstrap.Tab(offcanvasTab);
+    tab.show();
+  }, [tabulacion])
 
   return (
     <div className="container">
@@ -31,7 +41,7 @@ export const ProfilePriv = () => {
         <li className="nav-item" role="presentation">
           <button
             className="nav-link active"
-            id="home-tab"
+            id="profile"
             data-bs-toggle="tab"
             data-bs-target="#home-tab-pane"
             type="button"
@@ -45,7 +55,7 @@ export const ProfilePriv = () => {
         <li className="nav-item" role="presentation">
           <button
             className="nav-link"
-            id="profile-tab"
+            id="posts"
             data-bs-toggle="tab"
             data-bs-target="#profile-tab-pane"
             type="button"
@@ -59,12 +69,12 @@ export const ProfilePriv = () => {
         <li className="nav-item" role="presentation">
           <button
             className="nav-link"
-            id="contact-tab"
+            id="favorites"
             data-bs-toggle="tab"
-            data-bs-target="#contact-tab-pane"
+            data-bs-target="#favorite-tab-pane"
             type="button"
             role="tab"
-            aria-controls="contact-tab-pane"
+            aria-controls="favorite-tab-pane"
             aria-selected="false"
           >
             Favorites
@@ -76,7 +86,7 @@ export const ProfilePriv = () => {
           className="tab-pane fade show active"
           id="home-tab-pane"
           role="tabpanel"
-          aria-labelledby="home-tab"
+          aria-labelledby="profile"
           tabIndex="0"
         >
           <UserInfoPriv
@@ -96,16 +106,16 @@ export const ProfilePriv = () => {
           className="tab-pane fade"
           id="profile-tab-pane"
           role="tabpanel"
-          aria-labelledby="profile-tab"
+          aria-labelledby="posts"
           tabIndex="0"
         >
           <UserPostsTabPriv />
         </div>
         <div
           className="tab-pane fade"
-          id="contact-tab-pane"
+          id="favorite-tab-pane"
           role="tabpanel"
-          aria-labelledby="contact-tab"
+          aria-labelledby="favorites"
           tabIndex="0"
         >
           <UserFavorites />
