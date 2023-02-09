@@ -3,13 +3,15 @@ import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext.js";
 import PostCard from "../component/PostCard.jsx";
-import { useSearchParams } from "react-router-dom";
-import FilterCar from "../component/filter.jsx";
+import { Filter } from "../component/filter.jsx";
 
 export const Frontpage = () => {
   const { store, actions } = useContext(Context);
   const [pageNumber, setPageNumber] = useState(1);
   const [endOfPage, setendOfPage] = useState(false);
+
+  const [selectedMakeOption, setSelectedMakeOption] = useState("All");
+  const [selectedYearOption, setSelectedYearOption] = useState("All");
 
   useEffect(() => {
     actions.getPosts();
@@ -39,14 +41,36 @@ export const Frontpage = () => {
       setendOfPage(false);
     }
   }
+  const filteredPosts =
+    selectedMakeOption === "All" && selectedYearOption === "All"
+      ? store.posts
+      : store.posts.filter(
+          (post) =>
+            (selectedMakeOption === "All" ||
+              post.make === selectedMakeOption) &&
+            (selectedYearOption === "All" || post.year === selectedYearOption)
+        );
+
+  const handleMakeOptionChange = (event) => {
+    setSelectedMakeOption(event.target.value);
+  };
+
+  const handleYearOptionChange = (event) => {
+    setSelectedYearOption(event.target.value);
+  };
 
   return (
     <div className="container">
       <h1 className="display-4 ">Carhalla</h1>
+      <Filter
+        handleMakeFilterChange={handleMakeOptionChange}
+        handleYearFilterChange={handleYearOptionChange}
+        selectedMakeOption={selectedMakeOption}
+        selectedYearOption={selectedYearOption}
+      />
       <div className="container ">
         <div className="row display: inline-block;">
-          <FilterCar />
-          {store.posts.map((post) => (
+          {filteredPosts.map((post) => (
             <div className="col-4 mb-3  " key={post.post_id}>
               <PostCard
                 make={post.make}
