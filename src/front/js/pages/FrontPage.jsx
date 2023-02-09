@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext.js";
 import PostCard from "../component/PostCard.jsx";
 import { useSearchParams } from "react-router-dom";
+import FilterCar from "../component/filter.jsx";
 
 export const Frontpage = () => {
   const { store, actions } = useContext(Context);
@@ -40,10 +41,11 @@ export const Frontpage = () => {
   }
 
   return (
-    <div className="jumbotron">
-      <h1 className="display-4 ">Home Page</h1>
-      <div className="container">
-        <div className="row justify-content-between">
+    <div className="container">
+      <h1 className="display-4 ">Carhalla</h1>
+      <div className="container ">
+        <div className="row display: inline-block;">
+          <FilterCar />
           {store.posts.map((post) => (
             <div className="col-4 mb-3  " key={post.post_id}>
               <PostCard
