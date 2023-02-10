@@ -28,36 +28,21 @@ export function FormUser() {
   const { register, handleSubmit, reset, formState } = useForm(formOptions);
   const { errors } = formState;
   function onSubmit(data, event) {
-    event.preventDefault();
-    console.log("hola de nuevo");
     console.log(JSON.stringify(data, null, 4));
     return false;
   }
 
   const submitForm = (data, event) => {
+    event.preventDefault();
     if (event.target.checkValidity()) {
       let formData = new FormData(event.target);
-      let data = {};
-      let campos = [
-        "firstname",
-        "lastname",
-        "age",
-        "email",
-        "username",
-        "city",
-        "address",
-        "phone",
-        "password",
-        "profilePic",
-      ];
-      campos.forEach((campo) => {
-        data[campo] = formData.get(campo);
-      });
-      console.log(data);
-      let resp = actions.NewUser(data);
-      if (resp) {
-        navigate("/");
-      }
+      console.log(Array.from(formData.entries()));
+      let file = event.target.elements["profilePic"].files;
+      console.log(Array.from(formData.entries()));
+      let resp = actions.NewUser(formData);
+      //if (resp) {
+      //  navigate("/");
+      //}
     }
   };
   return (
@@ -118,14 +103,19 @@ export function FormUser() {
         </Row>
         <Row className="mb-3">
           <Form.Group as={Col} md="5" controlId="validationCustom06">
-            <Form.Label>City</Form.Label>
-            <Form.Control type="text" placeholder="City" required name="city" />
+            <Form.Label>Country</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="City"
+              required
+              name="country"
+            />
             <Form.Control.Feedback type="invalid">
-              Please provide a valid city.
+              Please provide a valid country.
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="5" controlId="validationCustom07">
-            <Form.Label>Adress</Form.Label>
+            <Form.Label>Address</Form.Label>
             <Form.Control
               type="text"
               placeholder="Address"
@@ -133,7 +123,7 @@ export function FormUser() {
               name="address"
             />
             <Form.Control.Feedback type="invalid">
-              Please provide a valid city.
+              Please provide a valid country.
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="3" controlId="validationCustom08">
@@ -142,65 +132,18 @@ export function FormUser() {
               type="num"
               placeholder="Phone"
               required
-              name="phone"
+              name="telnumber"
             />
             <Form.Control.Feedback type="invalid">
               Please provide a valid state.
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group as={Col} md="5" controlId="formFile" className="mb-3">
-            <Button
-              type="button"
-              className="btn btn-success"
-              style={{ marginTop: "30px" }}
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
-              Upload profile picture
-            </Button>
-            <div
-              className="modal fade"
-              id="exampleModal"
-              tabIndex="-1"
-              role="dialog"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">
-                      You can upload, later
-                    </h5>
-                  </div>
-                  <div className="modal-body">
-                    <Form.Group controlId="formFileMultiple" className="mb-3">
-                      <Form.Label>Choose your profile picture</Form.Label>
-                      <Form.Control type="file" name="profilePic" />
-                    </Form.Group>
-                  </div>
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      data-dismiss="modal"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <button
-                      type="submit"
-                      aria-label="Close"
-                      className="btn btn-primary"
-                      data-bs-dismiss="modal"
-                    >
-                      Save and send
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Form.Group>
+          <Form.Group
+            as={Col}
+            md="5"
+            controlId="formFile"
+            className="mb-3"
+          ></Form.Group>
         </Row>
         <Form.Group className="mb-3">
           <Form.Check
@@ -240,7 +183,72 @@ export function FormUser() {
           numbers, and must not contain spaces, special characters, or emoji.
         </Form.Text>
         <div>
-          <Button type="submit">Send submit</Button>
+          <Button
+            type="button"
+            className="btn btn-primary mt-1"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Next step
+          </Button>
+          <div
+            className="modal fade"
+            id="exampleModal"
+            tabIndex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">
+                    Add Profile Picture
+                  </h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <div className="d-flex grid gap-3">
+                    <Form.Group controlId="formFile" className="mb-3">
+                      <Form.Label>Choose profile picture (optional)</Form.Label>
+                      <Form.Control type="file" multiple name="profilePic" />
+                    </Form.Group>
+                  </div>
+                </div>
+                <div className="modal-footer d-flex">
+                  <div className="p-2 flex-grow-1">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      aria-label="Close"
+                      data-bs-dismiss="modal"
+                    >
+                      Back to form
+                    </button>
+                  </div>
+                  <Button
+                    type="submit"
+                    className="btn btn-primary "
+                    data-bs-dismiss="modal"
+                  >
+                    Skip picture
+                  </Button>
+
+                  <Button
+                    type="submit"
+                    className="btn btn-success"
+                    data-bs-dismiss="modal"
+                  >
+                    Upload picture
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </Form>
     </div>
