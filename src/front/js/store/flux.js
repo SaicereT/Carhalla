@@ -303,7 +303,15 @@ const getState = ({ getStore, getActions, setStore }) => {
           {
             method: "POST",
             body: formdata,
-            headers: {
+            headers: { ...getActions().getAuthorizationHeader() },
+          }
+        );
+        if (resp.status == 200) {
+          return true;
+        } else {
+          return false;
+        }
+      },
       updatePostInfo: async (data, post_id) => {
         let resp = await fetch(
           process.env.BACKEND_URL + "/api/posts/update/" + post_id,

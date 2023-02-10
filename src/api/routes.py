@@ -229,9 +229,20 @@ def get_posts():
 @api.route('/posts/<int:post_param>', methods=['GET'])
 def get_post_detail(post_param):
     post=Posts.query.filter(Posts.id==post_param).first()
+    print(post)
     if post is None:
         return jsonify({"msg":"No post found"})
     return jsonify({"results": post.serializeFull()}), 200
+
+#traer las imagenes de una publicacion
+@api.route('/postImages/<int:post_param>', methods=['GET'])
+def get_post_images(post_param):
+    images=Images.query.filter(Images.post_id==post_param).first
+    print(images)
+    if images is None:
+        return jsonify({"msg":"No images found"})
+
+    return jsonify({"results": images}), 200
 
 #agregar una nueva publicacion
 @api.route('posts/new', methods = ['POST'])

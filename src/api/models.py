@@ -155,10 +155,13 @@ class Images(db.Model):
         }
 
     def image_url(self):
+        bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+        resource=bucket.blob(self.resource_path)
+        signed_url=resource.generate_signed_url(version="v4", expiration=datetime.timedelta(minutes=15), method="GET")
         return {
             "id":self.id,
             "resource_path": self.resource_path,
-            "signed_url": self.description
+            "signed_url": signed_url
         }
     
 
