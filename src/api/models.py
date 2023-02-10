@@ -87,8 +87,11 @@ class Posts(db.Model):
         "post_id":self.id,
         "is_premium":self.premium,
         "miles":self.miles,
+        "doors":self.doors,
+        "fuel":self.fuel,
+        "transmission":self.transmission,
+        "style":self.style,
         "telnumber":self.user.telnumber
-        
         }
     
     def serializeFull(self):
