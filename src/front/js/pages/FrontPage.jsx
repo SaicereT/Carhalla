@@ -65,27 +65,27 @@ export const Frontpage = () => {
   return (
     <div className="container">
       <h1 className="display-4 ">Carhalla</h1>
+
       <Filter
         handleMakeFilterChange={handleMakeOptionChange}
         handleYearFilterChange={handleYearOptionChange}
         selectedMakeOption={selectedMakeOption}
         selectedYearOption={selectedYearOption}
       />
-      <div className="container ">
-        <div className="row display: inline-block;">
-          {filteredPosts().map((post) => (
-            <div className="col-4 mb-3  " key={post.post_id}>
-              <PostCard
-                make={post.make}
-                model={post.model}
-                id={post.post_id}
-                price={post.price}
-                title={post.title}
-                year={post.year}
-              />
-            </div>
-          ))}
-        </div>
+
+      <div className="row">
+        {filteredPosts().map((post) => (
+          <div className="col-4 mb-3  " key={post.post_id}>
+            <PostCard
+              make={post.make}
+              model={post.model}
+              id={post.post_id}
+              price={post.price}
+              title={post.title}
+              year={post.year}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
