@@ -9,20 +9,16 @@ export const Profile = () => {
   const { userid } = useParams();
   const [data, setData] = useState({});
 
-
-
-
   useEffect(() => {
-      actions.getUserInfoPub(userid).then((resp) => setData(resp));
+    actions.getUserInfoPub(userid).then((resp) => setData(resp));
   }, [store.accessToken]);
-  
-
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="float-md-start  " style={{ marginRight: "25px" }}>
         <img
-          src="https://picsum.photos/id/237/200/300"
-          style={{ borderRadius: "70px", marginTop: "50px" }}
+          src={store.profilePicPub.signed_url}
+          className="rounded-circle"
+          style={{ height: "250px", width: "250px" }}
           alt="/"
         />
       </div>
@@ -68,7 +64,6 @@ export const Profile = () => {
           role="tabpanel"
           aria-labelledby="home-tab show active"
           tabIndex="0"
-        
         >
           <UserInfoPub
             email={data.email}
@@ -84,7 +79,6 @@ export const Profile = () => {
           role="tabpanel"
           aria-labelledby="profile-tab"
           tabIndex="0"
-          
         >
           <UserPostsTabPub userid={userid} />
         </div>

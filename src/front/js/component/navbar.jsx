@@ -108,13 +108,12 @@ export const Navbar = () => {
             </button>
             <button
               className="btn btn-primary mx-3"
-
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
               aria-controls="offcanvasRight"
             >
-              Más Info  <i class="bi bi-info-circle"></i>
+              Más Info <i className="bi bi-info-circle"></i>
             </button>
 
             <div
@@ -134,14 +133,13 @@ export const Navbar = () => {
                 ></button>
               </div>
               <div className="offcanvas-body">
-              <Link className="dropdown-item" to="/addPost">
+                <Link className="dropdown-item" to="/addPost">
                   Agregar Publicacion
                 </Link>
                 <Link className="dropdown-item" to="/profile_pagePriv/profile">
                   Perfil
                 </Link>
                 <Link className="dropdown-item" to="/profile_pagePriv/posts">
-
                   Publicaciones
                 </Link>
                 <Link
@@ -152,8 +150,6 @@ export const Navbar = () => {
                 </Link>
               </div>
             </div>
-
-
           </div>
         )}
       </div>

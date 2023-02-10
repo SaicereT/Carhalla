@@ -53,13 +53,13 @@ export const PostDetails = (props) => {
                 >
                   <i className="bi bi-heart-fill"></i>
                 </button>
-            <a
-              class="btn btn-primary"
-              role="button"
-              href={`https://api.whatsapp.com/send?phone=${props.telnumber}`}
-            >
-              <i class="bi bi-whatsapp"> Click Here To Chat</i>
-            </a>
+                <a
+                  className="btn btn-outline-success"
+                  role="button"
+                  href={`https://api.whatsapp.com/send?phone=${props.telnumber}`}
+                >
+                  <i className="bi bi-whatsapp"> Chat with {props.username}</i>
+                </a>
                 <Link to={`/profile_page/${props.userid}`}>
                   <button type="button" className="btn btn-outline-warning">
                     View {props.username}'s account

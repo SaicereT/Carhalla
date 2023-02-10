@@ -10,27 +10,15 @@ const getState = ({ getStore, getActions, setStore }) => {
       userPosts: [],
       userPostsPub: [],
       userFavorites: [],
+      profilePicPub: [],
+      profilePicPriv: [],
     },
     actions: {
       // Use getActions to call a function within a fuction
-      NewUser: async (data) => {
+      NewUser: async (formdata) => {
         let respuesta = await fetch(process.env.BACKEND_URL + "/api/signup", {
           method: "POST",
-          body: JSON.stringify({
-            email: data.email,
-            username: data.username,
-            password: data.password,
-            firstname: data.firstname,
-            lastname: data.lastname,
-            is_active: true,
-            telnumber: data.phone,
-            address: data.address,
-            country: data.city,
-            age: data.age,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          body: formdata,
         });
         if (respuesta.status == 200) {
           return true;
@@ -106,12 +94,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
         let data = await response.json();
-        console.log(data);
         return data.results;
       },
 
       NewPost: async (formdata) => {
-        console.log(formdata);
         let resp = await fetch(process.env.BACKEND_URL + "/api/posts/new", {
           method: "POST",
           body: formdata,
@@ -194,6 +180,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       getUserInfo: async () => {
+        let { profilePicPriv } = getStore();
         let resp = await fetch(process.env.BACKEND_URL + "/api/user_info", {
           headers: {
             ...getActions().getAuthorizationHeader(),
@@ -204,10 +191,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
         let data = await resp.json();
-        console.log(data);
+        let pic = data.results.profile_pic;
+        setStore({
+          profilePicPriv: pic,
+        });
         return data.results;
       },
       getUserInfoPub: async (userid) => {
+        let { profilePicPub } = getStore();
         let resp = await fetch(
           process.env.BACKEND_URL + "/api/user_info/" + userid,
           {
@@ -221,7 +212,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
         let data = await resp.json();
-        console.log(data);
+        let pic = data.results.profile_pic;
+        setStore({
+          profilePicPub: pic,
+        });
         return data.results;
       },
       getUserFavorites: async () => {
@@ -293,6 +287,23 @@ const getState = ({ getStore, getActions, setStore }) => {
             }),
             headers: {
               "Content-Type": "application/json",
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (resp.status == 200) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      updateProfilePic: async (formdata) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/uploadProfilePic",
+          {
+            method: "POST",
+            body: formdata,
+            headers: {
               ...getActions().getAuthorizationHeader(),
             },
           }
