@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-
+import "../../styles/Filter.css";
 export const Filter = (props) => {
   return (
-    <div className="filter">
+    <div className="filter-box">
       <h2>Make:</h2>
       <select
         value={props.selectedMakeOption}
@@ -69,6 +69,47 @@ export const Filter = (props) => {
         <option value="2021">2021</option>
         <option value="2022">2022</option>
         <option value="2023">2023</option>
+      </select>
+      <h2>style</h2>
+      <select
+        value={props.selectedStyleOption}
+        onChange={props.handleStyleFilterChange}
+      >
+        <option value="All">All</option>
+        <option value="Sedan">Sedan</option>
+        <option value="Hatchback">Hatchback</option>
+        <option value="SUV">SUV</option>
+        <option value="Wagon">Wagon</option>
+      </select>
+      <h2>Fuel</h2>
+      <select
+        value={props.selectedFuelOption}
+        onChange={props.handleFuelFilterChange}
+      >
+        <option value="All">All</option>
+        <option value="gasoline">Gasoline</option>
+        <option value="Diesel">Diesel</option>
+        <option value="Electric">Electric</option>
+        <option value="hybrid">hybrid</option>
+      </select>
+      <h2>Transmission</h2>
+      <select
+        value={props.selectedTransmissionOption}
+        onChange={props.handleTransmissionFilterChange}
+      >
+        <option value="All">All</option>
+        <option value="Manual">Manual</option>
+        <option value="Automatic">Automatic</option>
+        <option value="CVT">CVT</option>
+      </select>
+      <h2>Doors</h2>
+      <select
+        value={props.selectedDoorsOption}
+        onChange={props.handleDoorsFilterChange}
+      >
+        <option value="All">All</option>
+        <option value="3">3</option>
+        <option value="4">4 or more</option>
       </select>
     </div>
   );
