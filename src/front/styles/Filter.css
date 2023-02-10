@@ -1,0 +1,12 @@
+.filter-box {
+  width: 300px;
+  height: 500px;
+  padding: 30px;
+  background-color: #222121;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px #3a3737;
+  margin: 50px;
+  text-align: center;
+  color: rgb(194, 211, 156);
+  font-size: small;
+}
