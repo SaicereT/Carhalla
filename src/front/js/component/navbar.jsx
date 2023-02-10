@@ -107,13 +107,13 @@ export const Navbar = () => {
               Log Out
             </button>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary mx-3"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
               aria-controls="offcanvasRight"
             >
-              ...
+              Más Info <i className="bi bi-info-circle"></i>
             </button>
 
             <div
@@ -123,7 +123,8 @@ export const Navbar = () => {
               aria-labelledby="offcanvasRightLabel"
             >
               <div className="offcanvas-header">
-                <h5 id="offcanvasRightLabel">More Info</h5>
+                <h5 id="offcanvasRightLabel">Menú</h5>
+
                 <button
                   type="button"
                   className="btn-close text-reset"
@@ -132,15 +133,21 @@ export const Navbar = () => {
                 ></button>
               </div>
               <div className="offcanvas-body">
-                <a className="dropdown-item" href="#">
-                  Crear Publicacion
-                </a>
-                <a className="dropdown-item" href="#">
-                  Favoritos
-                </a>
-                <a className="dropdown-item" href="#">
+                <Link className="dropdown-item" to="/addPost">
+                  Agregar Publicacion
+                </Link>
+                <Link className="dropdown-item" to="/profile_pagePriv/profile">
+                  Perfil
+                </Link>
+                <Link className="dropdown-item" to="/profile_pagePriv/posts">
                   Publicaciones
-                </a>
+                </Link>
+                <Link
+                  className="dropdown-item"
+                  to="/profile_pagePriv/favorites"
+                >
+                  Favoritos
+                </Link>
               </div>
             </div>
           </div>
