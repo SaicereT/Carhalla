@@ -304,6 +304,27 @@ const getState = ({ getStore, getActions, setStore }) => {
             method: "POST",
             body: formdata,
             headers: {
+      updatePostInfo: async (data, post_id) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/posts/update/" + post_id,
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              title: data.title,
+              model: data.model,
+              make: data.make,
+              style: data.style,
+              fuel: data.fuel,
+              transmission: data.transmission,
+              financing: data.financing,
+              doors: data.doors,
+              year: data.year,
+              miles: data.miles,
+              price: data.price,
+              description: data.description,
+            }),
+            headers: {
+              "Content-Type": "application/json",
               ...getActions().getAuthorizationHeader(),
             },
           }

@@ -21,6 +21,7 @@ export const PostDetailsPage = () => {
           username={data.username}
           userid={data.user_id}
           model={data.model}
+          miles={data.miles}
           id={data.post_id}
           price={data.price}
           title={data.title}

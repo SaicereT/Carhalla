@@ -234,7 +234,7 @@ export const AddPost = () => {
                   className="btn btn-secondary "
                   data-bs-dismiss="modal"
                 >
-                  skip
+                  Skip
                 </button>
 
                 <button
@@ -242,7 +242,7 @@ export const AddPost = () => {
                   className="btn btn-primary"
                   data-bs-dismiss="modal"
                 >
-                  upload pictures
+                  Upload pictures
                 </button>
               </div>
             </div>
