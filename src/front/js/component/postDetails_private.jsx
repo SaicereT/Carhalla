@@ -41,6 +41,13 @@ export const PostDetailsPrivate = (props) => {
         if (campo != "" || undefined || null) {
           data[campo] = formData.get(campo);
         }
+        if (campo == "financing") {
+          if (formData.get("financing") == "yes") {
+            data[campo] = true;
+          } else if (formData.get("financing") == "no") {
+            data[campo] = false;
+          }
+        }
       });
       let resp = actions.updatePostInfo(data, props.id);
       //if (resp) {
@@ -182,9 +189,13 @@ export const PostDetailsPrivate = (props) => {
                               <option value="CVT">CVT</option>
                             </Form.Select>
                           </Form.Group>
-                          <Form.Group as={Col} md="1" className="mb-1 mt-2">
+                          <Form.Group as={Col} md="5" className="mb-1">
                             <Form.Label>Financing</Form.Label>
-                            <Form.Check name="financing" id="financing" />
+                            <Form.Select name="financing">
+                              <option value="">No Update</option>
+                              <option value="yes">Yes</option>
+                              <option value="no">No</option>
+                            </Form.Select>
                           </Form.Group>
                           <Form.Group as={Col} md="3" className="mb-1">
                             <Form.Label>Doors</Form.Label>

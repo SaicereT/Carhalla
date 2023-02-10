@@ -304,6 +304,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       updatePostInfo: async (data, post_id) => {
+        console.log(data);
         let resp = await fetch(
           process.env.BACKEND_URL + "/api/posts/update/" + post_id,
           {
