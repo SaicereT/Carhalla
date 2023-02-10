@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import Paypal from "./paypal.jsx";
 
 const PostCardPrivate = (props) => {
   const { store, actions } = useContext(Context);
@@ -13,10 +14,51 @@ const PostCardPrivate = (props) => {
       />
       <ul className="list-group list-group-flush">
         <li className="list-group-item">
-          <button className="btn btn-success">
-            Impulse your post {"  "}
+          <button
+            type="button"
+            className="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Impulse your post <strong>10$</strong>{" "}
             <i className="bi bi-rocket-takeoff"></i>
           </button>
+          <div
+            className="modal fade"
+            id="exampleModal"
+            tabIndex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1 className="modal-title fs-5" id="exampleModalLabel">
+                    Do you want your publication to reach more users?
+                  </h1>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <Paypal />
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <div></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </li>
       </ul>
       <div className="card-body">
