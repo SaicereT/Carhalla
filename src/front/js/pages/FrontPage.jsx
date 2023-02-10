@@ -3,12 +3,20 @@ import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext.js";
 import PostCard from "../component/PostCard.jsx";
-import { useSearchParams } from "react-router-dom";
+import { Filter } from "../component/filter.jsx";
 
 export const Frontpage = () => {
   const { store, actions } = useContext(Context);
   const [pageNumber, setPageNumber] = useState(1);
   const [endOfPage, setendOfPage] = useState(false);
+
+  const [selectedMakeOption, setSelectedMakeOption] = useState("All");
+  const [selectedYearOption, setSelectedYearOption] = useState("All");
+  const [selectedStyleOption, setSelectedStyleOption] = useState("All");
+  const [selectedFuelOption, setSelectedFuelOption] = useState("All");
+  const [selectedDoorsOption, setSelectedDoorsOption] = useState("All");
+  const [selectedTransmissionOption, setSelectedTransmissionOption] =
+    useState("All");
 
   useEffect(() => {
     actions.getPosts();
@@ -16,6 +24,10 @@ export const Frontpage = () => {
     window.addEventListener("scroll", eventScroll, { passive: true });
     return () => window.removeEventListener("scroll", eventScroll);
   }, []);
+
+  useEffect(() => {
+    if (store.accessToken) actions.getUserFavorites();
+  }, [store.accessToken]);
 
   useEffect(() => {
     if (endOfPage) {
@@ -34,28 +46,96 @@ export const Frontpage = () => {
       setendOfPage(false);
     }
   }
+  function filteredPosts() {
+    let output = store.posts;
+    if (selectedMakeOption !== "All") {
+      output = output.filter((post) => post.make === selectedMakeOption);
+    }
+    if (selectedYearOption !== "All") {
+      output = output.filter(
+        (post) => post.year.toString() === selectedYearOption
+      );
+    }
+    if (selectedStyleOption !== "All") {
+      output = output.filter(
+        (post) => post.style.toString() === selectedStyleOption
+      );
+    }
+    if (selectedFuelOption !== "All") {
+      output = output.filter(
+        (post) => post.fuel.toString() === selectedFuelOption
+      );
+    }
+    if (selectedTransmissionOption !== "All") {
+      output = output.filter(
+        (post) => post.transmission.toString() === selectedTransmissionOption
+      );
+    }
+    if (selectedDoorsOption !== "All") {
+      output = output.filter(
+        (post) => post.doors.toString() === selectedDoorsOption
+      );
+    }
 
-  function addPage() {
-    setPageNumber(pageNumber + 1);
-    console.log(pageNumber);
+    return output;
   }
+
+  const handleMakeOptionChange = (event) => {
+    setSelectedMakeOption(event.target.value);
+  };
+
+  const handleYearOptionChange = (event) => {
+    setSelectedYearOption(event.target.value);
+  };
+  const handleStyleOptionChange = (event) => {
+    setSelectedStyleOption(event.target.value);
+  };
+  const handleFuelOptionChange = (event) => {
+    setSelectedFuelOption(event.target.value);
+  };
+  const handleTransmissionOptionChange = (event) => {
+    setSelectedTransmissionOption(event.target.value);
+  };
+  const handleDoorsOptionChange = (event) => {
+    setSelectedDoorsOption(event.target.value);
+  };
+
   return (
-    <div className="jumbotron">
-      <h1 className="display-4 ">Home Page</h1>
-      <div className="container">
-        <div className="row justify-content-between">
-          {store.posts.map((post) => (
-            <div className="col-4 mb-3  " key={post.post_id}>
-              <PostCard
-                make={post.make}
-                model={post.model}
-                id={post.post_id}
-                price={post.price}
-                title={post.title}
-                year={post.year}
-              />
-            </div>
-          ))}
+    <div className="container">
+      <h1 className="display-4 float-center ">Carhalla</h1>
+      <div className="d-flex">
+        <div className="filter-container mr-3">
+          <Filter
+            handleMakeFilterChange={handleMakeOptionChange}
+            handleYearFilterChange={handleYearOptionChange}
+            handleStyleFilterChange={handleStyleOptionChange}
+            handleFuelFilterChange={handleFuelOptionChange}
+            handleTransmissionFilterChange={handleTransmissionOptionChange}
+            handleDoorsFilterChange={handleDoorsOptionChange}
+            selectedMakeOption={selectedMakeOption}
+            selectedYearOption={selectedYearOption}
+            selectedStyleOption={selectedStyleOption}
+            selectedFuelOption={selectedFuelOption}
+            selectedTransmissionOption={selectedTransmissionOption}
+            selectedDoorsOption={selectedDoorsOption}
+          />
+        </div>
+
+        <div className="postcard-container">
+          <div className="row">
+            {filteredPosts().map((post) => (
+              <div className="col-4 mb-3  " key={post.post_id}>
+                <PostCard
+                  make={post.make}
+                  model={post.model}
+                  id={post.post_id}
+                  price={post.price}
+                  title={post.title}
+                  year={post.year}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

@@ -7,6 +7,10 @@ import PostCard from "./PostCard.jsx";
 export const PostDetails = (props) => {
   const { store, actions } = useContext(Context);
 
+  useEffect(() => {
+    if (store.accessToken) actions.getUserFavorites();
+  }, [store.accessToken]);
+
   return (
     <div className="card mb-3">
       <div className="row g-0">
@@ -25,16 +29,45 @@ export const PostDetails = (props) => {
             <p className="card-text">{props.financing}</p>
             <p className="card-text">{props.doors}</p>
             <p className="card-text">{props.description}</p>
-            <div className="card-body d-flex justify-content-between">
-              <Link to={-1}>
-                <button type="button" className="btn btn-outline-primary">
-                  Go back!
+            {store.accessToken == "" || null || undefined ? (
+              <div className="card-body d-flex justify-content-between">
+                {" "}
+                <Link to={-1}>
+                  <button type="button" className="btn btn-outline-primary">
+                    Go back!
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              <div className="card-body d-flex justify-content-between">
+                {" "}
+                <Link to={-1}>
+                  <button type="button" className="btn btn-outline-primary">
+                    Go back!
+                  </button>
+                </Link>
+                <button
+                  type="button"
+                  className="btn btn-outline-danger"
+                  onClick={() => actions.handleFavorites(props.id)}
+                >
+                  <i className="bi bi-heart-fill"></i>
                 </button>
-              </Link>
-              <button type="button" className="btn btn-outline-danger">
-                <i className="bi bi-heart-fill"></i>
-              </button>
-            </div>
+                <a
+                  className="btn btn-outline-success"
+                  role="button"
+                  href={`https://api.whatsapp.com/send?phone=${props.telnumber}`}
+                >
+                  <i className="bi bi-whatsapp"> Chat with {props.username}</i>
+                </a>
+                <Link to={`/profile_page/${props.userid}`}>
+                  <button type="button" className="btn btn-outline-warning">
+                    View {props.username}'s account
+                  </button>
+                </Link>
+              </div>
+            )}
+
             <p className="card-text">
               <small className="text-muted">Last updated 3 mins ago</small>
             </p>

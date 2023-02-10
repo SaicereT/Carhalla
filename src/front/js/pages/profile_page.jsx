@@ -1,23 +1,24 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import UserPostsTabPub from "../component/UserPostsTabPub.jsx";
 import UserInfoPub from "../component/UserInfoPub.jsx";
 import { Context } from "../store/appContext.js";
 
 export const Profile = () => {
   const { store, actions } = useContext(Context);
+  const { userid } = useParams();
   const [data, setData] = useState({});
 
   useEffect(() => {
-    if (store.accessToken) actions.getUserInfo().then((resp) => setData(resp));
+    actions.getUserInfoPub(userid).then((resp) => setData(resp));
   }, [store.accessToken]);
-
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="float-md-start  " style={{ marginRight: "25px" }}>
         <img
-          src="https://picsum.photos/id/237/200/300"
-          style={{ borderRadius: "70px", marginTop: "50px" }}
+          src={store.profilePicPub.signed_url}
+          className="rounded-circle"
+          style={{ height: "250px", width: "250px" }}
           alt="/"
         />
       </div>
@@ -38,7 +39,7 @@ export const Profile = () => {
             aria-controls="home-tab-pane"
             aria-selected="true"
           >
-            Profile Info
+            {data.username}'s Profile Info
           </button>
         </li>
         <li className="nav-item" role="presentation">
@@ -52,7 +53,7 @@ export const Profile = () => {
             aria-controls="profile-tab-pane"
             aria-selected="false"
           >
-            My posts
+            {data.username}'s posts
           </button>
         </li>
       </ul>
@@ -66,10 +67,9 @@ export const Profile = () => {
         >
           <UserInfoPub
             email={data.email}
-            firstname={data.firstname}
-            id={data.post_id}
+            username={data.username}
+            id={userid}
             is_active={data.is_active}
-            lastname={data.lastname}
             telnumber={data.telnumber}
           />
         </div>
@@ -80,7 +80,7 @@ export const Profile = () => {
           aria-labelledby="profile-tab"
           tabIndex="0"
         >
-          <UserPostsTabPub />
+          <UserPostsTabPub userid={userid} />
         </div>
       </div>
     </div>

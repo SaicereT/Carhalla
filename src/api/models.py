@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+from firebase_admin import storage
+import datetime
 
 db = SQLAlchemy()
 
@@ -11,6 +13,7 @@ class Users(db.Model):
     __tablename__="users"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    username = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(1000), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
     is_admin = db.Column(db.Boolean(), unique=False, nullable=True)
@@ -20,6 +23,8 @@ class Users(db.Model):
     address = db.Column(db.String(120), unique=False, nullable=False)
     country = db.Column(db.String(120), unique=False, nullable=False)
     age = db.Column(db.String(120), unique=False, nullable=False)
+    profile_picture_id=db.Column(db.Integer, db.ForeignKey("profilepics.id"))
+    profile_picture=db.relationship("ProfilePics")
 
     def __repr__(self):
         return f'<User {self.email}>'
@@ -28,7 +33,8 @@ class Users(db.Model):
         return {
             "id": self.id,
             "email": self.email,
-            #"photo":self.photo,
+            "username": self.username,
+            "profile_pic":self.profile_picture.image_url(),
             "firstname":self.firstname,
             "is_active":self.is_active,
             "lastname":self.lastname,
@@ -37,10 +43,20 @@ class Users(db.Model):
             "country":self.country,
             "age":self.age,
         }
+    def serializePub(self):
+        return {
+            "id": self.id,
+            "email": self.email,
+            "username": self.username,
+            "profile_pic":self.profile_picture.image_url(),
+            "is_active":self.is_active,
+            "telnumber":self.telnumber,
+        }
 
 class Posts(db.Model):
     __tablename__="posts"
     id = db.Column(db.Integer, primary_key=True)
+    premium = db.Column(db.Boolean(), unique=False, nullable=True)
     title = db.Column(db.String(240), unique=False, nullable=False)
     make = db.Column(db.String(120), unique=False, nullable=False)
     model = db.Column(db.String(120), unique=False, nullable=False)
@@ -52,6 +68,7 @@ class Posts(db.Model):
     year = db.Column(db.Integer, unique=False, nullable=False)
     price = db.Column(db.Integer, unique=False, nullable=False)
     description = db.Column(db.String(240), unique=False, nullable=False)
+    miles = db.Column(db.Integer, unique=False, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     user = db.relationship(Users)
 
@@ -61,12 +78,20 @@ class Posts(db.Model):
     def serializeCompact(self):
        return {
         "title":self.title,
+        "username":self.user.username,
         #"photo":self.photo,
         "year":self.year,
         "make":self.make,
         "model":self.model,
         "price":self.price,
-        "post_id":self.id
+        "post_id":self.id,
+        "is_premium":self.premium,
+        "miles":self.miles,
+        "doors":self.doors,
+        "fuel":self.fuel,
+        "transmission":self.transmission,
+        "style":self.style,
+        "telnumber":self.user.telnumber
         }
     
     def serializeFull(self):
@@ -83,7 +108,11 @@ class Posts(db.Model):
         "year":self.year,
         "price":self.price,
         "description":self.description,
-        "user_id":self.user_id
+        "user_id":self.user_id,
+        "username":self.user.username,
+        "miles":self.miles,
+        "premium":self.premium,
+        "telnumber":self.user.telnumber
         }
 
 class Fav_posts(db.Model):
@@ -99,12 +128,14 @@ class Fav_posts(db.Model):
 
     def serialize(self):
         return {
-            "id:":self.post.id,
+            "id":self.id,
+            "post_id":self.post.id,
             "title":self.post.title,
             "user_id":self.user_id,
             "model":self.post.model,
             "year":self.post.year,
             "price":self.post.price,
+            "premium":self.post.premium,
 
         }
 
@@ -115,3 +146,41 @@ class Images(db.Model):
     description=db.Column(db.String(200))
     post_id=db.Column(db.Integer, db.ForeignKey("posts.id"))
     post=db.relationship(Posts)
+
+    def serialize(self):
+        return {
+            "id":self.id,
+            "resurse_path": self.resource_path,
+            "description": self.description
+        }
+
+    def image_url(self):
+        return {
+            "id":self.id,
+            "resource_path": self.resource_path,
+            "signed_url": self.description
+        }
+    
+
+class ProfilePics(db.Model):
+    __tablename__="profilepics"
+    id = db.Column(db.Integer, primary_key=True)
+    resource_path=db.Column(db.String(250), unique=True, nullable=False)
+    description=db.Column(db.String(200))
+
+    def serialize(self):
+        return {
+            "id":self.id,
+            "resource_path": self.resource_path,
+            "description": self.description
+        }
+
+    def image_url(self):
+        bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+        resource=bucket.blob(self.resource_path)
+        signed_url=resource.generate_signed_url(version="v4", expiration=datetime.timedelta(minutes=15), method="GET")
+        return {
+            "id":self.id,
+            "resource_path": self.resource_path,
+            "signed_url": signed_url
+        }

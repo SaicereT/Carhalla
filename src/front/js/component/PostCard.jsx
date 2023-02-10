@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 const PostCard = (props) => {
+  const { store, actions } = useContext(Context);
   /*agrega el prop de pago en vez del financiado y en vez de false el prop para que lo iguale "false lo oculta, true lo muestra"*/
   let boost = true;
   return (
     <div className="card">
       <img
-        src="https://i.picsum.photos/id/670/500/500.jpg?hmac=N38FiXBMkkVNLkU8iurtSmZLgBc-wDkQJ5yCaCwJrIk"
+        src="https://picsum.photos/500/500"
         className="card-img-top"
         alt="..."
       />
@@ -28,17 +29,30 @@ const PostCard = (props) => {
           </li>
         )}
       </ul>
-
-      <div className="card-body d-flex justify-content-between">
-        <Link to={`/posts/${props.id}`}>
-          <button type="button" className="btn btn-outline-info">
-            Info
+      {store.accessToken == "" || null || undefined ? (
+        <div className="card-body d-flex justify-content-between">
+          <Link to={`/posts/${props.id}`}>
+            <button type="button" className="btn btn-outline-info">
+              Info
+            </button>
+          </Link>
+        </div>
+      ) : (
+        <div className="card-body d-flex justify-content-between">
+          <Link to={`/posts/${props.id}`}>
+            <button type="button" className="btn btn-outline-info">
+              Info
+            </button>
+          </Link>
+          <button
+            type="button"
+            className="btn btn-outline-danger"
+            onClick={() => actions.handleFavorites(props.id)}
+          >
+            <i className="bi bi-heart-fill"></i>
           </button>
-        </Link>
-        <button type="button" className="btn btn-outline-danger">
-          <i className="bi bi-heart-fill"></i>
-        </button>
-      </div>
+        </div>
+      )}
     </div>
   );
 };

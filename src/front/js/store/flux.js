@@ -8,28 +8,23 @@ const getState = ({ getStore, getActions, setStore }) => {
       refreshToken: "",
       posts: [],
       userPosts: [],
+      userPostsPub: [],
       userFavorites: [],
+      profilePicPub: [],
+      profilePicPriv: [],
     },
     actions: {
       // Use getActions to call a function within a fuction
-      NewUser: async (data) => {
+      NewUser: async (formdata) => {
         let respuesta = await fetch(process.env.BACKEND_URL + "/api/signup", {
           method: "POST",
-          body: JSON.stringify({
-            email: data.email,
-            password: data.password,
-            firstname: data.firstname,
-            lastname: data.lastname,
-            is_active: true,
-            telnumber: data.phone,
-            address: data.address,
-            country: data.city,
-            age: data.age,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          body: formdata,
         });
+        if (respuesta.status == 200) {
+          return true;
+        } else {
+          false;
+        }
       },
       LogOn: async (data) => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/login", {
@@ -99,12 +94,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
         let data = await response.json();
-        console.log(data);
         return data.results;
       },
 
       NewPost: async (formdata) => {
-        console.log(formdata);
         let resp = await fetch(process.env.BACKEND_URL + "/api/posts/new", {
           method: "POST",
           body: formdata,
@@ -167,8 +160,27 @@ const getState = ({ getStore, getActions, setStore }) => {
         store.userPosts = data.results;
         setStore(store);
       },
+      specificUserPostsPub: async (userid) => {
+        let store = getStore();
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/user_posts/" + userid,
+          {
+            headers: {
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+        let data = await resp.json();
+        store.userPostsPub = data.results;
+        setStore(store);
+      },
 
       getUserInfo: async () => {
+        let { profilePicPriv } = getStore();
         let resp = await fetch(process.env.BACKEND_URL + "/api/user_info", {
           headers: {
             ...getActions().getAuthorizationHeader(),
@@ -179,7 +191,31 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
         let data = await resp.json();
-        console.log(data);
+        let pic = data.results.profile_pic;
+        setStore({
+          profilePicPriv: pic,
+        });
+        return data.results;
+      },
+      getUserInfoPub: async (userid) => {
+        let { profilePicPub } = getStore();
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/user_info/" + userid,
+          {
+            headers: {
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+        let data = await resp.json();
+        let pic = data.results.profile_pic;
+        setStore({
+          profilePicPub: pic,
+        });
         return data.results;
       },
       getUserFavorites: async () => {
@@ -217,6 +253,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           if (respAdd) {
             let new_fav = await respAdd.json();
+            setStore({
+              userFavorites: [...userFavorites, new_fav.results],
+            });
           }
         } else {
           let favId = userFavorites[favIndex].id;
@@ -232,6 +271,47 @@ const getState = ({ getStore, getActions, setStore }) => {
           newFavorites.splice(favIndex, 1);
           console.log(favId);
           setStore({ userFavorites: newFavorites });
+        }
+      },
+      updateProfileInfo: async (data) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/user_info/update",
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              email: data.email,
+              username: data.username,
+              telnumber: data.phone,
+              address: data.address,
+              country: data.city,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (resp.status == 200) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      updateProfilePic: async (formdata) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/uploadProfilePic",
+          {
+            method: "POST",
+            body: formdata,
+            headers: {
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (resp.status == 200) {
+          return true;
+        } else {
+          return false;
         }
       },
       /*Nueva action arriba de esta linea*/
