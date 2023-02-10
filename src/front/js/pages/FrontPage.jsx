@@ -41,15 +41,18 @@ export const Frontpage = () => {
       setendOfPage(false);
     }
   }
-  const filteredPosts =
-    selectedMakeOption === "All" && selectedYearOption === "All"
-      ? store.posts
-      : store.posts.filter(
-          (post) =>
-            (selectedMakeOption === "All" ||
-              post.make === selectedMakeOption) &&
-            (selectedYearOption === "All" || post.year === selectedYearOption)
-        );
+  function filteredPosts() {
+    let output = store.posts;
+    if (selectedMakeOption !== "All") {
+      output = output.filter((post) => post.make === selectedMakeOption);
+    }
+    if (selectedYearOption !== "All") {
+      output = output.filter(
+        (post) => post.year.toString() === selectedYearOption
+      );
+    }
+    return output;
+  }
 
   const handleMakeOptionChange = (event) => {
     setSelectedMakeOption(event.target.value);
@@ -70,7 +73,7 @@ export const Frontpage = () => {
       />
       <div className="container ">
         <div className="row display: inline-block;">
-          {filteredPosts.map((post) => (
+          {filteredPosts().map((post) => (
             <div className="col-4 mb-3  " key={post.post_id}>
               <PostCard
                 make={post.make}

@@ -21,7 +21,7 @@ export const Filter = (props) => {
         <option value="All">All</option>
         <option value="2003">2003</option>
         <option value="2005">2005</option>
-        <option value="1980">1980</option>
+        <option value="1981">1981</option>
       </select>
     </div>
   );
