@@ -1,0 +1,262 @@
+/*/boton de Main menu*/
+.miBoton {
+  min-width: 40px;
+  min-height: 40px;
+  font-family: "Nunito", sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  font-weight: 700;
+  color: #313133;
+  background: #4fd1c5;
+  background: linear-gradient(
+    90deg,
+    hsl(51, 74%, 38%) 0%,
+    rgb(181, 211, 71) 100%
+  );
+  border: none;
+  border-radius: 1000px;
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 10px;
+}
+
+.miBoton:hover::before,
+.miBoton:focus::before {
+  opacity: 1;
+}
+
+.miBoton::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 6px solid #00ffcb;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
+}
+
+.miBoton:hover::after,
+.miBoton:focus::after {
+  animation: none;
+  display: none;
+}
+
+/*/boton de log out*/
+
+.button2 {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10rem;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.15rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.button2:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(17, 17, 17, 0.64);
+  border-radius: 10rem;
+  z-index: -2;
+}
+.button2:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background-color: #c90f0f;
+  transition: all 0.3s;
+  border-radius: 10rem;
+  z-index: -1;
+}
+.button2:hover {
+  color: #141414;
+}
+.button2:hover:before {
+  width: 100%;
+}
+
+/*boton de sign up */
+
+.button3 {
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  position: relative;
+  background: transparent;
+  color: #d3ad51;
+  text-transform: uppercase;
+  border: 3px solid #d3ad51;
+  cursor: pointer;
+  transition: all 0.7s;
+  overflow: hidden;
+  border-radius: 100px;
+}
+
+.button3:hover {
+  color: #b9aeae;
+}
+span {
+  transition: all 0.7s;
+  z-index: -1;
+}
+
+.button3 .first {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 0;
+  width: 25%;
+  height: 100%;
+  background: #d3ad51;
+}
+
+.button3:hover .first {
+  top: 0;
+  right: 0;
+}
+.button3 .second {
+  content: "";
+  position: absolute;
+  left: 25%;
+  top: -100%;
+  height: 100%;
+  width: 25%;
+  background: #d3ad51;
+}
+
+.button3:hover .second {
+  top: 0;
+  left: 50%;
+}
+
+.button3 .third {
+  content: "";
+  position: absolute;
+  left: 50%;
+  height: 100%;
+  top: 100%;
+  width: 25%;
+  background: #d3ad51;
+}
+
+.button3:hover .third {
+  top: 0;
+  left: 25%;
+}
+
+.button3 .fourth {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 0;
+  height: 100%;
+  width: 25%;
+  background: #d3ad51;
+}
+
+.button3:hover .fourth {
+  top: 0;
+  left: 0;
+}
+
+/*botton de log in*/
+
+.button4 {
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  position: relative;
+  background: transparent;
+  color: #d3ad51;
+  text-transform: uppercase;
+  border: 3px solid #d3ad51;
+  cursor: pointer;
+  transition: all 0.7s;
+  overflow: hidden;
+  border-radius: 100px;
+}
+
+.button4:hover {
+  color: #000;
+}
+span {
+  transition: all 0.7s;
+  z-index: -1;
+}
+
+.button4 .first {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 0;
+  width: 25%;
+  height: 100%;
+  background: #d3ad51;
+}
+
+.button4:hover .first {
+  top: 0;
+  right: 0;
+}
+.button4 .second {
+  content: "";
+  position: absolute;
+  left: 25%;
+  top: -100%;
+  height: 100%;
+  width: 25%;
+  background: #d3ad51;
+}
+
+.button4:hover .second {
+  top: 0;
+  left: 50%;
+}
+
+.button4 .third {
+  content: "";
+  position: absolute;
+  left: 50%;
+  height: 100%;
+  top: 100%;
+  width: 25%;
+  background: #d3ad51;
+}
+
+.button4:hover .third {
+  top: 0;
+  left: 25%;
+}
+
+.button4 .fourth {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 0;
+  height: 100%;
+  width: 25%;
+  background: #d3ad51;
+}
+
+.button4:hover .fourth {
+  top: 0;
+  left: 0;
+}
