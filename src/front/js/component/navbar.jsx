@@ -21,12 +21,15 @@ export const Navbar = () => {
       actions.LogOn(data);
       let resp = await actions.LogOn(data);
       if (resp) {
-        navigate("/");
+        navigate("/profile_pagePriv/profile");
       }
     }
   };
   const handleLogout = () => {
-    actions.logOut();
+    let resp = actions.logOut();
+    if (resp) {
+      navigate("/");
+    }
   };
 
   return (
@@ -113,7 +116,7 @@ export const Navbar = () => {
               data-bs-target="#offcanvasRight"
               aria-controls="offcanvasRight"
             >
-              Más Info <i className="bi bi-info-circle"></i>
+              More Info <i className="bi bi-info-circle"></i>
             </button>
 
             <div
@@ -133,19 +136,19 @@ export const Navbar = () => {
               </div>
               <div className="offcanvas-body">
                 <Link className="dropdown-item" to="/addPost">
-                  Agregar Publicacion
+                  Create a new post
                 </Link>
                 <Link className="dropdown-item" to="/profile_pagePriv/profile">
-                  Perfil
+                  Profile
                 </Link>
                 <Link className="dropdown-item" to="/profile_pagePriv/posts">
-                  Publicaciones
+                  Posts
                 </Link>
                 <Link
                   className="dropdown-item"
                   to="/profile_pagePriv/favorites"
                 >
-                  Favoritos
+                  Saved Posts
                 </Link>
               </div>
             </div>

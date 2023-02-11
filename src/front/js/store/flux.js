@@ -50,6 +50,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           return true;
         } else {
           console.error("Invalid Login");
+          return false;
         }
       },
       loadToken: (access, refresh) => {
@@ -143,6 +144,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           localStorage.setItem("accessToken", "");
           localStorage.setItem("refreshToken", "");
           console.log("Logged out");
+          return true;
+        } else {
+          return false;
         }
       },
       specificUserPosts: async () => {
@@ -303,8 +307,17 @@ const getState = ({ getStore, getActions, setStore }) => {
           {
             method: "POST",
             body: formdata,
-            headers: {
+            headers: { ...getActions().getAuthorizationHeader() },
+          }
+        );
+        if (resp.status == 200) {
+          return true;
+        } else {
+          return false;
+        }
+      },
       updatePostInfo: async (data, post_id) => {
+        console.log(data);
         let resp = await fetch(
           process.env.BACKEND_URL + "/api/posts/update/" + post_id,
           {

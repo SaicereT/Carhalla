@@ -307,6 +307,7 @@ def add_post():
 def update_post(post_param):
     user_id=get_jwt_identity()
     body = json.loads(request.data)
+    print(body)
     #for i in body:
     #    if (type(body[i]) != bool or None):
     #        body[i] = body[i].strip()
@@ -323,9 +324,10 @@ def update_post(post_param):
             if (body[key] != ""):
                 for col in post.serializeFull():
                     if key == col and key != "id":
+                        print(key)
                         setattr(post, col, body[key])
-                        db.session.commit()
-                        return jsonify({'msg':'Post Updated'}), 200
+        db.session.commit()
+        return jsonify({'msg':'Post Updated'}), 200
 
     return jsonify({'msg':'Post does not exist'}), 404
     
