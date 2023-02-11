@@ -81,7 +81,7 @@ export const AddPost = () => {
               <option value="gasoline">Gasoline</option>
               <option value="Diesel">Diesel</option>
               <option value="Electric">Electric</option>
-              <option value="hybrid">hybrid</option>
+              <option value="hybrid">Hybrid</option>
             </Form.Select>
           </Form.Group>
 

@@ -13,7 +13,7 @@ const UserFavorites = () => {
     <div className="container-fluid mt-3">
       <div className="row justify-content-between">
         {store.userFavorites.map((post) => (
-          <div className="col-4 mb-3" key={post.post_id}>
+          <div className="col-lg-4 mb-3" key={post.post_id}>
             <PostCard
               make={post.make}
               model={post.model}
