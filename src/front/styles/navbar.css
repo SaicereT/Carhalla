@@ -9,11 +9,7 @@
   font-weight: 700;
   color: #313133;
   background: #4fd1c5;
-  background: linear-gradient(
-    90deg,
-    hsl(51, 74%, 38%) 0%,
-    rgb(181, 211, 71) 100%
-  );
+  background: linear-gradient(90deg, #d3ad51, #d3ad51);
   border: none;
   border-radius: 1000px;
   transition: all 0.3s ease-in-out 0s;
@@ -260,3 +256,5 @@ span {
   top: 0;
   left: 0;
 }
+
+/*cavas button */

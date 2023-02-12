@@ -348,7 +348,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           return false;
         }
       },
-      Setpremiun: async (post_id) => {
+      Setpremium: async (post_id) => {
         let resp = await fetch(
           process.env.BACKEND_URL + "/api/posts/update/" + post_id,
           {

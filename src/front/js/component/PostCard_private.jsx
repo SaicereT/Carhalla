@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Paypal from "./paypal.jsx";
 
-let boost = true;
 const PostCardPrivate = (props) => {
+  let boost = props.premium;
   const { store, actions } = useContext(Context);
   return (
     <div className="card" /*style="width: 18rem;"*/>
@@ -45,7 +45,7 @@ const PostCardPrivate = (props) => {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  <Paypal />
+                  <Paypal id={props.id} />
                 </div>
                 <div className="modal-footer">
                   <button
@@ -74,7 +74,7 @@ const PostCardPrivate = (props) => {
         <li className="list-group-item">Year: {props.year}</li>
         {boost && (
           <li className="list-group-item">
-            <i className="bi bi-lightning-charge">Premium</i> {props.financing}
+            <i className="bi bi-lightning-charge">Premium</i> {props.premium}
           </li>
         )}
       </ul>

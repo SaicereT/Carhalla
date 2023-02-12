@@ -5,7 +5,7 @@ import { Context } from "../store/appContext";
 const PostCard = (props) => {
   const { store, actions } = useContext(Context);
   /*agrega el prop de pago en vez del financiado y en vez de false el prop para que lo iguale "false lo oculta, true lo muestra"*/
-  let boost = true;
+  let boost = props.premium;
   return (
     <div className="card">
       <img

@@ -135,13 +135,19 @@ export const Navbar = () => {
                 ></button>
               </div>
               <div className="offcanvas-body">
-                <Link className="dropdown-item" to="/addPost">
+                <Link className=" button5 dropdown-item" to="/addPost">
                   Create a new post
                 </Link>
-                <Link className="dropdown-item" to="/profile_pagePriv/profile">
+                <Link
+                  className="button5  dropdown-item"
+                  to="/profile_pagePriv/profile"
+                >
                   Profile
                 </Link>
-                <Link className="dropdown-item" to="/profile_pagePriv/posts">
+                <Link
+                  className="button5 dropdown-item"
+                  to="/profile_pagePriv/posts"
+                >
                   Posts
                 </Link>
                 <Link
