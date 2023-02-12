@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Paypal from "./paypal.jsx";
 
+let boost = true;
 const PostCardPrivate = (props) => {
   const { store, actions } = useContext(Context);
   return (
@@ -18,14 +19,14 @@ const PostCardPrivate = (props) => {
             type="button"
             className="btn btn-success"
             data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
+            data-bs-target="#modpaypal"
           >
             Impulse your post <strong>10$</strong>
             <i className="bi bi-rocket-takeoff"></i>
           </button>
           <div
             className="modal fade"
-            id="exampleModal"
+            id="modpaypal"
             tabIndex="-1"
             aria-labelledby="exampleModalLabel"
             aria-hidden="true"
@@ -71,6 +72,11 @@ const PostCardPrivate = (props) => {
         <li className="list-group-item">Model: {props.model}</li>
         <li className="list-group-item">Price: {props.price}</li>
         <li className="list-group-item">Year: {props.year}</li>
+        {boost && (
+          <li className="list-group-item">
+            <i className="bi bi-lightning-charge">Premium</i> {props.financing}
+          </li>
+        )}
       </ul>
 
       <div className="card-body d-flex justify-content-between">

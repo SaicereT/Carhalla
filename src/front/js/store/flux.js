@@ -348,6 +348,22 @@ const getState = ({ getStore, getActions, setStore }) => {
           return false;
         }
       },
+      Setpremiun: async (post_id) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/posts/update/" + post_id,
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              premium: true,
+            }),
+
+            headers: {
+              "Content-Type": "application/json",
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+      },
       /*Nueva action arriba de esta linea*/
     },
   };
