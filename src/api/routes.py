@@ -237,12 +237,12 @@ def get_post_detail(post_param):
 #traer las imagenes de una publicacion
 @api.route('/postImages/<int:post_param>', methods=['GET'])
 def get_post_images(post_param):
-    images=Images.query.filter(Images.post_id==post_param).first
-    print(images)
+    images=Images.query.filter(Images.post_id==post_param).all()
     if images is None:
         return jsonify({"msg":"No images found"})
-
-    return jsonify({"results": images}), 200
+    imagelist= list(map(lambda item: item.image_url(),images))
+    print(imagelist)
+    return jsonify({"results": imagelist}), 200
 
 #agregar una nueva publicacion
 @api.route('posts/new', methods = ['POST'])
@@ -304,7 +304,7 @@ def add_post():
             filename="posts/"+ str(new_post.id) +"/" +str(i)+ "." + extension
             resource = bucket.blob(filename)
             resource.upload_from_filename(temp.name,content_type="image/"+extension)
-            newImage=Images(resource_path=filename, description="Picture for post " + str(new_post.id))
+            newImage=Images(resource_path=filename, description="Picture for post " + str(new_post.id), imageposition=i)
             newImage.post_id=new_post.id
             db.session.add(newImage)
             db.session.flush()

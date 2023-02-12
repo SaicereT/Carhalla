@@ -11,7 +11,7 @@ export const Profile = () => {
 
   useEffect(() => {
     actions.getUserInfoPub(userid).then((resp) => setData(resp));
-  }, [store.accessToken]);
+  }, []);
   return (
     <div className="container-fluid">
       <div className="float-md-start  " style={{ marginRight: "25px" }}>

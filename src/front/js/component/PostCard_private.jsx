@@ -7,11 +7,46 @@ const PostCardPrivate = (props) => {
   const { store, actions } = useContext(Context);
   return (
     <div className="card" /*style="width: 18rem;"*/>
-      <img
-        src="https://picsum.photos/500/500"
-        className="card-img-top"
-        alt="..."
-      />
+      <div
+        id={`carousel${props.id}Controls`}
+        className="carousel slide"
+        data-bs-ride="carousel"
+      >
+        <div className="carousel-inner">
+          {props.images.map((image, index) => (
+            <div
+              className={`carousel-item ${index == 0 ? "active" : ""}`}
+              key={image.resource_path}
+            >
+              <img src={image.signed_url} className="w-100" alt="..." />
+            </div>
+          ))}
+        </div>
+        <button
+          className="carousel-control-prev"
+          type="button"
+          data-bs-target={`#carousel${props.id}Controls`}
+          data-bs-slide="prev"
+        >
+          <span
+            className="carousel-control-prev-icon"
+            aria-hidden="true"
+          ></span>
+          <span className="visually-hidden">Previous</span>
+        </button>
+        <button
+          className="carousel-control-next"
+          type="button"
+          data-bs-target={`#carousel${props.id}Controls`}
+          data-bs-slide="next"
+        >
+          <span
+            className="carousel-control-next-icon"
+            aria-hidden="true"
+          ></span>
+          <span className="visually-hidden">Next</span>
+        </button>
+      </div>
       <ul className="list-group list-group-flush">
         <li className="list-group-item">
           <button

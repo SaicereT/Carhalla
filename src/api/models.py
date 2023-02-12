@@ -76,10 +76,10 @@ class Posts(db.Model):
         return f'<Post: {self.id}>'
     
     def serializeCompact(self):
-       return {
+        imagelist= list(map(lambda item: item.image_url(),self.images))
+        return {
         "title":self.title,
         "username":self.user.username,
-        #"photo":self.photo,
         "year":self.year,
         "make":self.make,
         "model":self.model,
@@ -91,11 +91,13 @@ class Posts(db.Model):
         "fuel":self.fuel,
         "transmission":self.transmission,
         "style":self.style,
-        "telnumber":self.user.telnumber
+        "telnumber":self.user.telnumber,
+        "images": imagelist,
         }
     
     def serializeFull(self):
-       return {
+        imagelist= list(map(lambda item: item.image_url(),self.images))
+        return {
         "post_id":self.id,
         "title":self.title,
         "make":self.make,
@@ -112,7 +114,8 @@ class Posts(db.Model):
         "username":self.user.username,
         "miles":self.miles,
         "premium":self.premium,
-        "telnumber":self.user.telnumber
+        "telnumber":self.user.telnumber,
+        "images": imagelist,
         }
 
 class Fav_posts(db.Model):
@@ -127,6 +130,7 @@ class Fav_posts(db.Model):
         return '<Fav_posts %r>' %self.id
 
     def serialize(self):
+        imagelist= list(map(lambda item: item.image_url(),self.post.images))
         return {
             "id":self.id,
             "post_id":self.post.id,
@@ -136,16 +140,17 @@ class Fav_posts(db.Model):
             "year":self.post.year,
             "price":self.post.price,
             "premium":self.post.premium,
-
+            "images": imagelist,
         }
 
 class Images(db.Model):
     __tablename__= "images"
     id = db.Column(db.Integer, primary_key=True)
     resource_path=db.Column(db.String(250), unique=False, nullable=False)
+    imageposition=(db.Column(db.Integer, nullable=True))
     description=db.Column(db.String(200))
     post_id=db.Column(db.Integer, db.ForeignKey("posts.id"))
-    post=db.relationship(Posts)
+    post=db.relationship(Posts, backref="images")
 
     def serialize(self):
         return {

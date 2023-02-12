@@ -124,7 +124,7 @@ export const Frontpage = () => {
         <div className="postcard-container">
           <div className="row">
             {filteredPosts().map((post) => (
-              <div className="col-4 mb-3  " key={post.post_id}>
+              <div className="col-lg-4 mb-3  " key={post.post_id}>
                 <PostCard
                   make={post.make}
                   model={post.model}
@@ -132,6 +132,7 @@ export const Frontpage = () => {
                   price={post.price}
                   title={post.title}
                   year={post.year}
+                  images={post.images}
                 />
               </div>
             ))}

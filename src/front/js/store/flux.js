@@ -12,6 +12,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       userFavorites: [],
       profilePicPub: [],
       profilePicPriv: [],
+      postPicsPub: [],
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -64,6 +65,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         return { Authorization: "Bearer " + accessToken };
       },
       getPosts: async (page = 1, append = false) => {
+        let { postPicsPub } = getStore();
         let response = await fetch(
           process.env.BACKEND_URL + "/api/posts?page=" + page
         );
