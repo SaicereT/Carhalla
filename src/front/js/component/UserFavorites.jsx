@@ -21,6 +21,7 @@ const UserFavorites = () => {
               price={post.price}
               title={post.title}
               year={post.year}
+              images={post.images}
             />
           </div>
         ))}

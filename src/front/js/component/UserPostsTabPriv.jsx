@@ -21,6 +21,7 @@ const UserPostsTab = () => {
               price={post.price}
               title={post.title}
               year={post.year}
+              images={post.images}
             />
           </div>
         ))}
