@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Paypal from "./paypal.jsx";
+import "../../styles/premium.css";
 
 const PostCardPrivate = (props) => {
   let boost = props.premium;
@@ -73,7 +74,7 @@ const PostCardPrivate = (props) => {
         <li className="list-group-item">Price: {props.price}</li>
         <li className="list-group-item">Year: {props.year}</li>
         {boost && (
-          <li className="list-group-item">
+          <li className="list-group-item tracking-in-contract">
             <i className="bi bi-lightning-charge">Premium</i> {props.premium}
           </li>
         )}

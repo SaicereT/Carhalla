@@ -24,8 +24,8 @@ const PostCard = (props) => {
         <li className="list-group-item">Price: {props.price}</li>
         <li className="list-group-item">Year: {props.year}</li>
         {boost && (
-          <li className="list-group-item">
-            <i className="bi bi-lightning-charge">Premium</i> {props.financing}
+          <li className="list-group-item tracking-in-contract">
+            <i className="bi bi-lightning-charge">Premium</i> {props.premium}
           </li>
         )}
       </ul>

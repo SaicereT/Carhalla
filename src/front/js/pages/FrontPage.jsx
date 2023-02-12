@@ -138,6 +138,7 @@ export const Frontpage = () => {
                   price={post.price}
                   title={post.title}
                   year={post.year}
+                  premium={post.premium}
                 />
               </div>
             ))}
