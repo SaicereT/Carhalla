@@ -101,10 +101,10 @@ export const Frontpage = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container-fluid me-3">
       <h1 className="display-4 float-center ">Carhalla</h1>
       <div className="d-flex">
-        <div className="filter-container mr-3">
+        <div className="filter-container">
           <Filter
             handleMakeFilterChange={handleMakeOptionChange}
             handleYearFilterChange={handleYearOptionChange}
@@ -124,7 +124,7 @@ export const Frontpage = () => {
         <div className="postcard-container">
           <div className="row">
             {filteredPosts().map((post) => (
-              <div className="col-lg-4 mb-3  " key={post.post_id}>
+              <div className="col-lg-4 mb-3" key={post.post_id}>
                 <PostCard
                   make={post.make}
                   model={post.model}
