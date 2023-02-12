@@ -16,7 +16,7 @@ export const AccountRecovery = () => {
         data[campo] = formData.get(campo);
       });
       console.log(data);
-      //store.actions.NewUser(data);
+      actions.requestPassword(data)
     }
   };
   return (

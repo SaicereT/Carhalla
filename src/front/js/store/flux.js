@@ -56,7 +56,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(getStore());
           return true;
         } else {
-          console.error("Invalid Login");
+          console.error("Invalid Login")
+          return false;
         }
       },
       loadToken: (access, refresh) => {
@@ -272,6 +273,44 @@ const getState = ({ getStore, getActions, setStore }) => {
           newFavorites.splice(favIndex, 1);
           console.log(favId);
           setStore({ userFavorites: newFavorites });
+        }
+      },
+      requestPassword: async (data) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/requestresetpassword",
+          {
+            method: "POST",
+            body: JSON.stringify({ email: data.email }),
+            headers: {
+              "Content-type": "application/json",
+            },
+          }
+        );
+
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+      },
+      passwordChange: async (data, token) => {
+        console.log(data.password);
+        console.log(token);
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/reset_password",
+          {
+            method: "POST",
+            body: JSON.stringify({ password: data.password }),
+            headers: {
+              "Content-type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (!resp.ok) {
+          console.error(request.statusText);
+          return false;
+        } else {
+          return true;
         }
       },
       /*Nueva action arriba de esta linea*/
