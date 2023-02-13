@@ -10,7 +10,6 @@ export const Frontpage = () => {
   const { store, actions } = useContext(Context);
   const [pageNumber, setPageNumber] = useState(1);
   const [endOfPage, setendOfPage] = useState(false);
-
   const [selectedMakeOption, setSelectedMakeOption] = useState("All");
   const [selectedYearOption, setSelectedYearOption] = useState("All");
   const [selectedStyleOption, setSelectedStyleOption] = useState("All");
@@ -24,7 +23,7 @@ export const Frontpage = () => {
     window.removeEventListener("scroll", eventScroll);
     window.addEventListener("scroll", eventScroll, { passive: true });
     return () => window.removeEventListener("scroll", eventScroll);
-  }, []);
+  }, [Filter]);
 
   useEffect(() => {
     if (store.accessToken) actions.getUserFavorites();
