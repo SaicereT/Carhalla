@@ -17,22 +17,21 @@ export const PostDetailsPagePrivate = () => {
       <h1 className="display-4">Home Page</h1>
       <div className="container">
         <div className="row justify-content-between">
-          <div className="col-4 mb-3">
-            <PostDetailsPrivate
-              make={data.make}
-              model={data.model}
-              id={postid}
-              price={data.price}
-              title={data.title}
-              year={data.year}
-              style={data.style}
-              fuel={data.fuel}
-              transmission={data.transmission}
-              financing={data.financing}
-              doors={data.doors}
-              description={data.description}
-            />
-          </div>
+          <PostDetailsPrivate
+            make={data.make}
+            model={data.model}
+            miles={data.miles}
+            id={data.post_id}
+            price={data.price}
+            title={data.title}
+            year={data.year}
+            style={data.style}
+            fuel={data.fuel}
+            transmission={data.transmission}
+            financing={data.financing}
+            doors={data.doors}
+            description={data.description}
+          />
         </div>
       </div>
     </div>

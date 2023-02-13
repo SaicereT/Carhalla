@@ -21,12 +21,15 @@ export const Navbar = () => {
       actions.LogOn(data);
       let resp = await actions.LogOn(data);
       if (resp) {
-        navigate("/");
+        navigate("profile_pagePriv/profile");
       }
     }
   };
-  const handleLogout = () => {
-    actions.logOut();
+  const handleLogout = async () => {
+    let resp = await actions.logOut();
+    if (resp) {
+      navigate("/");
+    }
   };
 
   return (
@@ -45,7 +48,7 @@ export const Navbar = () => {
             <div className="dropdown me-3">
               <button
                 type="button"
-                className="btn btn-primary dropdown-toggle"
+                className=" button4 btn btn-primary dropdown-toggle"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
                 data-bs-auto-close="outside"
@@ -94,26 +97,26 @@ export const Navbar = () => {
               </div>
             </div>
             <Link to="/formUser">
-              <button className="btn btn-primary me-3">Sign up</button>
+              <button className=" button3 btn btn-success me-3">Sign up</button>
             </Link>
           </div>
         ) : (
           <div>
             <button
               type="button"
-              className="btn btn-danger"
+              className="button2 btn btn-danger"
               onClick={() => handleLogout()}
             >
               Log Out
             </button>
             <button
-              className="btn btn-primary"
+              className="miBoton btn btn-primary mx-3"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
               aria-controls="offcanvasRight"
             >
-              ...
+              Main Menu
             </button>
 
             <div
@@ -123,7 +126,7 @@ export const Navbar = () => {
               aria-labelledby="offcanvasRightLabel"
             >
               <div className="offcanvas-header">
-                <h5 id="offcanvasRightLabel">More Info</h5>
+                <h5 id="offcanvasRightLabel">Menú</h5>
                 <button
                   type="button"
                   className="btn-close text-reset"
@@ -132,15 +135,27 @@ export const Navbar = () => {
                 ></button>
               </div>
               <div className="offcanvas-body">
-                <a className="dropdown-item" href="#">
-                  Crear Publicacion
-                </a>
-                <a className="dropdown-item" href="#">
-                  Favoritos
-                </a>
-                <a className="dropdown-item" href="#">
-                  Publicaciones
-                </a>
+                <Link className=" button5 dropdown-item" to="/addPost">
+                  Create a new post
+                </Link>
+                <Link
+                  className="button5  dropdown-item"
+                  to="/profile_pagePriv/profile"
+                >
+                  Profile
+                </Link>
+                <Link
+                  className="button5 dropdown-item"
+                  to="/profile_pagePriv/posts"
+                >
+                  Posts
+                </Link>
+                <Link
+                  className="dropdown-item"
+                  to="/profile_pagePriv/favorites"
+                >
+                  Saved Posts
+                </Link>
               </div>
             </div>
           </div>

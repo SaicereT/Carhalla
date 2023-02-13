@@ -13,7 +13,7 @@ const UserPostsTab = () => {
     <div className="container-fluid mt-3">
       <div className="row justify-content-between">
         {store.userPosts.map((post) => (
-          <div className="col-4 mb-3" key={post.post_id}>
+          <div className="col-lg-4 mb-3" key={post.post_id}>
             <PostCardPrivate
               make={post.make}
               model={post.model}
@@ -21,6 +21,8 @@ const UserPostsTab = () => {
               price={post.price}
               title={post.title}
               year={post.year}
+              premium={post.premium}
+              images={post.images}
             />
           </div>
         ))}

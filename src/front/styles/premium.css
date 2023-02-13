@@ -1,0 +1,21 @@
+.tracking-in-contract {
+  animation: tracking-in-contract 0.8s cubic-bezier(0.755, 0.05, 0.855, 0.06)
+    both;
+}
+@keyframes tracking-in-contract {
+  0% {
+    letter-spacing: 1em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    letter-spacing: normal;
+    opacity: 1;
+  }
+}
+
+.tracking-in-contract {
+  color: #d3ad51;
+}
