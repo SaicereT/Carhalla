@@ -10,16 +10,15 @@ export const Profile = () => {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    if (store.accessToken)
-      actions.getUserInfoPub(userid).then((resp) => setData(resp));
-  }, [store.accessToken]);
-
+    actions.getUserInfoPub(userid).then((resp) => setData(resp));
+  }, []);
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="float-md-start  " style={{ marginRight: "25px" }}>
         <img
-          src="https://picsum.photos/id/237/200/300"
-          style={{ borderRadius: "70px", marginTop: "50px" }}
+          src={store.profilePicPub.signed_url}
+          className="rounded-circle"
+          style={{ height: "250px", width: "250px" }}
           alt="/"
         />
       </div>

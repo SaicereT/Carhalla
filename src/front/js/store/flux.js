@@ -10,28 +10,22 @@ const getState = ({ getStore, getActions, setStore }) => {
       userPosts: [],
       userPostsPub: [],
       userFavorites: [],
+      profilePicPub: [],
+      profilePicPriv: [],
+      postPicsPub: [],
     },
     actions: {
       // Use getActions to call a function within a fuction
-      NewUser: async (data) => {
+      NewUser: async (formdata) => {
         let respuesta = await fetch(process.env.BACKEND_URL + "/api/signup", {
           method: "POST",
-          body: JSON.stringify({
-            email: data.email,
-            username: data.username,
-            password: data.password,
-            firstname: data.firstname,
-            lastname: data.lastname,
-            is_active: true,
-            telnumber: data.phone,
-            address: data.address,
-            country: data.city,
-            age: data.age,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          body: formdata,
         });
+        if (respuesta.status == 200) {
+          return true;
+        } else {
+          false;
+        }
       },
       LogOn: async (data) => {
         let resp = await fetch(process.env.BACKEND_URL + "/api/login", {
@@ -57,6 +51,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           return true;
         } else {
           console.error("Invalid Login");
+          return false;
         }
       },
       loadToken: (access, refresh) => {
@@ -71,6 +66,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         return { Authorization: "Bearer " + accessToken };
       },
       getPosts: async (page = 1, append = false) => {
+        let { postPicsPub } = getStore();
         let response = await fetch(
           process.env.BACKEND_URL + "/api/posts?page=" + page
         );
@@ -101,12 +97,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
         let data = await response.json();
-        console.log(data);
         return data.results;
       },
 
       NewPost: async (formdata) => {
-        console.log(formdata);
         let resp = await fetch(process.env.BACKEND_URL + "/api/posts/new", {
           method: "POST",
           body: formdata,
@@ -152,6 +146,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           localStorage.setItem("accessToken", "");
           localStorage.setItem("refreshToken", "");
           console.log("Logged out");
+          return true;
+        } else {
+          return false;
         }
       },
       specificUserPosts: async () => {
@@ -189,6 +186,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       getUserInfo: async () => {
+        let { profilePicPriv } = getStore();
         let resp = await fetch(process.env.BACKEND_URL + "/api/user_info", {
           headers: {
             ...getActions().getAuthorizationHeader(),
@@ -199,10 +197,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
         let data = await resp.json();
-        console.log(data);
+        let pic = data.results.profile_pic;
+        setStore({
+          profilePicPriv: pic,
+        });
         return data.results;
       },
       getUserInfoPub: async (userid) => {
+        let { profilePicPub } = getStore();
         let resp = await fetch(
           process.env.BACKEND_URL + "/api/user_info/" + userid,
           {
@@ -216,7 +218,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
         let data = await resp.json();
-        console.log(data);
+        let pic = data.results.profile_pic;
+        setStore({
+          profilePicPub: pic,
+        });
         return data.results;
       },
       getUserFavorites: async () => {
@@ -273,6 +278,131 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(favId);
           setStore({ userFavorites: newFavorites });
         }
+      },
+      requestPassword: async (data) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/requestresetpassword",
+          {
+            method: "POST",
+            body: JSON.stringify({ email: data.email }),
+            headers: {
+              "Content-type": "application/json",
+            },
+          }
+        );
+
+        if (!resp.ok) {
+          console.log(resp.status + ": " + resp.statusText);
+          return;
+        }
+      },
+      passwordChange: async (data, token) => {
+        console.log(data.password);
+        console.log(token);
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/reset_password",
+          {
+            method: "POST",
+            body: JSON.stringify({ password: data.password }),
+            headers: {
+              "Content-type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (!resp.ok) {
+          console.error(request.statusText);
+          return false;
+        } else {
+          return true;
+        }
+      },
+      updateProfileInfo: async (data) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/user_info/update",
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              email: data.email,
+              username: data.username,
+              telnumber: data.phone,
+              address: data.address,
+              country: data.city,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (resp.status == 200) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      updateProfilePic: async (formdata) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/uploadProfilePic",
+          {
+            method: "POST",
+            body: formdata,
+            headers: { ...getActions().getAuthorizationHeader() },
+          }
+        );
+        if (resp.status == 200) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      updatePostInfo: async (data, post_id) => {
+        console.log(data);
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/posts/update/" + post_id,
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              title: data.title,
+              model: data.model,
+              make: data.make,
+              style: data.style,
+              fuel: data.fuel,
+              transmission: data.transmission,
+              financing: data.financing,
+              doors: data.doors,
+              year: data.year,
+              miles: data.miles,
+              price: data.price,
+              description: data.description,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (resp.status == 200) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      Setpremium: async (post_id) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/posts/update/" + post_id,
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              premium: true,
+            }),
+
+            headers: {
+              "Content-Type": "application/json",
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
       },
       /*Nueva action arriba de esta linea*/
     },

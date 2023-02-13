@@ -13,7 +13,9 @@ import { AccountRecovery } from "./pages/AccountRecovery.jsx";
 import { Profile } from "./pages/profile_page.jsx";
 import { ProfilePriv } from "./pages/profile_pagePriv.jsx";
 import { PostDetailsPagePrivate } from "./pages/postDetailsPagePrivate.jsx";
-import UserInfoPub from "./component/UserInfoPub.jsx";
+import { PasswordChange } from "./pages/passwordChange.jsx";
+
+import {UserInfoPub} from "./component/UserInfoPub.jsx";
 
 //create your first component
 const Layout = () => {
@@ -35,9 +37,14 @@ const Layout = () => {
             <Route element={<PostDetailsPage />} path="/posts/:postid" />
             <Route element={<FormUser />} path="/formUser" />
             <Route element={<AddPost />} path="/addPost" />
+            <Route
+              element={<ProfilePriv />}
+              path="/profile_pagePriv/:tabulacion"
+            />
             <Route element={<Profile />} path="/profile_page/:userid" />
-            <Route element={<ProfilePriv />} path="/profile_pagePriv" />
             <Route element={<AccountRecovery />} path="/accountRecovery" />
+            <Route element={<PasswordChange />} path="/passwordChange" />
+
             <Route element={<h1>Not found!</h1>} path="*" />
           </Routes>
           <Footer />

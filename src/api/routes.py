@@ -2,14 +2,18 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, jsonify
-from api.models import db, Users, Posts, Fav_posts, TokenBlocklist, Images
+from api.models import db, Users, Posts, Fav_posts, TokenBlocklist, Images, ProfilePics
 from api.utils import generate_sitemap, APIException
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt, get_jwt_identity
 from flask_bcrypt import Bcrypt
 from firebase_admin import storage
+from .sendemail import mail_recovery_template, send_mail
 import tempfile
+from sqlalchemy import func
+
+
 
 
 api = Blueprint('api', __name__)
@@ -63,6 +67,25 @@ def get_user_info():
         return jsonify({"results": user.serialize()}), 200
     return jsonify({"msg":"No User Found"})
 
+#actualizar publicacion
+@api.route('/user_info/update', methods = ['PUT'])
+@jwt_required()
+def update_user_info():
+    user_id=get_jwt_identity()
+    body = json.loads(request.data)
+    for key in body:
+        if (type(body[key]) != bool):
+            body[key] = body[key].strip()
+
+    user = Users.query.get(user_id)
+    for key in body:
+        if (body[key] != ""):
+            for col in user.serialize():
+                if key == col and key != "id":
+                    setattr(user, col, body[key])
+    db.session.commit()
+    return jsonify({'msg':'User Updated'}), 200
+
 @api.route('/user_info/<int:user_id>', methods=['GET'])
 @jwt_required()
 def get_user_info_pub(user_id):
@@ -96,30 +119,38 @@ def get_user_posts_pub(user_id):
 #Crear una cuenta
 @api.route('/signup', methods = ['POST'])
 def add_user():
-    body = json.loads(request.data)
-    for i in body:
-        if (type(body[i]) != bool):
-            body[i] = body[i].strip()
-            
-    for i in body:
-        if (body[i] == ""):
-            return jsonify({"msg":"There are empty values"}), 404
+    body = {
+        "email":"",
+        "username":"",
+        "password":"",
+        "firstname":"",
+        "lastname":"",
+        "telnumber":"",
+        "address":"",
+        "country":"",
+        "age":""
+    }
+    for key in body:
+        body[key]=request.form.get(key)
+        if (body[key] == "" or body[key] is None):
+            return jsonify({"msg":"There are empty values"}), 401
+        body[key] = body[key].strip()     
 
-    user_exists=Users.query.filter(Users.email==body["email"]).first()
+    #user_exists=Users.query.filter(Or(Users.email==body["email"], Users.telnumber==body["telnumber"])).first
+    #phone_exists = Users.query.filter(Users.telnumber==body["telnumber"]).first
 
-    if user_exists != None:
-        return jsonify({"msg":"There is already an account with this email"}), 401
+    #if user_exists != None:
+    #    return jsonify({"msg":"There is already an account with this email"}), 401
     
-    phone_exists = Users.query.filter(Users.telnumber==body["telnumber"]).first()
+    #if phone_exists != None:
+    #   return jsonify({"msg":"There is already an account with this telephone number"}), 401
 
-    if phone_exists != None:
-        return jsonify({"msg":"There is already an account with this telephone number"}), 401
-        
     new_user = Users(
         email=body["email"],
         username=body["username"],
         password=cripto.generate_password_hash(body["password"]).decode('utf-8'),
-        is_active=body["is_active"],
+        is_active=True,
+        is_admin=False,
         firstname=body["firstname"],
         lastname=body["lastname"],
         telnumber=body["telnumber"],
@@ -128,6 +159,21 @@ def add_user():
         age=body["age"]
     )
     db.session.add(new_user)
+    db.session.flush()
+    file=request.files['profilePic']
+    if file.filename != "":
+        extension=file.filename.split(".")[1]
+        temp = tempfile.NamedTemporaryFile(delete=False)
+        file.save(temp.name)
+        bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+        filename="profiles/" + str(new_user.id) + "." + extension
+        resource = bucket.blob(filename)
+        resource.upload_from_filename(temp.name,content_type="image/"+extension)
+        newImage=ProfilePics(resource_path=filename, description="User " + str(new_user.id)+ "'s profile pic")
+        db.session.add(newImage)
+        db.session.flush()
+        new_user.profile_picture_id=newImage.id
+        db.session.add(new_user)
     db.session.commit()
     return jsonify({"msg":"New user created!"}), 200
    
@@ -187,9 +233,20 @@ def get_posts():
 @api.route('/posts/<int:post_param>', methods=['GET'])
 def get_post_detail(post_param):
     post=Posts.query.filter(Posts.id==post_param).first()
+    print(post)
     if post is None:
         return jsonify({"msg":"No post found"})
     return jsonify({"results": post.serializeFull()}), 200
+
+#traer las imagenes de una publicacion
+@api.route('/postImages/<int:post_param>', methods=['GET'])
+def get_post_images(post_param):
+    images=Images.query.filter(Images.post_id==post_param).all()
+    if images is None:
+        return jsonify({"msg":"No images found"})
+    imagelist= list(map(lambda item: item.image_url(),images))
+    print(imagelist)
+    return jsonify({"results": imagelist}), 200
 
 #agregar una nueva publicacion
 @api.route('posts/new', methods = ['POST'])
@@ -214,11 +271,11 @@ def add_post():
     for i in body:
         if(i=="financing"):
             body[i]=request.form.get(i)=="true" #bool(request.form.get(i))
-        elif(i=="premium"):
-            body[i]=request.form.get(i)=="true"
         else:
             body[i]=request.form.get(i)
             #body[i] = body[i].strip()
+        if(i=="premium"):
+            body[i]=request.form.get(i)=="true"
         if (body[i] == ""):
             return jsonify({"msg":"There are empty values"}), 404
     new_post = Posts(
@@ -237,7 +294,6 @@ def add_post():
         premium=body["premium"],
         user_id=user_id
     )
-    print(new_post)
     db.session.add(new_post)
     db.session.flush()
 
@@ -252,7 +308,7 @@ def add_post():
             filename="posts/"+ str(new_post.id) +"/" +str(i)+ "." + extension
             resource = bucket.blob(filename)
             resource.upload_from_filename(temp.name,content_type="image/"+extension)
-            newImage=Images(resource_path=filename, description="Picture for post " + str(new_post.id))
+            newImage=Images(resource_path=filename, description="Picture for post " + str(new_post.id), imageposition=i)
             newImage.post_id=new_post.id
             db.session.add(newImage)
             db.session.flush()
@@ -266,13 +322,10 @@ def add_post():
 def update_post(post_param):
     user_id=get_jwt_identity()
     body = json.loads(request.data)
-    for i in body:
-        if (type(body[i]) != bool):
-            body[i] = body[i].strip()
-
-    for i in body:
-        if (body[i] == ""):
-            return jsonify({"msg":"There are empty values"}), 404
+    print(body)
+    #for i in body:
+    #    if (type(body[i]) != bool or None):
+    #        body[i] = body[i].strip()
 
     post_exists=Posts.query.filter(Posts.id==post_param).first()
 
@@ -282,17 +335,12 @@ def update_post(post_param):
             return jsonify({"msg":"Not authorized to edit post"})
 
         post = Posts.query.get(post_param)
-        post.title= body["title"]
-        post.make= body["make"]
-        post.model= body["model"]
-        post.style= body["style"]
-        post.fuel= body["fuel"]
-        post.transmission= body["transmission"]
-        post.doors= body["doors"]
-        post.year= body["year"]
-        post.price= body["price"]
-        post.description= body["description"]
-        post.financing= request.json.get('financing')
+        for key in body:
+            if (body[key] != ""):
+                for col in post.serializeFull():
+                    if key == col and key != "id":
+                        print(key)
+                        setattr(post, col, body[key])
         db.session.commit()
         return jsonify({'msg':'Post Updated'}), 200
 
@@ -314,6 +362,70 @@ def delete_post(post_param):
     db.session.commit()
     return jsonify({'msg':'Post Deleted'}), 200
 
+#borrar imagen de publicacion
+@api.route('/post_images/delete/<int:pic_id>', methods = ['DELETE'])
+@jwt_required()
+def delete_post_image(pic_id):
+    user_id=get_jwt_identity()
+    image=Images.query.filter(Images.id==pic_id).first()
+    bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+    if image is None:
+        return jsonify({'msg':'Image does not exist'}), 404
+    if user_id != image.post.user_id:
+        return jsonify({"msg":"Not authorized to delete image"}), 403
+    resource=bucket.blob(image.resource_path)
+    resource.delete()
+    db.session.delete(image)
+    db.session.commit()
+    return jsonify({'msg':'Image Deleted'}), 200
+
+#agregar fotos a publicacion
+@api.route('/post_images/upload/<int:post_param>', methods = ['POST'])
+@jwt_required()
+def upload_post_image(post_param):
+    user_id=get_jwt_identity()
+    post = Posts.query.filter(Posts.id==post_param).first()
+    if post is None:
+        return jsonify({'msg':'Post does not exist'}), 404
+    post_images=Images.query.filter(Images.post_id==post_param).all()
+    files=request.files.getlist('postPic')
+    if len(post_images) != 0:
+        last_image_position=Images.query.filter(Images.post_id==post_param).order_by(Images.imageposition.desc()).first().imageposition 
+        new_position=last_image_position + 1
+        for file in files:
+            if file.filename!="":
+                extension=file.filename.split(".")[1]
+                temp = tempfile.NamedTemporaryFile(delete=False)
+                file.save(temp.name)
+                bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+                filename="posts/"+ str(post_param) +"/" +str(new_position)+ "." + extension
+                resource = bucket.blob(filename)
+                resource.upload_from_filename(temp.name,content_type="image/"+extension)
+                newImage=Images(resource_path=filename, description="Picture for post " + str(post_param), imageposition=new_position)
+                newImage.post_id=post_param
+                db.session.add(newImage)
+                db.session.flush()
+                new_position=new_position + 1
+        db.session.commit()
+        return jsonify({"msg": "New post pictures uploaded"}), 200
+    i=1
+    for file in files:
+        if file.filename!="":
+            extension=file.filename.split(".")[1]
+            temp = tempfile.NamedTemporaryFile(delete=False)
+            file.save(temp.name)
+            bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+            filename="posts/"+ str(post_param) +"/" +str(i)+ "." + extension
+            resource = bucket.blob(filename)
+            resource.upload_from_filename(temp.name,content_type="image/"+extension)
+            newImage=Images(resource_path=filename, description="Picture for post " + str(post_param), imageposition=i)
+            newImage.post_id=post_param
+            db.session.add(newImage)
+            db.session.flush()
+            i=i+1
+        db.session.commit()
+        return jsonify({"msg": "New post pictures uploaded"}), 200
+
 @api.route('/change_password', methods=['PATCH'])
 @jwt_required()
 def update_user_password():
@@ -324,40 +436,72 @@ def update_user_password():
     db.session.add(user)
     db.session.commit()
     return jsonify({"msg":"Password has been updated"}), 200
+     
 
+#reinicio de contrsaseña utilizando el token con tiempo limitado 
+@api.route('/reset_password', methods=['POST'])
+@jwt_required()
+def reset_password():
+    #claims=get_jwt()
+    #if claims['role']=="password":
+    jti=get_jwt()["jti"]
+    now = datetime.now(timezone.utc)
+    new_password=request.json.get("password")
+    user_id=get_jwt_identity()
+    user=Users.query.get(user_id)
+    user.password=cripto.generate_password_hash(new_password).decode('utf-8')
+    db.session.add(user)
+    db.session.flush()
+    blocked_token=TokenBlocklist(jti=jti, created_at=now)
+    db.session.add(blocked_token)
+    db.session.commit()
+    return jsonify({"msg":"La contraseña ha sido actualizada"}), 200
+    # else 
+    #     return jsonify({"msg":"La contrasenña no puede ser actualizada"}), 401
+    
+#Solicitud del token para reiniciar contraseña 
+@api.route('/requestresetpassword', methods=['POST'])
+def request_password():
+    email=request.json.get("email")
+    print(email)
+    user=Users.query.filter(Users.email==email).first()
+    print(user)
+    if user==None:
+        return jsonify({"msg":"Correo no registrado"}),401
+    delta=timedelta(minutes=10)
+    password_token=create_access_token(identity=user.id, expires_delta=delta)
+    template=mail_recovery_template(password_token)
+    if send_mail(email, template):
+        return jsonify({"msg":"Correo para actualizar la contraseña enviado"}),200
+    else:
+        return jsonify({"msg":"Correo para actualizar la contraseña no enviado"}),401
+    
+@api.route ('/uploadProfilePic', methods=['POST'])
+@jwt_required()
+def uploadPostPic():
+    user_id = get_jwt_identity()
+    user = Users.query.get(user_id)
+    if user is None:
+        return jsonify({"msg":"User not found"}), 403
 
-#@api.route ('/uploadPostImage/<int:post_param>', methods=['POST'])
-#@jwt_required()
-#def uploadPostImage(post_param):
-#    post = Posts.query.filter(Posts.id==post_param).first()
-#    user_id = get_jwt_identity()
-#    user = Users.query.get(get_jwt_identity())
-#    if user is None:
-#        return jsonify({"msg":"User not found"}), 403
-#    
- #   if post is None:
-#        return jsonify({"msg":"Post not found"}), 403 
-#
-#    if post.user_id != user_id:
-#        return jsonify({"msg":"Not authorized to delete post"}), 403
-#
- #   file=request.files['postPic']
-#    extension=file.filename.split(".")[1]
-#    temp = tempfile.NamedTemporaryFile(delete=False)
-#    file.save(temp.name)
-#    bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
-#    filename="posts/" + str(user_id) + "/" + str(post_param) + "." + extension
-#    resource = bucket.blob(filename)
-#    resource.upload_from_filename(temp.name,content_type="image/"+extension)
-#
-#    if Images.query.filter(Images.resource_path==filename).first() is None:
-#
-#        newImage=Images(resource_path=filename, description="Picture for post " + str(post_param))
-#        db.session.add(newImage)
-#        db.session.flush()
-#        post.post_picture_id=newImage.id
-#        db.session.add(user)
-#        db.session.commit()
-#        return jsonify({"msg":"Image uploaded"}), 200
-#
-#    return jsonify({"msg":"Image updated"}), 200
+    file=request.files['profilePic']
+    extension=file.filename.split(".")[1]
+    temp = tempfile.NamedTemporaryFile(delete=False)
+    file.save(temp.name)
+    bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+    filename="profiles/" + str(user_id) + "." + extension
+    resource = bucket.blob(filename)
+    resource.upload_from_filename(temp.name,content_type="image/"+extension)
+
+    if ProfilePics.query.filter(ProfilePics.resource_path==filename).first() is None:
+
+        newImage=ProfilePics(resource_path=filename, description="User " + str(user_id)+ "'s profile pic")
+        db.session.add(newImage)
+        db.session.flush()
+        user.profile_picture_id=newImage.id
+        db.session.add(user)
+        db.session.commit()
+        return jsonify({"msg":"Image uploaded"}), 200
+
+    return jsonify({"msg":"Image updated"}), 200
+

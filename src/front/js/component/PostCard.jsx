@@ -5,14 +5,49 @@ import { Context } from "../store/appContext";
 const PostCard = (props) => {
   const { store, actions } = useContext(Context);
   /*agrega el prop de pago en vez del financiado y en vez de false el prop para que lo iguale "false lo oculta, true lo muestra"*/
-  let boost = true;
+  let boost = props.premium;
   return (
     <div className="card">
-      <img
-        src="https://picsum.photos/500/500"
-        className="card-img-top"
-        alt="..."
-      />
+      <div
+        id={`carousel${props.id}Controls`}
+        className="carousel slide"
+        data-bs-ride="carousel"
+      >
+        <div className="carousel-inner">
+          {props.images.map((image, index) => (
+            <div
+              className={`carousel-item ${index == 0 ? "active" : ""}`}
+              key={image.resource_path}
+            >
+              <img src={image.signed_url} className="w-100" alt="" />
+            </div>
+          ))}
+        </div>
+        <button
+          className="carousel-control-prev"
+          type="button"
+          data-bs-target={`#carousel${props.id}Controls`}
+          data-bs-slide="prev"
+        >
+          <span
+            className="carousel-control-prev-icon"
+            aria-hidden="true"
+          ></span>
+          <span className="visually-hidden">Previous</span>
+        </button>
+        <button
+          className="carousel-control-next"
+          type="button"
+          data-bs-target={`#carousel${props.id}Controls`}
+          data-bs-slide="next"
+        >
+          <span
+            className="carousel-control-next-icon"
+            aria-hidden="true"
+          ></span>
+          <span className="visually-hidden">Next</span>
+        </button>
+      </div>
       <div className="card-body">
         <h5 className="card-title">{props.title}</h5>
         <p className="card-text">Description</p>
@@ -24,8 +59,8 @@ const PostCard = (props) => {
         <li className="list-group-item">Price: {props.price}</li>
         <li className="list-group-item">Year: {props.year}</li>
         {boost && (
-          <li className="list-group-item">
-            <i className="bi bi-lightning-charge">Premium</i> {props.financing}
+          <li className="list-group-item tracking-in-contract">
+            <i className="bi bi-lightning-charge">Premium</i> {props.premium}
           </li>
         )}
       </ul>

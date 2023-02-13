@@ -17,18 +17,22 @@ export const PostDetails = (props) => {
         <div className="col-md-4">Inserte imagen aqui</div>
         <div className="col-md-8">
           <div className="card-body">
-            <h5 className="card-title">Card title</h5>
-            <p className="card-text">{props.make}</p>
-            <p className="card-text">{props.model}</p>
-            <p className="card-text">{props.price}</p>
-            <p className="card-text">{props.title}</p>
-            <p className="card-text">{props.year}</p>
-            <p className="card-text">{props.style}</p>
-            <p className="card-text">{props.fuel}</p>
-            <p className="card-text">{props.transmission}</p>
-            <p className="card-text">{props.financing}</p>
-            <p className="card-text">{props.doors}</p>
-            <p className="card-text">{props.description}</p>
+            <h5 className="card-title">{props.title}</h5>
+            <p className="card-text">Make: {props.make}</p>
+            <p className="card-text">Model: {props.model}</p>
+            <p className="card-text">Price: {props.price}</p>
+            <p className="card-text">Miles: {props.miles}</p>
+            <p className="card-text">Year: {props.year}</p>
+            <p className="card-text">Style: {props.style}</p>
+            <p className="card-text">Fuel Type: {props.fuel}</p>
+            <p className="card-text">Transmission Type: {props.transmission}</p>
+            {props.financing == true ? (
+              <p className="card-text">Financing: Yes</p>
+            ) : (
+              <p className="card-text">Financing: No</p>
+            )}
+            <p className="card-text">Doors: {props.doors}</p>
+            <p className="card-text">Description: {props.description}</p>
             {store.accessToken == "" || null || undefined ? (
               <div className="card-body d-flex justify-content-between">
                 {" "}
@@ -53,6 +57,13 @@ export const PostDetails = (props) => {
                 >
                   <i className="bi bi-heart-fill"></i>
                 </button>
+                <a
+                  className="btn btn-outline-success"
+                  role="button"
+                  href={`https://api.whatsapp.com/send?phone=${props.telnumber}`}
+                >
+                  <i className="bi bi-whatsapp"> Chat with {props.username}</i>
+                </a>
                 <Link to={`/profile_page/${props.userid}`}>
                   <button type="button" className="btn btn-outline-warning">
                     View {props.username}'s account
@@ -60,6 +71,7 @@ export const PostDetails = (props) => {
                 </Link>
               </div>
             )}
+
             <p className="card-text">
               <small className="text-muted">Last updated 3 mins ago</small>
             </p>
