@@ -21,12 +21,12 @@ export const Navbar = () => {
       actions.LogOn(data);
       let resp = await actions.LogOn(data);
       if (resp) {
-        navigate("/profile_pagePriv/profile");
+        navigate("profile_pagePriv/profile");
       }
     }
   };
-  const handleLogout = () => {
-    let resp = actions.logOut();
+  const handleLogout = async () => {
+    let resp = await actions.logOut();
     if (resp) {
       navigate("/");
     }

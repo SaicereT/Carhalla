@@ -16,10 +16,12 @@ export const ProfilePriv = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (store.accessToken) actions.getUserInfo().then((resp) => setData(resp));
-    var offcanvasTab = document.querySelector("#" + tabulacion);
-    var tab = new bootstrap.Tab(offcanvasTab);
-    tab.show();
+    if (store.accessToken) {
+      actions.getUserInfo().then((resp) => setData(resp));
+      var offcanvasTab = document.querySelector("#" + tabulacion);
+      var tab = new bootstrap.Tab(offcanvasTab);
+      tab.show();
+    }
   }, [store.accessToken]);
 
   useEffect(() => {
