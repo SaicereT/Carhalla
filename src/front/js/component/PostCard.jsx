@@ -19,7 +19,7 @@ const PostCard = (props) => {
               className={`carousel-item ${index == 0 ? "active" : ""}`}
               key={image.resource_path}
             >
-              <img src={image.signed_url} className="w-100" alt="..." />
+              <img src={image.signed_url} className="w-100" alt="" />
             </div>
           ))}
         </div>

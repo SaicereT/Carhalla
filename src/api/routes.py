@@ -10,6 +10,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token, jwt_re
 from flask_bcrypt import Bcrypt
 from firebase_admin import storage
 import tempfile
+from sqlalchemy import func
 
 
 api = Blueprint('api', __name__)
@@ -357,6 +358,70 @@ def delete_post(post_param):
     db.session.delete(post)
     db.session.commit()
     return jsonify({'msg':'Post Deleted'}), 200
+
+#borrar imagen de publicacion
+@api.route('/post_images/delete/<int:pic_id>', methods = ['DELETE'])
+@jwt_required()
+def delete_post_image(pic_id):
+    user_id=get_jwt_identity()
+    image=Images.query.filter(Images.id==pic_id).first()
+    bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+    if image is None:
+        return jsonify({'msg':'Image does not exist'}), 404
+    if user_id != image.post.user_id:
+        return jsonify({"msg":"Not authorized to delete image"}), 403
+    resource=bucket.blob(image.resource_path)
+    resource.delete()
+    db.session.delete(image)
+    db.session.commit()
+    return jsonify({'msg':'Image Deleted'}), 200
+
+#agregar fotos a publicacion
+@api.route('/post_images/upload/<int:post_param>', methods = ['POST'])
+@jwt_required()
+def upload_post_image(post_param):
+    user_id=get_jwt_identity()
+    post = Posts.query.filter(Posts.id==post_param).first()
+    if post is None:
+        return jsonify({'msg':'Post does not exist'}), 404
+    post_images=Images.query.filter(Images.post_id==post_param).all()
+    files=request.files.getlist('postPic')
+    if len(post_images) != 0:
+        last_image_position=Images.query.filter(Images.post_id==post_param).order_by(Images.imageposition.desc()).first().imageposition 
+        new_position=last_image_position + 1
+        for file in files:
+            if file.filename!="":
+                extension=file.filename.split(".")[1]
+                temp = tempfile.NamedTemporaryFile(delete=False)
+                file.save(temp.name)
+                bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+                filename="posts/"+ str(post_param) +"/" +str(new_position)+ "." + extension
+                resource = bucket.blob(filename)
+                resource.upload_from_filename(temp.name,content_type="image/"+extension)
+                newImage=Images(resource_path=filename, description="Picture for post " + str(post_param), imageposition=new_position)
+                newImage.post_id=post_param
+                db.session.add(newImage)
+                db.session.flush()
+                new_position=new_position + 1
+        db.session.commit()
+        return jsonify({"msg": "New post pictures uploaded"}), 200
+    i=1
+    for file in files:
+        if file.filename!="":
+            extension=file.filename.split(".")[1]
+            temp = tempfile.NamedTemporaryFile(delete=False)
+            file.save(temp.name)
+            bucket=storage.bucket(name="proyecto-final-c6dca.appspot.com")
+            filename="posts/"+ str(post_param) +"/" +str(i)+ "." + extension
+            resource = bucket.blob(filename)
+            resource.upload_from_filename(temp.name,content_type="image/"+extension)
+            newImage=Images(resource_path=filename, description="Picture for post " + str(post_param), imageposition=i)
+            newImage.post_id=post_param
+            db.session.add(newImage)
+            db.session.flush()
+            i=i+1
+        db.session.commit()
+        return jsonify({"msg": "New post pictures uploaded"}), 200
 
 @api.route('/change_password', methods=['PATCH'])
 @jwt_required()

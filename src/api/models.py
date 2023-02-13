@@ -166,7 +166,8 @@ class Images(db.Model):
         return {
             "id":self.id,
             "resource_path": self.resource_path,
-            "signed_url": signed_url
+            "signed_url": signed_url,
+            "imageposition":self.imageposition
         }
     
 
