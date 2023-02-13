@@ -5,12 +5,15 @@ from flask import Flask, request, jsonify, url_for, Blueprint, jsonify
 from api.models import db, Users, Posts, Fav_posts, TokenBlocklist, Images, ProfilePics
 from api.utils import generate_sitemap, APIException
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt, get_jwt_identity
 from flask_bcrypt import Bcrypt
 from firebase_admin import storage
+from .sendemail import mail_recovery_template, send_mail
 import tempfile
 from sqlalchemy import func
+
+
 
 
 api = Blueprint('api', __name__)
@@ -433,8 +436,46 @@ def update_user_password():
     db.session.add(user)
     db.session.commit()
     return jsonify({"msg":"Password has been updated"}), 200
+     
 
-
+#reinicio de contrsaseña utilizando el token con tiempo limitado 
+@api.route('/reset_password', methods=['POST'])
+@jwt_required()
+def reset_password():
+    #claims=get_jwt()
+    #if claims['role']=="password":
+    jti=get_jwt()["jti"]
+    now = datetime.now(timezone.utc)
+    new_password=request.json.get("password")
+    user_id=get_jwt_identity()
+    user=Users.query.get(user_id)
+    user.password=cripto.generate_password_hash(new_password).decode('utf-8')
+    db.session.add(user)
+    db.session.flush()
+    blocked_token=TokenBlocklist(jti=jti, created_at=now)
+    db.session.add(blocked_token)
+    db.session.commit()
+    return jsonify({"msg":"La contraseña ha sido actualizada"}), 200
+    # else 
+    #     return jsonify({"msg":"La contrasenña no puede ser actualizada"}), 401
+    
+#Solicitud del token para reiniciar contraseña 
+@api.route('/requestresetpassword', methods=['POST'])
+def request_password():
+    email=request.json.get("email")
+    print(email)
+    user=Users.query.filter(Users.email==email).first()
+    print(user)
+    if user==None:
+        return jsonify({"msg":"Correo no registrado"}),401
+    delta=timedelta(minutes=10)
+    password_token=create_access_token(identity=user.id, expires_delta=delta)
+    template=mail_recovery_template(password_token)
+    if send_mail(email, template):
+        return jsonify({"msg":"Correo para actualizar la contraseña enviado"}),200
+    else:
+        return jsonify({"msg":"Correo para actualizar la contraseña no enviado"}),401
+    
 @api.route ('/uploadProfilePic', methods=['POST'])
 @jwt_required()
 def uploadPostPic():
@@ -463,3 +504,4 @@ def uploadPostPic():
         return jsonify({"msg":"Image uploaded"}), 200
 
     return jsonify({"msg":"Image updated"}), 200
+

@@ -14,6 +14,8 @@ from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
 import firebase_admin
 from firebase_admin import credentials
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 
 #from models import Person
