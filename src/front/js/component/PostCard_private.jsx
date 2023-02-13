@@ -2,8 +2,10 @@ import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Paypal from "./paypal.jsx";
+import "../../styles/premium.css";
 
 const PostCardPrivate = (props) => {
+  let boost = props.premium;
   const { store, actions } = useContext(Context);
   return (
     <div className="card" /*style="width: 18rem;"*/>
@@ -53,14 +55,14 @@ const PostCardPrivate = (props) => {
             type="button"
             className="btn btn-success"
             data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
+            data-bs-target="#modpaypal"
           >
-            Impulse your post <strong>10$</strong>{" "}
+            Impulse your post <strong>10$</strong>
             <i className="bi bi-rocket-takeoff"></i>
           </button>
           <div
             className="modal fade"
-            id="exampleModal"
+            id="modpaypal"
             tabIndex="-1"
             aria-labelledby="exampleModalLabel"
             aria-hidden="true"
@@ -79,7 +81,7 @@ const PostCardPrivate = (props) => {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  <Paypal />
+                  <Paypal id={props.id} />
                 </div>
                 <div className="modal-footer">
                   <button
@@ -106,6 +108,11 @@ const PostCardPrivate = (props) => {
         <li className="list-group-item">Model: {props.model}</li>
         <li className="list-group-item">Price: {props.price}</li>
         <li className="list-group-item">Year: {props.year}</li>
+        {boost && (
+          <li className="list-group-item tracking-in-contract">
+            <i className="bi bi-lightning-charge">Premium</i> {props.premium}
+          </li>
+        )}
       </ul>
 
       <div className="card-body d-flex justify-content-between">

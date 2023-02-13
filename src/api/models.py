@@ -85,7 +85,7 @@ class Posts(db.Model):
         "model":self.model,
         "price":self.price,
         "post_id":self.id,
-        "is_premium":self.premium,
+        "premium":self.premium,
         "miles":self.miles,
         "doors":self.doors,
         "fuel":self.fuel,

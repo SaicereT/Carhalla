@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext.js";
 import PostCard from "../component/PostCard.jsx";
 import { Filter } from "../component/filter.jsx";
+import carhallabaner from "../../img/carhallabaner.png";
 
 export const Frontpage = () => {
   const { store, actions } = useContext(Context);
@@ -101,8 +102,13 @@ export const Frontpage = () => {
   };
 
   return (
-    <div className="container-fluid me-3">
-      <h1 className="display-4 float-center ">Carhalla</h1>
+    <div className="container-fluid me-5">
+      <img
+        style={{ height: "200px" }}
+        className="ms-2"
+        src={carhallabaner}
+        alt="/"
+      />
       <div className="d-flex">
         <div className="filter-container">
           <Filter
@@ -124,7 +130,7 @@ export const Frontpage = () => {
         <div className="postcard-container">
           <div className="row">
             {filteredPosts().map((post) => (
-              <div className="col-lg-4 mb-3" key={post.post_id}>
+              <div className="col-lg-4 mb-2" key={post.post_id}>
                 <PostCard
                   make={post.make}
                   model={post.model}
@@ -132,6 +138,7 @@ export const Frontpage = () => {
                   price={post.price}
                   title={post.title}
                   year={post.year}
+                  premium={post.premium}
                   images={post.images}
                 />
               </div>

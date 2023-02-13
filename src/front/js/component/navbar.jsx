@@ -48,7 +48,7 @@ export const Navbar = () => {
             <div className="dropdown me-3">
               <button
                 type="button"
-                className="btn btn-primary dropdown-toggle"
+                className=" button4 btn btn-primary dropdown-toggle"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
                 data-bs-auto-close="outside"
@@ -97,26 +97,26 @@ export const Navbar = () => {
               </div>
             </div>
             <Link to="/formUser">
-              <button className="btn btn-primary me-3">Sign up</button>
+              <button className=" button3 btn btn-success me-3">Sign up</button>
             </Link>
           </div>
         ) : (
           <div>
             <button
               type="button"
-              className="btn btn-danger"
+              className="button2 btn btn-danger"
               onClick={() => handleLogout()}
             >
               Log Out
             </button>
             <button
-              className="btn btn-primary mx-3"
+              className="miBoton btn btn-primary mx-3"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
               aria-controls="offcanvasRight"
             >
-              More Info <i className="bi bi-info-circle"></i>
+              Main Menu
             </button>
 
             <div
@@ -135,13 +135,19 @@ export const Navbar = () => {
                 ></button>
               </div>
               <div className="offcanvas-body">
-                <Link className="dropdown-item" to="/addPost">
+                <Link className=" button5 dropdown-item" to="/addPost">
                   Create a new post
                 </Link>
-                <Link className="dropdown-item" to="/profile_pagePriv/profile">
+                <Link
+                  className="button5  dropdown-item"
+                  to="/profile_pagePriv/profile"
+                >
                   Profile
                 </Link>
-                <Link className="dropdown-item" to="/profile_pagePriv/posts">
+                <Link
+                  className="button5 dropdown-item"
+                  to="/profile_pagePriv/posts"
+                >
                   Posts
                 </Link>
                 <Link

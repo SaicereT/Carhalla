@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import "../../styles/navbar.css";
 import { Context } from "../store/appContext";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";

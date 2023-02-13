@@ -1,8 +1,9 @@
-import React from "react";
-
+import React, { useContext, useEffect } from "react";
+import { Context } from "../store/appContext";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
-export default function App() {
+const App = (props) => {
+  const { store, actions } = useContext(Context);
   return (
     <PayPalScriptProvider
       options={{
@@ -22,13 +23,15 @@ export default function App() {
             ],
           });
         }}
-        onApprove={(data, actions) => {
-          return actions.order.capture().then((details) => {
+        onApprove={(data, action) => {
+          return action.order.capture().then((details) => {
             const name = details.payer.name.given_name;
+            actions.Setpremium(props.id);
             alert(`Transaction completed by ${name}`);
           });
         }}
       />
     </PayPalScriptProvider>
   );
-}
+};
+export default App;
