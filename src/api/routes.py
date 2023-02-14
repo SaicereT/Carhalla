@@ -6,7 +6,7 @@ from api.models import db, Users, Posts, Fav_posts, TokenBlocklist, Images, Prof
 from api.utils import generate_sitemap, APIException
 import json
 from datetime import datetime, timezone, timedelta
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt, get_jwt_identity, get_jti
 from flask_bcrypt import Bcrypt
 from firebase_admin import storage
 from .sendemail import mail_recovery_template, send_mail
@@ -33,8 +33,9 @@ def user_login():
  #valida la contraseña
     if cripto.check_password_hash(user.password, password):
         print("Clave correcta")
-        access_token=create_access_token(identity=user.id)
-        refresh_token=create_refresh_token(identity=user.id)
+        access_token=create_access_token(identity=user.id, additional_claims={"role":"user"})
+        access_token_jti = get_jti(access_token)
+        refresh_token=create_refresh_token(identity=user.id, additional_claims={"accessToken":access_token_jti, "role":"user"})
         return jsonify({"msg": "Welcome Back!", "token":access_token,"refresh":refresh_token}), 200
     else:
     #clave no valilda
