@@ -62,13 +62,13 @@ export const Navbar = () => {
                       forhtml="exampleDropdownFormEmail2"
                       className="form-label"
                     >
-                      Email address
+                      Email Adress
                     </label>
                     <input
                       type="email"
                       className="form-control mb-2"
                       id="exampleDropdownFormEmail2"
-                      placeholder="Email here"
+                      placeholder="Email"
                       name="email"
                     />
                   </div>
@@ -83,7 +83,7 @@ export const Navbar = () => {
                       type="password"
                       className="form-control mb-2"
                       id="exampleDropdownFormPassword2"
-                      placeholder="Password here"
+                      placeholder="Password"
                       name="password"
                     />
                   </div>
@@ -93,11 +93,11 @@ export const Navbar = () => {
                   </button>
                 </form>
                 <div className="dropdown-divider"></div>
-                <Link to="/accountRecovery">Forgot Password?</Link>
+                <Link to="/accountRecovery">Forgot your password?</Link>
               </div>
             </div>
             <Link to="/formUser">
-              <button className=" button3 btn btn-success me-3">Sign up</button>
+              <button className=" button3 btn btn-success me-3">Sign Up</button>
             </Link>
           </div>
         ) : (
@@ -126,7 +126,7 @@ export const Navbar = () => {
               aria-labelledby="offcanvasRightLabel"
             >
               <div className="offcanvas-header">
-                <h5 id="offcanvasRightLabel">Menú</h5>
+                <h5 id="offcanvasRightLabel">Menu</h5>
                 <button
                   type="button"
                   className="btn-close text-reset"
@@ -136,7 +136,7 @@ export const Navbar = () => {
               </div>
               <div className="offcanvas-body">
                 <Link className=" button5 dropdown-item" to="/addPost">
-                  Create a new post
+                  Add New Post
                 </Link>
                 <Link
                   className="button5  dropdown-item"

@@ -120,14 +120,14 @@ const UserInfo = (props) => {
                           md="3"
                           controlId="validationCustom06"
                         >
-                          <Form.Label>City</Form.Label>
+                          <Form.Label>Country</Form.Label>
                           <Form.Control
                             type="text"
-                            placeholder="City"
+                            placeholder={props.country}
                             name="city"
                           />
                           <Form.Control.Feedback type="invalid">
-                            Please provide a valid city.
+                            Please provide a valid Country.
                           </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group
@@ -142,7 +142,7 @@ const UserInfo = (props) => {
                             name="address"
                           />
                           <Form.Control.Feedback type="invalid">
-                            Please provide a valid city.
+                            Please provide an address.
                           </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group
@@ -157,7 +157,7 @@ const UserInfo = (props) => {
                             name="phone"
                           />
                           <Form.Control.Feedback type="invalid">
-                            Please provide a valid state.
+                            Please provide a valid phone number.
                           </Form.Control.Feedback>
                         </Form.Group>
                       </Row>

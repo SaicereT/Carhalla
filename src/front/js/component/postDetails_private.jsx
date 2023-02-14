@@ -140,7 +140,7 @@ export const PostDetailsPrivate = (props) => {
                             <Form.Label>Post Title</Form.Label>
                             <Form.Control
                               type="textarea"
-                              placeholder="Title"
+                              placeholder={props.title}
                               name="title"
                               id="title"
                             />
@@ -149,7 +149,7 @@ export const PostDetailsPrivate = (props) => {
                             <Form.Label>Model</Form.Label>
                             <Form.Control
                               type="text"
-                              placeholder="Model"
+                              placeholder={props.model}
                               name="model"
                             />
                           </Form.Group>
@@ -269,7 +269,7 @@ export const PostDetailsPrivate = (props) => {
                             <Form.Label>Miles</Form.Label>
                             <Form.Control
                               type="number"
-                              placeholder="Miles"
+                              placeholder={props.miles}
                               name="miles"
                             />
                           </Form.Group>
@@ -277,7 +277,7 @@ export const PostDetailsPrivate = (props) => {
                             <Form.Label>Price</Form.Label>
                             <Form.Control
                               type="number"
-                              placeholder="$0.000"
+                              placeholder={props.price}
                               name="price"
                             />
                           </Form.Group>
@@ -286,7 +286,7 @@ export const PostDetailsPrivate = (props) => {
                             <Form.Control
                               as="textarea"
                               type="text"
-                              placeholder="Description"
+                              placeholder={props.description}
                               name="description"
                             />
                           </Form.Group>
