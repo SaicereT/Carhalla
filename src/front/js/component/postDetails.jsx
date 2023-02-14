@@ -10,11 +10,50 @@ export const PostDetails = (props) => {
   useEffect(() => {
     if (store.accessToken) actions.getUserFavorites();
   }, [store.accessToken]);
-
+  console.log(props.username);
   return (
     <div className="card mb-3">
       <div className="row g-0">
-        <div className="col-md-4">Inserte imagen aqui</div>
+        <div
+          id={`carousel${props.id}Controls`}
+          className="carousel slide"
+          data-bs-ride="carousel"
+        >
+          <div className="carousel-inner">
+            {props.images.map((image, index) => (
+              <div
+                className={`carousel-item ${index == 0 ? "active" : ""}`}
+                key={image.resource_path}
+              >
+                <img src={image.signed_url} className="w-100" alt="" />
+              </div>
+            ))}
+          </div>
+          <button
+            className="carousel-control-prev"
+            type="button"
+            data-bs-target={`#carousel${props.id}Controls`}
+            data-bs-slide="prev"
+          >
+            <span
+              className="carousel-control-prev-icon"
+              aria-hidden="true"
+            ></span>
+            <span className="visually-hidden">Previous</span>
+          </button>
+          <button
+            className="carousel-control-next"
+            type="button"
+            data-bs-target={`#carousel${props.id}Controls`}
+            data-bs-slide="next"
+          >
+            <span
+              className="carousel-control-next-icon"
+              aria-hidden="true"
+            ></span>
+            <span className="visually-hidden">Next</span>
+          </button>
+        </div>
         <div className="col-md-8">
           <div className="card-body">
             <h5 className="card-title">{props.title}</h5>

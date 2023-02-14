@@ -229,7 +229,7 @@ def get_posts():
     posts=Posts.query.order_by(Posts.premium.desc()).order_by(Posts.id.desc()).paginate(page=pagenum, per_page=21, error_out=False)
     return jsonify({"results":list(map(lambda item: item.serializeFull(),posts))}), 200
 
-#traer toda la info de solo una
+#traer toda la info de solo una publicacion
 @api.route('/posts/<int:post_param>', methods=['GET'])
 def get_post_detail(post_param):
     post=Posts.query.filter(Posts.id==post_param).first()
