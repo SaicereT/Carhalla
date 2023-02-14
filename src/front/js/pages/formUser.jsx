@@ -106,7 +106,7 @@ export function FormUser() {
             <Form.Label>Country</Form.Label>
             <Form.Control
               type="text"
-              placeholder="City"
+              placeholder="Country"
               required
               name="country"
             />
@@ -135,7 +135,7 @@ export function FormUser() {
               name="telnumber"
             />
             <Form.Control.Feedback type="invalid">
-              Please provide a valid state.
+              Please provide a valid number.
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group
@@ -189,7 +189,7 @@ export function FormUser() {
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           >
-            Next step
+            Sign Up 
           </Button>
           <div
             className="modal fade"
