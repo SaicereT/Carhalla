@@ -55,13 +55,14 @@ export const Navbar = () => {
               >
                 Log in
               </button>
-              <div className="dropdown-menu px-3">
+              <div className="dropstyle  dropdown-menu px-3 mt-5">
                 <form className="" onSubmit={(event) => handleSubmit(event)}>
                   <div className="mb-1">
                     <label
                       forhtml="exampleDropdownFormEmail2"
                       className="form-label"
                     >
+                      <br></br>
                       Email address
                     </label>
                     <input
@@ -88,7 +89,10 @@ export const Navbar = () => {
                     />
                   </div>
 
-                  <button type="submit" className="btn btn-primary mb-2">
+                  <button
+                    type="submit"
+                    className=" button4 btn btn-primary mb-2"
+                  >
                     Submit
                   </button>
                 </form>
