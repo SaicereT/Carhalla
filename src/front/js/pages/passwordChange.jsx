@@ -49,7 +49,7 @@ export const PasswordChange = () => {
           style={{ width: "400px", height: "500px" }}
         >
           <label for="exampleInputpassword1" className="form-label">
-            Contraseña
+            Password
           </label>
           <input
             name="password"
@@ -61,7 +61,7 @@ export const PasswordChange = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <label htmlfor="verification" className="form-label">
-            Verifique la contraseña
+            Verify your Password
           </label>
           <input
             type="password"
@@ -72,7 +72,7 @@ export const PasswordChange = () => {
             onChange={(e) => setVerification(e.target.value)}
           />
           <label for="exampleInputemail1" className="form-label">
-            Confirmación de Correo
+            Confirm your Email
           </label>
           <input
             name="email"
