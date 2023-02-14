@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext.js";
 import PostCard from "../component/PostCard.jsx";
 import { Filter } from "../component/filter.jsx";
-import carhallabaner from "../../img/carhallabaner.png";
+import frontpage from "../../styles/frontpage.css";
 
 export const Frontpage = () => {
   const { store, actions } = useContext(Context);
@@ -102,14 +102,8 @@ export const Frontpage = () => {
   };
 
   return (
-    <div className="container-fluid me-5">
-      <img
-        style={{ height: "200px" }}
-        className="ms-2"
-        src={carhallabaner}
-        alt="/"
-      />
-      <div className="d-flex">
+    <div className="container-fluid me-5 ">
+      <div className="d-flex ">
         <div className="filter-container">
           <Filter
             handleMakeFilterChange={handleMakeOptionChange}

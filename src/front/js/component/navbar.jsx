@@ -55,14 +55,15 @@ export const Navbar = () => {
               >
                 Log in
               </button>
-              <div className="dropdown-menu px-3">
+              <div className="dropstyle  dropdown-menu px-3 mt-5">
                 <form className="" onSubmit={(event) => handleSubmit(event)}>
                   <div className="mb-1">
                     <label
                       forhtml="exampleDropdownFormEmail2"
                       className="form-label"
                     >
-                      Email Adress
+                      <br></br>
+                      Email address
                     </label>
                     <input
                       type="email"
@@ -88,7 +89,10 @@ export const Navbar = () => {
                     />
                   </div>
 
-                  <button type="submit" className="btn btn-primary mb-2">
+                  <button
+                    type="submit"
+                    className=" button4 btn btn-primary mb-2"
+                  >
                     Submit
                   </button>
                 </form>
@@ -110,7 +114,7 @@ export const Navbar = () => {
               Log Out
             </button>
             <button
-              className="miBoton btn btn-primary mx-3"
+              className="miBoton btn btn-primary mx-3  "
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
@@ -134,12 +138,12 @@ export const Navbar = () => {
                   aria-label="Close"
                 ></button>
               </div>
-              <div className="offcanvas-body">
-                <Link className=" button5 dropdown-item" to="/addPost">
-                  Add New Post
+              <div className="offcanvas-body ">
+                <Link className="dropdown-item" to="/addPost">
+                  Create a new post
                 </Link>
                 <Link
-                  className="button5  dropdown-item"
+                  className="  dropdown-item"
                   to="/profile_pagePriv/profile"
                 >
                   Profile
