@@ -257,4 +257,11 @@ span {
   left: 0;
 }
 
-/*cavas button */
+/*cavas */
+
+.offcanvas {
+  height: 350px;
+  width: 400px;
+  border-radius: 5%;
+  margin-top: 200px;
+}

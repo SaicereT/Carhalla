@@ -110,7 +110,7 @@ export const Navbar = () => {
               Log Out
             </button>
             <button
-              className="miBoton btn btn-primary mx-3"
+              className="miBoton btn btn-primary mx-3  "
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
@@ -125,7 +125,7 @@ export const Navbar = () => {
               id="offcanvasRight"
               aria-labelledby="offcanvasRightLabel"
             >
-              <div className="offcanvas-header">
+              <div className="offcanvas-header ">
                 <h5 id="offcanvasRightLabel">Menú</h5>
                 <button
                   type="button"
@@ -134,12 +134,12 @@ export const Navbar = () => {
                   aria-label="Close"
                 ></button>
               </div>
-              <div className="offcanvas-body">
-                <Link className=" button5 dropdown-item" to="/addPost">
+              <div className="offcanvas-body ">
+                <Link className="dropdown-item" to="/addPost">
                   Create a new post
                 </Link>
                 <Link
-                  className="button5  dropdown-item"
+                  className="  dropdown-item"
                   to="/profile_pagePriv/profile"
                 >
                   Profile

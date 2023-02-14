@@ -27,6 +27,7 @@ export const AddPost = () => {
       if (resp) {
         navigate("/");
       }
+      window.location.reload(true);
     }
   };
 
@@ -47,6 +48,7 @@ export const AddPost = () => {
             <Form.Label>Make</Form.Label>
             <Form.Select name="make">
               <option value="BMW">BMW</option>
+              <option value="Honda">Honda</option>
               <option value="Chevrolet">Chevrolet</option>
               <option value="FIAT">FIAT</option>
               <option value="Mitsubishi">Mitsubishi</option>
