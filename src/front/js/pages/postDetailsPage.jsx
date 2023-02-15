@@ -18,7 +18,7 @@ export const PostDetailsPage = () => {
 
   return (
     <div className="container">
-      <h1 className="display-4">Home Page</h1>
+      <h1 className="display-4">Details</h1>
       <div className="row justify-content-between">
         <PostDetails
           make={data?.make}
