@@ -7,8 +7,7 @@ const App = (props) => {
   return (
     <PayPalScriptProvider
       options={{
-        "client-id":
-          "AWupyIZCF6KfoZLwqH_T6hA0FoET8Usdl_L8VYdBf8S1wm7J5IRbDSmHIV6jqQlYU2Sf42XJBfH73ryU",
+        "client-id": process.env.PAYPAL_TOKEN,
       }}
     >
       <PayPalButtons

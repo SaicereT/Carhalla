@@ -41,7 +41,7 @@ export const AccountRecovery = () => {
           />
           <div id="emailHelp" className="form-text"></div>
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary button4">
           Enviar
         </button>
       </form>

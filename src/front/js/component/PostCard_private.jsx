@@ -121,7 +121,7 @@ const PostCardPrivate = (props) => {
             Info
           </button>
         </Link>
-        <Link to={"/profile_pagePriv"}>
+        <Link to={"/profile_pagePriv/profile"}>
           <button
             className="btn btn-warning"
             onClick={() => actions.DeletePost(props.id)}
