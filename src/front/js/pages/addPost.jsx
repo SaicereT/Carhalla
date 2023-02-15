@@ -27,7 +27,6 @@ export const AddPost = () => {
       if (resp) {
         navigate("/");
       }
-      window.location.reload(true);
     }
   };
 
