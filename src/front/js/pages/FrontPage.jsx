@@ -102,28 +102,28 @@ export const Frontpage = () => {
 
   return (
     <div className="container-fluid me-5 ">
-      <div className="d-flex ">
-        <div className="filter-container">
-          <Filter
-            handleMakeFilterChange={handleMakeOptionChange}
-            handleYearFilterChange={handleYearOptionChange}
-            handleStyleFilterChange={handleStyleOptionChange}
-            handleFuelFilterChange={handleFuelOptionChange}
-            handleTransmissionFilterChange={handleTransmissionOptionChange}
-            handleDoorsFilterChange={handleDoorsOptionChange}
-            selectedMakeOption={selectedMakeOption}
-            selectedYearOption={selectedYearOption}
-            selectedStyleOption={selectedStyleOption}
-            selectedFuelOption={selectedFuelOption}
-            selectedTransmissionOption={selectedTransmissionOption}
-            selectedDoorsOption={selectedDoorsOption}
-          />
-        </div>
-
+      <h1>Front Page</h1>
+      <div className="d-flex">
         <div className="postcard-container">
           <div className="row">
+            <div className="col-lg-3 filter-container">
+              <Filter
+                handleMakeFilterChange={handleMakeOptionChange}
+                handleYearFilterChange={handleYearOptionChange}
+                handleStyleFilterChange={handleStyleOptionChange}
+                handleFuelFilterChange={handleFuelOptionChange}
+                handleTransmissionFilterChange={handleTransmissionOptionChange}
+                handleDoorsFilterChange={handleDoorsOptionChange}
+                selectedMakeOption={selectedMakeOption}
+                selectedYearOption={selectedYearOption}
+                selectedStyleOption={selectedStyleOption}
+                selectedFuelOption={selectedFuelOption}
+                selectedTransmissionOption={selectedTransmissionOption}
+                selectedDoorsOption={selectedDoorsOption}
+              />
+            </div>
             {filteredPosts().map((post) => (
-              <div className="col-lg-4 mb-2" key={post.post_id}>
+              <div className="col-lg-3 mb-3" key={post.post_id}>
                 <PostCard
                   make={post.make}
                   model={post.model}

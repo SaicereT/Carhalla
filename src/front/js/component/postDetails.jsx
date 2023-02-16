@@ -16,7 +16,7 @@ export const PostDetails = (props) => {
         <div className="row g-0">
           <div
             id={`carousel${props.id}Controls`}
-            className="carousel slide"
+            className="carousel slide col-md-4"
             data-bs-ride="carousel"
           >
             <div className="carousel-inner">

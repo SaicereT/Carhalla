@@ -108,6 +108,12 @@ const getState = ({ getStore, getActions, setStore }) => {
             ...getActions().getAuthorizationHeader(),
           },
         });
+        if (!resp.ok) {
+          console.log(response.status + ": " + response.statusText);
+          return false;
+        } else {
+          return true;
+        }
       },
       DeletePost: async (postid) => {
         let { userPosts } = getStore();
@@ -206,7 +212,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       getUserInfoPub: async (userid) => {
         let { profilePicPub } = getStore();
         let resp = await fetch(
-          process.env.BACKEND_URL + "/api/user_info/" + userid,
+          process.env.BACKEND_URL + "/api/user/" + userid,
           {
             headers: {
               ...getActions().getAuthorizationHeader(),
@@ -403,6 +409,41 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
           }
         );
+      },
+      uploadPostPic: async (formdata, post_id) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/post_images/upload/" + post_id,
+          {
+            method: ["POST"],
+            body: formdata,
+            headers: {
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (!resp.ok) {
+          console.error(request.statusText);
+          return false;
+        } else {
+          return true;
+        }
+      },
+      deletePostPic: async (pic_id) => {
+        let resp = await fetch(
+          process.env.BACKEND_URL + "/api/post_images/delete/" + pic_id,
+          {
+            method: ["DELETE"],
+            headers: {
+              ...getActions().getAuthorizationHeader(),
+            },
+          }
+        );
+        if (!resp.ok) {
+          console.error(request.statusText);
+          return false;
+        } else {
+          return true;
+        }
       },
       /*Nueva action arriba de esta linea*/
     },
