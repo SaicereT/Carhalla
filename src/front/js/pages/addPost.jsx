@@ -24,10 +24,9 @@ export const AddPost = () => {
       let files = event.target.elements["postPic"].files;
       if (files.length == 0) formData.delete("postPic");
       let resp = actions.NewPost(formData);
-      if (resp) {
+      if (resp == true) {
         navigate("/");
       }
-      window.location.reload(true);
     }
   };
 

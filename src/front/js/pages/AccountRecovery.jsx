@@ -28,7 +28,7 @@ export const AccountRecovery = () => {
         <div className="mb-3">
           <h2 className="form-title justifycontent-center">CarHalla</h2>
           <h4 className="form-subtitle mt-4"> Recuperación de Cuenta </h4>
-          <label for="exampleInputEmail1" className="form-label mt-3">
+          <label htmlFor="exampleInputEmail1" className="form-label mt-3">
             Introduce tu dirección de correo electrónico
           </label>
           <input

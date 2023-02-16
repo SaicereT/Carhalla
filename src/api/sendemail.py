@@ -6,8 +6,8 @@ from sendgrid.helpers.mail import Mail
 
 def send_mail(to, template):
     message = Mail(
-        from_email=to,
-        to_emails=os.environ.get('SEND_GRID_API_SENDER'),
+        from_email=os.environ.get('SEND_GRID_API_SENDER'),
+        to_emails=to,
         subject=template['subject'],
         html_content=template['body'],
         )

@@ -34,7 +34,6 @@ class Users(db.Model):
             "id": self.id,
             "email": self.email,
             "username": self.username,
-            "profile_pic":self.profile_picture.image_url(),
             "firstname":self.firstname,
             "is_active":self.is_active,
             "lastname":self.lastname,
@@ -42,15 +41,16 @@ class Users(db.Model):
             "address":self.address,
             "country":self.country,
             "age":self.age,
+            "profile_pic":self.profile_picture.image_url(),
         }
     def serializePub(self):
         return {
             "id": self.id,
             "email": self.email,
             "username": self.username,
-            "profile_pic":self.profile_picture.image_url(),
             "is_active":self.is_active,
             "telnumber":self.telnumber,
+            "profile_pic":self.profile_picture.image_url(),
         }
 
 class Posts(db.Model):
