@@ -31,6 +31,7 @@ export const PostDetailsPagePrivate = () => {
             financing={data.financing}
             doors={data.doors}
             description={data.description}
+            images={data.images}
           />
         </div>
       </div>

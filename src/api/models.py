@@ -34,7 +34,6 @@ class Users(db.Model):
             "id": self.id,
             "email": self.email,
             "username": self.username,
-            "profile_pic":self.profile_picture.image_url(),
             "firstname":self.firstname,
             "is_active":self.is_active,
             "lastname":self.lastname,
@@ -42,15 +41,16 @@ class Users(db.Model):
             "address":self.address,
             "country":self.country,
             "age":self.age,
+            "profile_pic":self.profile_picture.image_url(),
         }
     def serializePub(self):
         return {
             "id": self.id,
             "email": self.email,
             "username": self.username,
-            "profile_pic":self.profile_picture.image_url(),
             "is_active":self.is_active,
             "telnumber":self.telnumber,
+            "profile_pic":self.profile_picture.image_url(),
         }
 
 class Posts(db.Model):
@@ -59,15 +59,15 @@ class Posts(db.Model):
     premium = db.Column(db.Boolean(), unique=False, nullable=True)
     title = db.Column(db.String(240), unique=False, nullable=False)
     make = db.Column(db.String(120), unique=False, nullable=False)
-    model = db.Column(db.String(120), unique=False, nullable=False)
-    style = db.Column(db.String(120), unique=False, nullable=False)
+    model = db.Column(db.String(200), unique=False, nullable=False)
+    style = db.Column(db.String(200), unique=False, nullable=False)
     fuel = db.Column(db.String(120), unique=False, nullable=False)
     transmission = db.Column(db.String(120), unique=False, nullable=False)
     financing = db.Column(db.Boolean(), unique=False, nullable=False)
     doors = db.Column(db.Integer, unique=False, nullable=False)
     year = db.Column(db.Integer, unique=False, nullable=False)
     price = db.Column(db.Integer, unique=False, nullable=False)
-    description = db.Column(db.String(240), unique=False, nullable=False)
+    description = db.Column(db.String(500), unique=False, nullable=False)
     miles = db.Column(db.Integer, unique=False, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     user = db.relationship(Users)

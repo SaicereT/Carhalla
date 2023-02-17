@@ -14,7 +14,7 @@ const UserInfoPub = (props) => {
             <p className="card-text">Telephone Number: {props.telnumber}</p>
           </div>
         </div>
-      </div>
+    </div>
     </div>
   );
 };

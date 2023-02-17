@@ -87,7 +87,7 @@ def update_user_info():
     db.session.commit()
     return jsonify({'msg':'User Updated'}), 200
 
-@api.route('/user_info/<int:user_id>', methods=['GET'])
+@api.route('/user/<int:user_id>', methods=['GET'])
 @jwt_required()
 def get_user_info_pub(user_id):
     user=Users.query.filter(Users.id==user_id).first()
@@ -133,6 +133,7 @@ def add_user():
     }
     for key in body:
         body[key]=request.form.get(key)
+        print(body)
         if (body[key] == "" or body[key] is None):
             return jsonify({"msg":"There are empty values"}), 401
         body[key] = body[key].strip()     
@@ -230,7 +231,7 @@ def get_posts():
     posts=Posts.query.order_by(Posts.premium.desc()).order_by(Posts.id.desc()).paginate(page=pagenum, per_page=21, error_out=False)
     return jsonify({"results":list(map(lambda item: item.serializeFull(),posts))}), 200
 
-#traer toda la info de solo una
+#traer toda la info de solo una publicacion
 @api.route('/posts/<int:post_param>', methods=['GET'])
 def get_post_detail(post_param):
     post=Posts.query.filter(Posts.id==post_param).first()

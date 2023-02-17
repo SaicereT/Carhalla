@@ -89,10 +89,10 @@ export const Profile = () => {
           </div>
         </>
       ) : (
-        <div>
-          <h1>Cargando</h1>
+        <div className="card-body">
+          <h5 className="card-title">Loading Info...</h5>
         </div>
-      )}
+        )}
     </div>
   );
 };

@@ -11,22 +11,28 @@ const UserFavorites = () => {
   }, [store.accessToken]);
   return (
     <div className="container-fluid mt-3">
-      <div className="row justify-content-between">
-        {store.userFavorites.map((post) => (
-          <div className="col-lg-4 mb-3" key={post.post_id}>
-            <PostCard
-              make={post.make}
-              model={post.model}
-              id={post.post_id}
-              price={post.price}
-              title={post.title}
-              year={post.year}
-              images={post.images}
-              type={"Favposts"}
-            />
-          </div>
-        ))}
-      </div>
+      {store.userFavorites ? (
+        <div className="row justify-content-between">
+          {store.userFavorites.map((post) => (
+            <div className="col-lg-4 mb-3" key={post.post_id}>
+              <PostCard
+                make={post.make}
+                model={post.model}
+                id={post.post_id}
+                price={post.price}
+                title={post.title}
+                year={post.year}
+                images={post.images}
+                type={"Favposts"}
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="card-body">
+          <h5 className="card-title">Loading Info...</h5>
+        </div>
+      )}
     </div>
   );
 };

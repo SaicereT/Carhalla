@@ -55,20 +55,21 @@ export const Navbar = () => {
               >
                 Log in
               </button>
-              <div className="dropdown-menu px-3">
+              <div className="dropstyle  dropdown-menu px-3 mt-5">
                 <form className="" onSubmit={(event) => handleSubmit(event)}>
                   <div className="mb-1">
                     <label
                       forhtml="exampleDropdownFormEmail2"
                       className="form-label"
                     >
+                      <br></br>
                       Email address
                     </label>
                     <input
                       type="email"
                       className="form-control mb-2"
                       id="exampleDropdownFormEmail2"
-                      placeholder="Email here"
+                      placeholder="Email"
                       name="email"
                     />
                   </div>
@@ -83,21 +84,24 @@ export const Navbar = () => {
                       type="password"
                       className="form-control mb-2"
                       id="exampleDropdownFormPassword2"
-                      placeholder="Password here"
+                      placeholder="Password"
                       name="password"
                     />
                   </div>
 
-                  <button type="submit" className="btn btn-primary mb-2">
+                  <button
+                    type="submit"
+                    className=" button4 btn btn-primary mb-2"
+                  >
                     Submit
                   </button>
                 </form>
                 <div className="dropdown-divider"></div>
-                <Link to="/accountRecovery">Forgot Password?</Link>
+                <Link to="/accountRecovery">Forgot your password?</Link>
               </div>
             </div>
             <Link to="/formUser">
-              <button className=" button3 btn btn-success me-3">Sign up</button>
+              <button className=" button3 btn btn-success me-3">Sign Up</button>
             </Link>
           </div>
         ) : (
@@ -110,7 +114,7 @@ export const Navbar = () => {
               Log Out
             </button>
             <button
-              className="miBoton btn btn-primary mx-3"
+              className="miBoton btn btn-primary mx-3  "
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
@@ -126,7 +130,7 @@ export const Navbar = () => {
               aria-labelledby="offcanvasRightLabel"
             >
               <div className="offcanvas-header">
-                <h5 id="offcanvasRightLabel">Menú</h5>
+                <h5 id="offcanvasRightLabel">Menu</h5>
                 <button
                   type="button"
                   className="btn-close text-reset"
@@ -134,12 +138,12 @@ export const Navbar = () => {
                   aria-label="Close"
                 ></button>
               </div>
-              <div className="offcanvas-body">
-                <Link className=" button5 dropdown-item" to="/addPost">
+              <div className="offcanvas-body ">
+                <Link className="dropdown-item" to="/addPost">
                   Create a new post
                 </Link>
                 <Link
-                  className="button5  dropdown-item"
+                  className="  dropdown-item"
                   to="/profile_pagePriv/profile"
                 >
                   Profile

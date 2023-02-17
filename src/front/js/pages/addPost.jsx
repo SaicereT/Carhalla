@@ -24,7 +24,7 @@ export const AddPost = () => {
       let files = event.target.elements["postPic"].files;
       if (files.length == 0) formData.delete("postPic");
       let resp = actions.NewPost(formData);
-      if (resp) {
+      if (resp == true) {
         navigate("/");
       }
     }
@@ -47,6 +47,7 @@ export const AddPost = () => {
             <Form.Label>Make</Form.Label>
             <Form.Select name="make">
               <option value="BMW">BMW</option>
+              <option value="Honda">Honda</option>
               <option value="Chevrolet">Chevrolet</option>
               <option value="FIAT">FIAT</option>
               <option value="Mitsubishi">Mitsubishi</option>

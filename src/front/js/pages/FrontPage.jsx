@@ -4,13 +4,12 @@ import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext.js";
 import PostCard from "../component/PostCard.jsx";
 import { Filter } from "../component/filter.jsx";
-import carhallabaner from "../../img/carhallabaner.png";
+import frontpage from "../../styles/frontpage.css";
 
 export const Frontpage = () => {
   const { store, actions } = useContext(Context);
   const [pageNumber, setPageNumber] = useState(1);
   const [endOfPage, setendOfPage] = useState(false);
-
   const [selectedMakeOption, setSelectedMakeOption] = useState("All");
   const [selectedYearOption, setSelectedYearOption] = useState("All");
   const [selectedStyleOption, setSelectedStyleOption] = useState("All");
@@ -24,7 +23,7 @@ export const Frontpage = () => {
     window.removeEventListener("scroll", eventScroll);
     window.addEventListener("scroll", eventScroll, { passive: true });
     return () => window.removeEventListener("scroll", eventScroll);
-  }, []);
+  }, [Filter]);
 
   useEffect(() => {
     if (store.accessToken) actions.getUserFavorites();
@@ -102,30 +101,29 @@ export const Frontpage = () => {
   };
 
   return (
-    <div className="container-fluid me-5">
-      <h1 className="neonText">Carhalla</h1>
+    <div className="container-fluid me-5 ">
+      <h1>Front Page</h1>
       <div className="d-flex">
-        <div className="filter-container">
-          <Filter
-            handleMakeFilterChange={handleMakeOptionChange}
-            handleYearFilterChange={handleYearOptionChange}
-            handleStyleFilterChange={handleStyleOptionChange}
-            handleFuelFilterChange={handleFuelOptionChange}
-            handleTransmissionFilterChange={handleTransmissionOptionChange}
-            handleDoorsFilterChange={handleDoorsOptionChange}
-            selectedMakeOption={selectedMakeOption}
-            selectedYearOption={selectedYearOption}
-            selectedStyleOption={selectedStyleOption}
-            selectedFuelOption={selectedFuelOption}
-            selectedTransmissionOption={selectedTransmissionOption}
-            selectedDoorsOption={selectedDoorsOption}
-          />
-        </div>
-
         <div className="postcard-container">
           <div className="row">
+            <div className="col-lg-3 filter-container">
+              <Filter
+                handleMakeFilterChange={handleMakeOptionChange}
+                handleYearFilterChange={handleYearOptionChange}
+                handleStyleFilterChange={handleStyleOptionChange}
+                handleFuelFilterChange={handleFuelOptionChange}
+                handleTransmissionFilterChange={handleTransmissionOptionChange}
+                handleDoorsFilterChange={handleDoorsOptionChange}
+                selectedMakeOption={selectedMakeOption}
+                selectedYearOption={selectedYearOption}
+                selectedStyleOption={selectedStyleOption}
+                selectedFuelOption={selectedFuelOption}
+                selectedTransmissionOption={selectedTransmissionOption}
+                selectedDoorsOption={selectedDoorsOption}
+              />
+            </div>
             {filteredPosts().map((post) => (
-              <div className="col-lg-4 mb-2" key={post.post_id}>
+              <div className="col-lg-3 mb-3" key={post.post_id}>
                 <PostCard
                   make={post.make}
                   model={post.model}
