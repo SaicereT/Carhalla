@@ -103,12 +103,7 @@ export const Frontpage = () => {
 
   return (
     <div className="container-fluid me-5">
-      <img
-        style={{ height: "200px" }}
-        className="ms-2"
-        src={carhallabaner}
-        alt="/"
-      />
+      <h1 className="neonText">Carhalla</h1>
       <div className="d-flex">
         <div className="filter-container">
           <Filter
@@ -140,6 +135,7 @@ export const Frontpage = () => {
                   year={post.year}
                   premium={post.premium}
                   images={post.images}
+                  type={"Homeposts"}
                 />
               </div>
             ))}

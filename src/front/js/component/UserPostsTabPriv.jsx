@@ -23,6 +23,7 @@ const UserPostsTab = () => {
               year={post.year}
               premium={post.premium}
               images={post.images}
+              type={"Privposts"}
             />
           </div>
         ))}

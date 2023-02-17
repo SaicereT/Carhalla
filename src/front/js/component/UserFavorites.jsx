@@ -22,6 +22,7 @@ const UserFavorites = () => {
               title={post.title}
               year={post.year}
               images={post.images}
+              type={"Favposts"}
             />
           </div>
         ))}
