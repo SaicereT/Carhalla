@@ -36,13 +36,13 @@ export function FormUser() {
     event.preventDefault();
     if (event.target.checkValidity()) {
       let formData = new FormData(event.target);
-      console.log(Array.from(formData.entries()));
+      //console.log(Array.from(formData.entries()));
       let file = event.target.elements["profilePic"].files;
-      console.log(Array.from(formData.entries()));
+      //console.log(Array.from(formData.entries()));
       let resp = actions.NewUser(formData);
-      //if (resp) {
-      //  navigate("/");
-      //}
+      if (resp) {
+        navigate("/");
+      }
     }
   };
   return (

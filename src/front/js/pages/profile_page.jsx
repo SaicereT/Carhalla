@@ -14,75 +14,83 @@ export const Profile = () => {
   }, []);
   return (
     <div className="container-fluid">
-      <div className="float-md-start  " style={{ marginRight: "25px" }}>
-        <img
-          src={store.profilePicPub.signed_url}
-          className="rounded-circle"
-          style={{ height: "250px", width: "250px" }}
-          alt="/"
-        />
-      </div>
-      <ul
-        className="nav nav-tabs"
-        id="myTab"
-        role="tablist"
-        style={{ marginTop: "50px" }}
-      >
-        <li className="nav-item" role="presentation">
-          <button
-            className="nav-link active"
-            id="home-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#home-tab-pane"
-            type="button"
-            role="tab"
-            aria-controls="home-tab-pane"
-            aria-selected="true"
+      {data ? (
+        <div>
+          <div className="float-md-start  " style={{ marginRight: "25px" }}>
+            <img
+              src={store.profilePicPub.signed_url}
+              className="rounded-circle"
+              style={{ height: "250px", width: "250px" }}
+              alt="/"
+            />
+          </div>
+          <ul
+            className="nav nav-tabs"
+            id="myTab"
+            role="tablist"
+            style={{ marginTop: "50px" }}
           >
-            {data.username}'s Profile Info
-          </button>
-        </li>
-        <li className="nav-item" role="presentation">
-          <button
-            className="nav-link"
-            id="profile-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#profile-tab-pane"
-            type="button"
-            role="tab"
-            aria-controls="profile-tab-pane"
-            aria-selected="false"
-          >
-            {data.username}'s posts
-          </button>
-        </li>
-      </ul>
-      <div className="tab-content" id="myTabContent">
-        <div
-          className="tab-pane fade"
-          id="home-tab-pane"
-          role="tabpanel"
-          aria-labelledby="home-tab show active"
-          tabIndex="0"
-        >
-          <UserInfoPub
-            email={data.email}
-            username={data.username}
-            id={userid}
-            is_active={data.is_active}
-            telnumber={data.telnumber}
-          />
+            <li className="nav-item" role="presentation">
+              <button
+                className="nav-link active"
+                id="home-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#home-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="home-tab-pane"
+                aria-selected="true"
+              >
+                {data.username}'s Profile Info
+              </button>
+            </li>
+            <li className="nav-item" role="presentation">
+              <button
+                className="nav-link"
+                id="profile-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#profile-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="profile-tab-pane"
+                aria-selected="false"
+              >
+                {data.username}'s posts
+              </button>
+            </li>
+          </ul>
+          <div className="tab-content" id="myTabContent">
+            <div
+              className="tab-pane fade"
+              id="home-tab-pane"
+              role="tabpanel"
+              aria-labelledby="home-tab show active"
+              tabIndex="0"
+            >
+              <UserInfoPub
+                email={data.email}
+                username={data.username}
+                id={userid}
+                is_active={data.is_active}
+                telnumber={data.telnumber}
+              />
+            </div>
+            <div
+              className="tab-pane fade"
+              id="profile-tab-pane"
+              role="tabpanel"
+              aria-labelledby="profile-tab"
+              tabIndex="0"
+            >
+              <UserPostsTabPub userid={userid} />
+            </div>
+          </div>
         </div>
-        <div
-          className="tab-pane fade"
-          id="profile-tab-pane"
-          role="tabpanel"
-          aria-labelledby="profile-tab"
-          tabIndex="0"
-        >
-          <UserPostsTabPub userid={userid} />
+      ) : (
+        <div className="card-body">
+          <h5 className="card-title">Loading Info...</h5>
         </div>
-      </div>
+      )}
     </div>
   );
 };
