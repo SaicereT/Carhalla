@@ -60,7 +60,7 @@ export const AddPost = () => {
             }}
           >
             <h1 style={{ fontSize: "80px", textAlign: "center" }}>
-              Uploading photos please wait....
+              Ugiploading post
             </h1>
           </div>
         </div>

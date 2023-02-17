@@ -5,3 +5,10 @@
   box-shadow: 10px 10px 54px 12px rgba(211, 173, 81, 1);
   font-family: sans-serif;
 }
+.card_profile {
+  border-radius: 1%;
+  -webkit-box-shadow: 10px 20px 54px 6px rgba(211, 173, 81, 1) !important;
+  -moz-box-shadow: 10px 20px 54px 6px rgba(211, 173, 81, 1) !important;
+  box-shadow: 10px 20px 54px 6px rgba(211, 173, 81, 1) !important;
+  font-family: sans-serif;
+}
