@@ -22,6 +22,7 @@ const UserPostsTabPub = (props) => {
               title={post.title}
               year={post.year}
               images={post.images}
+              type={"Pubposts"}
             />
           </div>
         ))}

@@ -10,12 +10,14 @@ export const Profile = () => {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    actions.getUserInfoPub(userid).then((resp) => setData(resp));
-  }, []);
+    if (store.accessToken)
+      actions.getUserInfoPub(userid).then((resp) => setData(resp));
+  }, [store.accessToken]);
+
   return (
     <div className="container-fluid">
       {data ? (
-        <div>
+        <>
           <div className="float-md-start  " style={{ marginRight: "25px" }}>
             <img
               src={store.profilePicPub.signed_url}
@@ -61,7 +63,7 @@ export const Profile = () => {
           </ul>
           <div className="tab-content" id="myTabContent">
             <div
-              className="tab-pane fade"
+              className="tab-pane fade show active"
               id="home-tab-pane"
               role="tabpanel"
               aria-labelledby="home-tab show active"
@@ -85,12 +87,12 @@ export const Profile = () => {
               <UserPostsTabPub userid={userid} />
             </div>
           </div>
-        </div>
+        </>
       ) : (
         <div className="card-body">
           <h5 className="card-title">Loading Info...</h5>
         </div>
-      )}
+        )}
     </div>
   );
 };

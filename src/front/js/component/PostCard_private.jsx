@@ -10,7 +10,7 @@ const PostCardPrivate = (props) => {
   return (
     <div className="card" /*style="width: 18rem;"*/>
       <div
-        id={`carousel${props.id}Controls`}
+        id={`carousel${props.id}Controls${props.type}`}
         className="carousel slide"
         data-bs-ride="carousel"
       >
@@ -27,7 +27,7 @@ const PostCardPrivate = (props) => {
         <button
           className="carousel-control-prev"
           type="button"
-          data-bs-target={`#carousel${props.id}Controls`}
+          data-bs-target={`#carousel${props.id}Controls${props.type}`}
           data-bs-slide="prev"
         >
           <span
@@ -39,7 +39,7 @@ const PostCardPrivate = (props) => {
         <button
           className="carousel-control-next"
           type="button"
-          data-bs-target={`#carousel${props.id}Controls`}
+          data-bs-target={`#carousel${props.id}Controls${props.type}`}
           data-bs-slide="next"
         >
           <span

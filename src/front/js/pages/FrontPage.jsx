@@ -133,6 +133,7 @@ export const Frontpage = () => {
                   year={post.year}
                   premium={post.premium}
                   images={post.images}
+                  type={"Homeposts"}
                 />
               </div>
             ))}
