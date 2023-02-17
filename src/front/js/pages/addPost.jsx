@@ -13,26 +13,63 @@ import { FormCheck } from "react-bootstrap";
 
 export const AddPost = () => {
   const [validated, setValidated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (event.target.checkValidity()) {
       let formData = new FormData(event.target);
       console.log(formData);
       let files = event.target.elements["postPic"].files;
       if (files.length == 0) formData.delete("postPic");
-      let resp = actions.NewPost(formData);
-      if (resp == true) {
+      setIsLoading(true);
+      let resp = await actions.NewPost(formData);
+      if ((resp = true)) {
+        setIsLoading(false);
         navigate("/");
       }
     }
   };
-
   return (
-    <div className="container">
-      <Form onSubmit={(event) => handleSubmit(event)}>
+    <div className="container" style={{ position: "relative" }}>
+      {isLoading && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 1000,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            pointerEvents: "none", // deshabilitar los eventos de puntero para que no se pueda hacer clic en elementos debajo de la capa de carga
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+              color: "white",
+            }}
+          >
+            <h1 style={{ fontSize: "100px", textAlign: "center" }}>
+              Upload Picture, Wait...
+            </h1>
+          </div>
+        </div>
+      )}
+      <Form
+        noValidate
+        validated={validated}
+        onSubmit={(event) => handleSubmit(event)}
+      >
         <Row className="mb-3 mt-5">
           <Form.Group as={Col} md="3">
             <Form.Label>Model</Form.Label>
@@ -74,6 +111,7 @@ export const AddPost = () => {
               <option value="Hatchback">Hatchback</option>
               <option value="SUV">SUV</option>
               <option value="Wagon">Wagon</option>
+              <option value="Pickup">PickUp</option>
             </Form.Select>
           </Form.Group>
           <Form.Group as={Col} md="3">
