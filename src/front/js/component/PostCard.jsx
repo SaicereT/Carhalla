@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import "../../styles/postcard.css";
 
 const PostCard = (props) => {
   const { store, actions } = useContext(Context);

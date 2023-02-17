@@ -59,8 +59,8 @@ export const AddPost = () => {
               color: "white",
             }}
           >
-            <h1 style={{ fontSize: "100px", textAlign: "center" }}>
-              Upload Picture, Wait...
+            <h1 style={{ fontSize: "80px", textAlign: "center" }}>
+              Uploading photos please wait....
             </h1>
           </div>
         </div>

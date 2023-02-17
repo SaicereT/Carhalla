@@ -102,7 +102,7 @@ export const Frontpage = () => {
 
   return (
     <div className="container-fluid me-5 ">
-      <h1>Front Page</h1>
+      <h1>Car Inventory</h1>
       <div className="d-flex">
         <div className="postcard-container">
           <div className="row">
