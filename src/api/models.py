@@ -23,6 +23,7 @@ class Users(db.Model):
     address = db.Column(db.String(120), unique=False, nullable=False)
     country = db.Column(db.String(120), unique=False, nullable=False)
     age = db.Column(db.String(120), unique=False, nullable=False)
+    bio = db.Column(db.String(1000), unique=False, nullable=True)
     profile_picture_id=db.Column(db.Integer, db.ForeignKey("profilepics.id"))
     profile_picture=db.relationship("ProfilePics")
 
@@ -42,6 +43,7 @@ class Users(db.Model):
             "country":self.country,
             "age":self.age,
             "profile_pic":self.profile_picture.image_url(),
+            "bio":self.bio,
         }
     def serializePub(self):
         return {
@@ -51,6 +53,7 @@ class Users(db.Model):
             "is_active":self.is_active,
             "telnumber":self.telnumber,
             "profile_pic":self.profile_picture.image_url(),
+            "bio":self.bio,
         }
 
 class Posts(db.Model):

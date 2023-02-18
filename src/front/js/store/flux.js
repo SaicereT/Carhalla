@@ -334,6 +334,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               telnumber: data.phone,
               address: data.address,
               country: data.city,
+              bio: data.bio,
             }),
             headers: {
               "Content-Type": "application/json",
