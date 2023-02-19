@@ -6,9 +6,10 @@ import PostCard from "./PostCard.jsx";
 
 export const PostDetails = (props) => {
   const { store, actions } = useContext(Context);
+  const { postid } = useParams();
   const texto = {
     title:"Share Post",
-    url:`https://3000-saiceret-carhalla-rl7jvy2d9t0.ws-us87.gitpod.io/posts/${props.id}`
+    url:`https://3000-saiceret-carhalla-rl7jvy2d9t0.ws-us87.gitpod.io/posts/${postid}`
   }
   function shareAcross(object) {
     if (navigator.share){
