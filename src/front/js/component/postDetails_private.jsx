@@ -18,6 +18,8 @@ export const PostDetailsPrivate = (props) => {
     if (store.accessToken) actions.getUserFavorites();
   }, [store.accessToken]);
 
+  
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (event.target.checkValidity()) {

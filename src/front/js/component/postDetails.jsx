@@ -6,6 +6,21 @@ import PostCard from "./PostCard.jsx";
 
 export const PostDetails = (props) => {
   const { store, actions } = useContext(Context);
+  const texto = {
+    title:"Share Post",
+    url:`https://3000-saiceret-carhalla-rl7jvy2d9t0.ws-us87.gitpod.io/posts/${props.id}`
+  }
+  function shareAcross(object) {
+    if (navigator.share){
+      navigator 
+        .share(object)
+        .then(()=> console.log('Successful share'))
+        .cath(error => console.log('Error Sharing', error));
+    }
+    else {
+      console.log('No Soportado');
+    }
+  }
 
   useEffect(() => {
     if (store.accessToken) actions.getUserFavorites();
@@ -75,9 +90,13 @@ export const PostDetails = (props) => {
             <p className="card-text">
               <small className="text-muted">Last updated 3 mins ago</small>
             </p>
+            <button onClick={()=> shareAcross(texto)}>
+              Share Post
+            </button>
+
           </div>
         </div>
       </div>
     </div>
   );
-};
+}
