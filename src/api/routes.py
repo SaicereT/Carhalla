@@ -74,6 +74,7 @@ def get_user_info():
 def update_user_info():
     user_id=get_jwt_identity()
     body = json.loads(request.data)
+    print(body)
     for key in body:
         if (type(body[key]) != bool):
             body[key] = body[key].strip()

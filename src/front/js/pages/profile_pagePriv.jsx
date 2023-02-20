@@ -187,6 +187,7 @@ export const ProfilePriv = () => {
             is_active={data.is_active}
             lastname={data.lastname}
             telnumber={data.telnumber}
+            bio={data.bio}
           />
         </div>
         <div

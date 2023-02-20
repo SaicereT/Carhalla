@@ -16,12 +16,13 @@ const UserInfo = (props) => {
     if (event.target.checkValidity()) {
       let formData = new FormData(event.target);
       let data = {};
-      let campos = ["email", "username", "city", "address", "phone"];
+      let campos = ["email", "username", "city", "address", "phone", "bio"];
       campos.forEach((campo) => {
         if (campo != "" || undefined) {
           data[campo] = formData.get(campo);
         }
       });
+      console.log(data)
       let resp = actions.updateProfileInfo(data);
       if (resp) {
         navigate(0);
@@ -46,6 +47,7 @@ const UserInfo = (props) => {
               <p className="card-text">First Name: {props.firstname}</p>
               <p className="card-text">Last Name: {props.lastname}</p>
               <p className="card-text">Telephone Number: {props.telnumber}</p>
+              <p className="card-text">Bio: {props.bio}</p>
             </div>
             <div>
               <button
@@ -159,8 +161,17 @@ const UserInfo = (props) => {
                             />
                             <Form.Control.Feedback type="invalid">
                               Please provide a valid phone number.
-                            </Form.Control.Feedback>
-                          </Form.Group>
+                            </Form.Control.Feedback>               
+                        </Form.Group>
+                        <Form.Group as={Col} md="12" className="mb-1">
+                              <Form.Label>Bio</Form.Label>
+                              <Form.Control
+                                as="textarea"
+                                type="text"
+                                placeholder={props.bio}
+                                name="bio"
+                              />
+                            </Form.Group>
                         </Row>
                         <div className="modal-footer">
                           <button

@@ -75,6 +75,7 @@ export const Profile = () => {
                 id={userid}
                 is_active={data.is_active}
                 telnumber={data.telnumber}
+                bio={data.bio}
               />
             </div>
             <div

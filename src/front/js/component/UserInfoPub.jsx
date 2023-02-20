@@ -12,6 +12,7 @@ const UserInfoPub = (props) => {
             <p className="card-text">Email: {props.email}</p>
             <p className="card-text">Username: {props.username}</p>
             <p className="card-text">Telephone Number: {props.telnumber}</p>
+            <p className="card-text">Bio: {props.bio}</p>
           </div>
         </div>
     </div>
