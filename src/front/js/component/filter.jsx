@@ -9,11 +9,12 @@ export const Filter = (props) => {
         onChange={props.handleMakeFilterChange}
       >
         <option value="All">All</option>
+        <option value="Honda">Honda</option>
         <option value="BMW">BMW</option>
         <option value="Chevrolet">Chevrolet</option>
         <option value="FIAT">FIAT</option>
         <option value="Mitsubishi">Mitsubishi</option>
-        <option value="Nissan">Nissan</option>
+        <option value="Jeep">Jeep</option>
         <option value="Tesla">Tesla</option>
         <option value="Toyota">Toyota</option>
         <option value="Hyundai">Hyundai</option>
@@ -70,7 +71,7 @@ export const Filter = (props) => {
         <option value="2022">2022</option>
         <option value="2023">2023</option>
       </select>
-      <h2>style</h2>
+      <h2>Style</h2>
       <select
         value={props.selectedStyleOption}
         onChange={props.handleStyleFilterChange}
@@ -80,6 +81,7 @@ export const Filter = (props) => {
         <option value="Hatchback">Hatchback</option>
         <option value="SUV">SUV</option>
         <option value="Wagon">Wagon</option>
+        <option value="Pickup">Pickup</option>
       </select>
       <h2>Fuel</h2>
       <select
@@ -87,10 +89,10 @@ export const Filter = (props) => {
         onChange={props.handleFuelFilterChange}
       >
         <option value="All">All</option>
-        <option value="gasoline">Gasoline</option>
+        <option value="Gasoline">Gasoline</option>
         <option value="Diesel">Diesel</option>
         <option value="Electric">Electric</option>
-        <option value="hybrid">hybrid</option>
+        <option value="Hybrid">Hybrid</option>
       </select>
       <h2>Transmission</h2>
       <select
@@ -108,7 +110,7 @@ export const Filter = (props) => {
         onChange={props.handleDoorsFilterChange}
       >
         <option value="All">All</option>
-        <option value="3">3</option>
+        <option value="2">2</option>
         <option value="4">4 or more</option>
       </select>
     </div>

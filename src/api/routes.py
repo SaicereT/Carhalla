@@ -6,7 +6,7 @@ from api.models import db, Users, Posts, Fav_posts, TokenBlocklist, Images, Prof
 from api.utils import generate_sitemap, APIException
 import json
 from datetime import datetime, timezone, timedelta
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt, get_jwt_identity, get_jti
 from flask_bcrypt import Bcrypt
 from firebase_admin import storage
 from .sendemail import mail_recovery_template, send_mail
@@ -33,8 +33,9 @@ def user_login():
  #valida la contraseña
     if cripto.check_password_hash(user.password, password):
         print("Clave correcta")
-        access_token=create_access_token(identity=user.id)
-        refresh_token=create_refresh_token(identity=user.id)
+        access_token=create_access_token(identity=user.id, additional_claims={"role":"user"})
+        access_token_jti = get_jti(access_token)
+        refresh_token=create_refresh_token(identity=user.id, additional_claims={"accessToken":access_token_jti, "role":"user"})
         return jsonify({"msg": "Welcome Back!", "token":access_token,"refresh":refresh_token}), 200
     else:
     #clave no valilda
@@ -73,6 +74,7 @@ def get_user_info():
 def update_user_info():
     user_id=get_jwt_identity()
     body = json.loads(request.data)
+    print(body)
     for key in body:
         if (type(body[key]) != bool):
             body[key] = body[key].strip()
@@ -86,7 +88,7 @@ def update_user_info():
     db.session.commit()
     return jsonify({'msg':'User Updated'}), 200
 
-@api.route('/user_info/<int:user_id>', methods=['GET'])
+@api.route('/user/<int:user_id>', methods=['GET'])
 @jwt_required()
 def get_user_info_pub(user_id):
     user=Users.query.filter(Users.id==user_id).first()
@@ -132,6 +134,7 @@ def add_user():
     }
     for key in body:
         body[key]=request.form.get(key)
+        print(body)
         if (body[key] == "" or body[key] is None):
             return jsonify({"msg":"There are empty values"}), 401
         body[key] = body[key].strip()     
@@ -229,7 +232,7 @@ def get_posts():
     posts=Posts.query.order_by(Posts.premium.desc()).order_by(Posts.id.desc()).paginate(page=pagenum, per_page=21, error_out=False)
     return jsonify({"results":list(map(lambda item: item.serializeFull(),posts))}), 200
 
-#traer toda la info de solo una
+#traer toda la info de solo una publicacion
 @api.route('/posts/<int:post_param>', methods=['GET'])
 def get_post_detail(post_param):
     post=Posts.query.filter(Posts.id==post_param).first()

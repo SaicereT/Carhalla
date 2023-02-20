@@ -13,26 +13,82 @@ import { FormCheck } from "react-bootstrap";
 
 export const AddPost = () => {
   const [validated, setValidated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const form = event.currentTarget;
     if (event.target.checkValidity()) {
       let formData = new FormData(event.target);
       console.log(formData);
       let files = event.target.elements["postPic"].files;
       if (files.length == 0) formData.delete("postPic");
-      let resp = actions.NewPost(formData);
-      if (resp) {
+      setIsLoading(true);
+      let resp = await actions.NewPost(formData);
+      if ((resp = true)) {
+        setIsLoading(false);
         navigate("/");
       }
+    } else {
+      // mostrar los errores de validación
+      setFormErrors(
+        Array.from(form.elements).reduce((acc, element) => {
+          if (element.nodeName === "INPUT" || element.nodeName === "SELECT") {
+            acc[element.name] = element.validationMessage;
+          }
+          return acc;
+        }, {})
+      );
+      setValidated(true);
     }
   };
 
+  const handleChange = (event) => {
+    // borrar el mensaje de error cuando el usuario comienza a escribir en un campo
+    setFormErrors((prev) => ({ ...prev, [event.target.name]: "" }));
+  };
+
   return (
-    <div className="container">
-      <Form onSubmit={(event) => handleSubmit(event)}>
+    <div className="container" style={{ position: "relative" }}>
+      {isLoading && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 1000,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            pointerEvents: "none", // deshabilitar los eventos de puntero para que no se pueda hacer clic en elementos debajo de la capa de carga
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+              color: "white",
+            }}
+          >
+            <h1 style={{ fontSize: "80px", textAlign: "center" }}>
+              Uploading post...
+            </h1>
+          </div>
+        </div>
+      )}
+      <Form
+        noValidate
+        validated={validated}
+        onSubmit={(event) => handleSubmit(event)}
+      >
         <Row className="mb-3 mt-5">
           <Form.Group as={Col} md="3">
             <Form.Label>Model</Form.Label>
@@ -41,12 +97,14 @@ export const AddPost = () => {
               placeholder="Model"
               required
               name="model"
+              isInvalid={formErrors.model}
             />
           </Form.Group>
           <Form.Group as={Col} md="2">
             <Form.Label>Make</Form.Label>
             <Form.Select name="make">
               <option value="BMW">BMW</option>
+              <option value="Honda">Honda</option>
               <option value="Chevrolet">Chevrolet</option>
               <option value="FIAT">FIAT</option>
               <option value="Mitsubishi">Mitsubishi</option>
@@ -73,6 +131,7 @@ export const AddPost = () => {
               <option value="Hatchback">Hatchback</option>
               <option value="SUV">SUV</option>
               <option value="Wagon">Wagon</option>
+              <option value="Pickup">PickUp</option>
             </Form.Select>
           </Form.Group>
           <Form.Group as={Col} md="3">
@@ -174,10 +233,11 @@ export const AddPost = () => {
           <Form.Group as={Col} md="11">
             <Form.Label>Description</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Description"
-              required
+              as="textarea"
+              rows={3}
               name="description"
+              placeholder="Enter description"
+              required
             />
           </Form.Group>
         </Row>

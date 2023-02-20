@@ -32,17 +32,26 @@ export function FormUser() {
     return false;
   }
 
-  const submitForm = (data, event) => {
+  const submitForm = async (data, event) => {
     event.preventDefault();
     if (event.target.checkValidity()) {
       let formData = new FormData(event.target);
-      console.log(Array.from(formData.entries()));
+      //console.log(Array.from(formData.entries()));
       let file = event.target.elements["profilePic"].files;
-      console.log(Array.from(formData.entries()));
-      let resp = actions.NewUser(formData);
-      //if (resp) {
-      //  navigate("/");
-      //}
+      //console.log(Array.from(formData.entries()));
+      let resp = await actions.NewUser(formData);
+
+      if (resp) {
+        let data = {};
+        let campos = ["password", "email"];
+        campos.forEach((campo) => {
+          data[campo] = formData.get(campo);
+        });
+        let respo = await actions.LogOn(data);
+        if (respo) {
+          navigate("/");
+        }
+      }
     }
   };
   return (
@@ -106,7 +115,7 @@ export function FormUser() {
             <Form.Label>Country</Form.Label>
             <Form.Control
               type="text"
-              placeholder="City"
+              placeholder="Country"
               required
               name="country"
             />
@@ -135,7 +144,7 @@ export function FormUser() {
               name="telnumber"
             />
             <Form.Control.Feedback type="invalid">
-              Please provide a valid state.
+              Please provide a valid number.
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group
@@ -189,7 +198,7 @@ export function FormUser() {
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           >
-            Next step
+            Sign Up
           </Button>
           <div
             className="modal fade"

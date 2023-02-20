@@ -1,0 +1,12 @@
+body {
+  color: grey;
+}
+h1 {
+  text-align: center;
+  color: rgb(211, 173, 81);
+}
+.order1 {
+  align-self: center !important;
+  align-items: center !important;
+  align-content: center !important;
+}
