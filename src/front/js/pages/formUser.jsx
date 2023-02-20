@@ -32,16 +32,25 @@ export function FormUser() {
     return false;
   }
 
-  const submitForm = (data, event) => {
+  const submitForm = async (data, event) => {
     event.preventDefault();
     if (event.target.checkValidity()) {
       let formData = new FormData(event.target);
       //console.log(Array.from(formData.entries()));
       let file = event.target.elements["profilePic"].files;
       //console.log(Array.from(formData.entries()));
-      let resp = actions.NewUser(formData);
+      let resp = await actions.NewUser(formData);
+
       if (resp) {
-        navigate("/");
+        let data = {};
+        let campos = ["password", "email"];
+        campos.forEach((campo) => {
+          data[campo] = formData.get(campo);
+        });
+        let respo = await actions.LogOn(data);
+        if (respo) {
+          navigate("/");
+        }
       }
     }
   };
@@ -189,7 +198,7 @@ export function FormUser() {
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           >
-            Sign Up 
+            Sign Up
           </Button>
           <div
             className="modal fade"
