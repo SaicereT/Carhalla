@@ -33,7 +33,7 @@ const UserInfo = (props) => {
   };
 
   return (
-    <div className="card mb-3">
+    <div className="card card_profile mb-3">
       {props.id ? (
         <div className="row g-0">
           <div className="col-md-8 card-body d-flex justify-content-between">

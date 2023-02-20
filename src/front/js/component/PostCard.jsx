@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import "../../styles/postcard.css";
 
 const PostCard = (props) => {
   const { store, actions } = useContext(Context);
@@ -8,6 +9,12 @@ const PostCard = (props) => {
   let boost = props.premium;
   return (
     <div className="card">
+      {boost && (
+        <h3 className=" tracking-in-contract text-center ">
+          <i className="bi bi-lightning-charge text-center">Premium</i>{" "}
+          {props.premium}
+        </h3>
+      )}
       <div
         id={`carousel${props.id}Controls${props.type}`}
         className="carousel slide"
@@ -58,11 +65,6 @@ const PostCard = (props) => {
         <li className="list-group-item">Model: {props.model}</li>
         <li className="list-group-item">Price: {props.price}</li>
         <li className="list-group-item">Year: {props.year}</li>
-        {boost && (
-          <li className="list-group-item tracking-in-contract">
-            <i className="bi bi-lightning-charge">Premium</i> {props.premium}
-          </li>
-        )}
       </ul>
       {store.accessToken == "" || null || undefined ? (
         <div className="card-body d-flex justify-content-between">
