@@ -101,9 +101,9 @@ export const Frontpage = () => {
   };
 
   return (
-    <div className="container-fluid me-5 ">
-      <h1> The Valkyrians Feed</h1>
-      <div className="d-flex">
+    <div className="order1 container-fluid me-5">
+      <h1 className="mt-5 mb-4"> The Valkyrians Feed</h1>
+      <div className="display: flex;">
         <div className="postcard-container">
           <div className="row">
             <div className="col-lg-3 filter-container">

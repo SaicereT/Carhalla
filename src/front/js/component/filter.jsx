@@ -71,7 +71,7 @@ export const Filter = (props) => {
         <option value="2022">2022</option>
         <option value="2023">2023</option>
       </select>
-      <h2>style</h2>
+      <h2>Style</h2>
       <select
         value={props.selectedStyleOption}
         onChange={props.handleStyleFilterChange}

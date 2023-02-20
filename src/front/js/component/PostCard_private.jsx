@@ -56,6 +56,7 @@ const PostCardPrivate = (props) => {
             className="btn btn-success"
             data-bs-toggle="modal"
             data-bs-target="#modpaypal"
+            aria-label="Close"
           >
             Impulse your post <strong>10$</strong>
             <i className="bi bi-rocket-takeoff"></i>
@@ -66,6 +67,7 @@ const PostCardPrivate = (props) => {
             tabIndex="-1"
             aria-labelledby="exampleModalLabel"
             aria-hidden="true"
+            aria-label="Close"
           >
             <div className="modal-dialog">
               <div className="modal-content">
