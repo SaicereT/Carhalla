@@ -32,10 +32,15 @@ def user_login():
         return jsonify({"msg":"Invalid Login"}), 401
  #valida la contraseña
     if cripto.check_password_hash(user.password, password):
-        print("Clave correcta")
-        access_token=create_access_token(identity=user.id, additional_claims={"role":"user"})
-        access_token_jti = get_jti(access_token)
-        refresh_token=create_refresh_token(identity=user.id, additional_claims={"accessToken":access_token_jti, "role":"user"})
+        
+        if (user.is_admin):
+            claims={"role":"admin"}
+        else:
+            claims={"role":"user"}
+        
+        access_token=create_access_token(identity=user.id, additional_claims=claims)
+        claims["access_jti"]=get_jti(access_token)
+        refresh_token=create_refresh_token(identity=user.id, additional_claims=claims)
         return jsonify({"msg": "Welcome Back!", "token":access_token,"refresh":refresh_token}), 200
     else:
     #clave no valilda
@@ -506,4 +511,23 @@ def uploadPostPic():
         return jsonify({"msg":"Image uploaded"}), 200
 
     return jsonify({"msg":"Image updated"}), 200
+
+@api.route ('/refresh', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh():
+    claims=get_jwt()
+    refresh_token = claims["jti"]
+    access_token = claims["access_jti"]
+    user_id=get_jwt_identity()
+    now = datetime.now(timezone.utc)
+    access_tokenBlocked= TokenBlocklist(jti=access_token, created_at=now)
+    refresh_tokenBlocked= TokenBlocklist(jti=refresh_token, created_at=now)
+    db.session.add(access_tokenBlocked)
+    db.session.add(refresh_tokenBlocked)
+    db.session.commit()
+    claims={"role":claims['role']}
+    new_access_token=create_access_token(identity=user_id, additional_claims=claims)
+    claims["access_jti"]=get_jti(new_access_token)
+    new_refresh_token=create_refresh_token(identity=user_id, additional_claims=claims)
+    return jsonify({"token":new_access_token,"refresh":new_refresh_token}), 200
 

@@ -27,10 +27,16 @@ app.url_map.strict_slashes = False
 
 #JWT Manager
 app.config["JWT_SECRET_KEY"]= os.getenv("FLASK_APP_KEY")
+app.config["JWT_ACCESS_TOKEN_EXPIRES"]= 60
 jwt = JWTManager(app)
 
 @jwt.token_in_blocklist_loader
 def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
+    if jwt_payload["type"]=="refresh":
+        token_is_blocked=TokenBlocklist.query.filter_by(jti=jwt_payload["access_jti"]).first()
+        if token_is_blocked is not None:
+            return True
+
     jti = jwt_payload["jti"]
     token = db.session.query(TokenBlocklist.id).filter_by(jti=jti).scalar()
     return token is not None

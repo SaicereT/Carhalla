@@ -61,8 +61,31 @@ const getState = ({ getStore, getActions, setStore }) => {
           refreshToken: refresh,
         });
       },
-      getAuthorizationHeader: () => {
+      getAuthorizationHeader: async (refresh = false) => {
         let { accessToken } = getStore();
+        if (refresh) {
+          let { refreshToken } = getStore();
+          let resp = await fetch(process.env.BACKEND_URL + "/api/refresh", {
+            method: "POST",
+            headers: {
+              Authorization: "Bearer " + refreshToken,
+            },
+          });
+          if (resp.status == 200) {
+            let info = await resp.json();
+            setStore({
+              ...getStore(),
+              accessToken: info.token,
+              refreshToken: info.refresh,
+            });
+            localStorage.setItem("accessToken", info.token);
+            localStorage.setItem("refreshToken", info.refresh);
+            console.log(accessToken);
+          } else {
+            console.error(resp.statusText);
+            return null;
+          }
+        }
         return { Authorization: "Bearer " + accessToken };
       },
       getPosts: async (page = 1, append = false) => {
@@ -192,15 +215,33 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       getUserInfo: async () => {
-        let { profilePicPriv } = getStore();
+        const { getAuthorizationHeader } = getActions();
+        const { profilePicPriv } = getStore();
+        let authorization = await getAuthorizationHeader();
+        if (!authorization) {
+          console.log("Token Error");
+          return false;
+        }
         let resp = await fetch(process.env.BACKEND_URL + "/api/user_info", {
           headers: {
-            ...getActions().getAuthorizationHeader(),
+            ...authorization,
           },
         });
         if (!resp.ok) {
+          let errorResp = await resp.json();
+          if (errorResp.msg == "Token has expired") {
+            let refreshAuthorization = await getAuthorizationHeader(true);
+            resp = await fetch(process.env.BACKEND_URL + "/api/user_info", {
+              headers: {
+                ...refreshAuthorization,
+              },
+            });
+          } else {
+            console.error(resp.statusText);
+            return null;
+          }
           console.log(resp.status + ": " + resp.statusText);
-          return;
+          return null;
         }
         let data = await resp.json();
         let pic = data.results.profile_pic;
